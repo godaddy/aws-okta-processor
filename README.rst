@@ -7,7 +7,7 @@ aws-okta-processor
    :alt: Latest Version
 
 .. image:: https://travis-ci.org/godaddy/aws-okta-processor.svg?branch=master
-   :target: https://travis-ci.org/godaddy/aws-okta-processor
+   :target: https://travis-ci.com/godaddy/aws-okta-processor
    :alt: Build Status
 
 .. image:: https://codecov.io/gh/godaddy/aws-okta-processor/branch/master/graph/badge.svg

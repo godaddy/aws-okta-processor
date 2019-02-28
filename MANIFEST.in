@@ -1,0 +1,6 @@
+include README.md
+include LICENSE
+include pytest.ini
+include Pipfile
+include Pipfile.lock
+include tests/*

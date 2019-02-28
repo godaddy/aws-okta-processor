@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Amazon Web Services Sign-In</title>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+
+<div id="container">
+<h1 class="background">Amazon Web Services Login</h1>
+<div id="content">
+  <div id="main_error"></div>
+  <form id="saml_form" name="saml_form" action="/saml" method="post">
+          <input type="hidden" name="RelayState" value="" />
+          <input type="hidden" name="SAMLResponse" value="" />
+          <input type="hidden" name="name" value="" />
+          <input type="hidden" name="portal" value="" />
+          <p style="font-size: 16px; padding-left: 20px;">Select a role:</p>
+          <fieldset>
+            <div  class="saml-account"> <div onClick="expandCollapse(0);">
+              <img id="image0" src="/static/image/down.png" valign="middle"></img>
+              <div class="saml-account-name">Account: account-one (1)</div>
+              </div>
+              <hr style="border: 1px solid #ddd;">
+              <div id="0" class="saml-account" >
+                <div class="saml-role" onClick="checkRadio(this);">
+                    <input type="radio" name="roleIndex" value="arn:aws:iam::1:role/Role-One" class="saml-radio" id="arn:aws:iam::1:role/Role-One" />
+                    <label for="arn:aws:iam::1:role/Role-One" class="saml-role-description">Role-One</label>
+                    <span style="clear: both;"></span>
+                </div>
+
+                <div class="saml-role" onClick="checkRadio(this);">
+                    <input type="radio" name="roleIndex" value="arn:aws:iam::1:role/Role-Two" class="saml-radio" id="arn:aws:iam::1:role/Role-Two" />
+                    <label for="arn:aws:iam::1:role/Role-Two" class="saml-role-description">Role-Two</label>
+                    <span style="clear: both;"></span>
+                </div>
+                 </div></div><div  class="saml-account"> <div onClick="expandCollapse(1);">
+              <img id="image1" src="/static/image/down.png" valign="middle"></img>
+              <div class="saml-account-name">Account: account-two (2)</div>
+              </div>
+              <hr style="border: 1px solid #ddd;">
+              <div id="1" class="saml-account" >
+                <div class="saml-role" onClick="checkRadio(this);">
+                    <input type="radio" name="roleIndex" value="arn:aws:iam::2:role/Role-One" class="saml-radio" id="arn:aws:iam::2:role/Role-One" />
+                    <label for="arn:aws:iam::2:role/Role-One" class="saml-role-description">Role-One</label>
+                    <span style="clear: both;"></span>
+                </div>
+                 </div></div>
+          </fieldset>
+
+          <br>
+          <div class="buttoninput" id="input_signin_button">
+              <a id="signin_button" class="css3button" href="#" alt="Continue" value="Continue">Sign In</a>
+          </div>
+  </form>
+</div>
+</div>
+</body>
+</html>

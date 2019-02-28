@@ -154,8 +154,8 @@ Named profiles for different roles can then be defined in ``~/.aws/credentials``
     credential_process=aws-okta-processor authenticate --user <user_name> --organization <organization>.okta.com --application <application_url> --role <role_two_arn> --key role_two
 
 To clear all AWS session caches run::
-    $ rm ~/.aws/boto/cache/*
 
+    $ rm ~/.aws/boto/cache/*
 
 ------------
 Getting Help

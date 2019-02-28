@@ -13,7 +13,4 @@ docutils = "*"
 "flake8" = "*"
 
 [packages]
-aws-okta-processor = {editable = true,path = "."}
-
-[requires]
-python_version = "3.7"
+aws-okta-processor = {path = "."}

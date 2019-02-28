@@ -71,7 +71,7 @@ and place it in ``~/.aws/credentials`` (or in
     $ aws sts get-caller-identity
 
 Supply a password then select your AWS Okta application and account role if prompted.
-The AWS CLI command will return a result schowing the assumed account role. If you run the 
+The AWS CLI command will return a result showing the assumed account role. If you run the
 AWS CLI command again you will get the same role back without any prompts due to caching.
 
 For tools and libraries that do not recognize ``credential_process`` aws-okta-processor
@@ -153,7 +153,7 @@ AWS
 
 After aws-okta-processor has a session with Okta and an AWS role has been selected it will fetch 
 the role's keys and session token. This session information from the AWS role gets cached as a 
-json file under ``~/.aws/boto/cache``. The file name is a SHA1 hash based on a combonation the 
+json file under ``~/.aws/boto/cache``. The file name is a SHA1 hash based on a combination the
 ``user``, ``organization`` and ``key`` option values passed to the command.
 
 If you want to store a seperate AWS role session cache for each role assumed using the same 

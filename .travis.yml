@@ -22,4 +22,6 @@ jobs:
       dist: xenial
     - stage: coverage
       python: '3.6'
-      script: codecov
+      script:
+        - make coverage
+        - codecov

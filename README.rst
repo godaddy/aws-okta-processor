@@ -141,10 +141,10 @@ understand how this caching works to avoid confusion when attempting to switch b
 Okta
 ^^^^
 
-When aws-okta-processor attempts authentication it will check the system's temporary directory 
+When aws-okta-processor attempts authentication it will check ``~/.aws-okta-processor/cache/``
 for a file named ``<user>-<organization>-session.json`` based on the ``user`` and ``organization`` 
 option values passed. If the file is not found or the session contents are stale then 
-aws-okta-processor will create a new session and write it to the system's temporary directory. 
+aws-okta-processor will create a new session and write it to ``~/.aws-okta-processor/cache/``.
 If the file exists and the session is not stale then the existing session gets refreshed.
 
 ^^^

@@ -4,7 +4,6 @@ import time
 import json
 import requests
 import dateutil
-import tempfile
 import getpass
 import aws_okta_processor.core.prompt as prompt
 
@@ -52,7 +51,7 @@ class Okta:
         self.factor = factor
         self.session = requests.Session()
         self.organization = organization
-        self.temp_file_path = self.get_temp_file_path()
+        self.cache_file_path = self.get_cache_file_path()
         self.okta_session_id = None
 
         okta_session = self.get_okta_session()
@@ -73,29 +72,37 @@ class Okta:
 
             self.get_okta_session_id()
 
-    def get_temp_file_path(self):
-        temp_directory = tempfile.gettempdir()
+    def get_cache_file_path(self):
+        home_directory = os.path.expanduser('~')
+        cache_directory = os.path.join(
+            home_directory,
+            '.aws-okta-processor',
+            'cache'
+        )
 
-        temp_file_name = "{}-{}-session.json".format(
+        if not os.path.isdir(cache_directory):
+            os.makedirs(cache_directory)
+
+        cache_file_name = "{}-{}-session.json".format(
             self.user_name,
             self.organization
         )
 
-        temp_file_path = os.path.join(temp_directory, temp_file_name)
+        cache_file_path = os.path.join(cache_directory, cache_file_name)
 
-        return temp_file_path
+        return cache_file_path
 
     def set_okta_session(self, okta_session=None):
-        with open(self.temp_file_path, "w") as file:
+        with open(self.cache_file_path, "w") as file:
             json.dump(okta_session, file)
 
-        os.chmod(self.temp_file_path, 0o600)
+        os.chmod(self.cache_file_path, 0o600)
 
     def get_okta_session(self):
         session = {}
 
-        if os.path.isfile(self.temp_file_path):
-            with open(self.temp_file_path) as file:
+        if os.path.isfile(self.cache_file_path):
+            with open(self.cache_file_path) as file:
                 session = json.load(file)
 
         return session
@@ -177,7 +184,7 @@ class Okta:
         if "sessionToken" in response_json:
             return response_json["sessionToken"]
 
-        if factor.factor == "push":
+        if "factorResult" in response_json and factor.factor == "push":
             if response_json["factorResult"] == "WAITING":
                 factor.link = response_json["_links"]["next"]["href"]
                 time.sleep(1)

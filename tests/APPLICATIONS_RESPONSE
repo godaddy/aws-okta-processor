@@ -1,0 +1,38 @@
+[
+  {
+    "id": "00ub0oNGTSWTBKOLGLNR",
+    "label": "AWS",
+    "linkUrl": "https://organization.okta.com/home/amazon_aws/0oa3omz2i9XRNSRIHBZO/270",
+    "logoUrl": "https://organization.okta.com/img/logos/amazon-aws.png",
+    "appName": "amazon_aws",
+    "appInstanceId": "0oa3omz2i9XRNSRIHBZO",
+    "appAssignmentId": "0ua3omz7weMMMQJERBKY",
+    "credentialsSetup": false,
+    "hidden": false,
+    "sortOrder": 0
+  },
+  {
+    "id": "00ub0oNGTSWTBKOLGLNR",
+    "label": "AWS GOV",
+    "linkUrl": "https://organization.okta.com/home/amazon_aws/0oa3omz2i9XRNSRIHBZO/272",
+    "logoUrl": "https://organization.okta.com/img/logos/amazon-aws.png",
+    "appName": "amazon_aws",
+    "appInstanceId": "0oa3omz2i9XRNSRIHBZO",
+    "appAssignmentId": "0ua3omz7weMMMQJERBKY",
+    "credentialsSetup": false,
+    "hidden": false,
+    "sortOrder": 0
+  },
+  {
+    "id": "00ub0oNGTSWTBKOLGLNR",
+    "label": "Google Apps Calendar",
+    "linkUrl": "https://organization.okta.com/home/google/0oa3omz2i9XRNSRIHBZO/54",
+    "logoUrl": "https://organization.okta.com/img/logos/google-calendar.png",
+    "appName": "google",
+    "appInstanceId": "0oa3omz2i9XRNSRIHBZO",
+    "appAssignmentId": "0ua3omz7weMMMQJERBKY",
+    "credentialsSetup": false,
+    "hidden": false,
+    "sortOrder": 1
+  }
+]

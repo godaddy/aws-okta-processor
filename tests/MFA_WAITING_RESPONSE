@@ -1,0 +1,1 @@
+{"stateToken": "state_token", "factorResult": "WAITING", "_links": {"next": {"href": "https://organization.okta.com/api/v1/authn/factors/id/lifecycle/activate/poll"}}}

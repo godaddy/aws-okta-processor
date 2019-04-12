@@ -1,0 +1,1 @@
+{"expiresAt":"2019-04-09T20:17:42.000Z","status":"SUCCESS","sessionToken":"single_use_token","_embedded":{"user":{"id":"foo","profile":{"login":"user@domain.tld","firstName":"foo","lastName":"bar","locale":"en","timeZone":"America/Los_Angeles"}}}}

@@ -38,7 +38,8 @@ REQUIRES = [
 TEST_REQUIREMENTS = [
     'pytest-cov',
     'pytest-mock',
-    'pytest>=2.8.0'
+    'pytest>=2.8.0',
+    'responses'
 ]
 
 

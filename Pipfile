@@ -11,6 +11,7 @@ pytest-cov = "*"
 readme-renderer = "*"
 docutils = "*"
 "flake8" = "*"
+responses = "*"
 
 [packages]
 aws-okta-processor = {path = "."}

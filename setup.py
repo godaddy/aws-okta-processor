@@ -23,16 +23,16 @@ README_FILE = os.path.join(ABS_PATH, 'README.rst')
 
 REQUIRES = [
     'docopt>=0.6.2',
-    'requests>=2.19.1',
-    'pyOpenSSL>=18.0.0',
-    'cryptography>=2.3.1',
-    'idna>=2.7',
-    'future>=0.16.0',
-    'boto3>=1.7.84',
+    'requests>=2.21.0',
+    'pyOpenSSL>=19.0.0',
+    'cryptography>=2.6.1',
+    'idna>=2.8',
+    'future>=0.17.1',
+    'boto3>=1.9.134',
     'bs4>=0.0.1',
-    'lxml>=4.2.4',
+    'lxml>=4.3.3',
     'contextlib2>=0.5.5',
-    'six>=1.11.0'
+    'six>=1.12.0'
 ]
 
 TEST_REQUIREMENTS = [

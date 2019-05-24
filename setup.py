@@ -30,7 +30,6 @@ REQUIRES = [
     'future>=0.17.1',
     'boto3>=1.9.134',
     'bs4>=0.0.1',
-    'lxml>=4.3.3',
     'contextlib2>=0.5.5',
     'six>=1.12.0'
 ]

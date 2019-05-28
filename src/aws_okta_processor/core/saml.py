@@ -16,7 +16,7 @@ AWS_SIGN_IN_URL = "https://signin.aws.amazon.com/saml"
 
 
 def get_saml_assertion(saml_response=None):
-    soup = BeautifulSoup(saml_response)
+    soup = BeautifulSoup(saml_response, "html.parser")
 
     for input_tag in soup.find_all('input'):
         if input_tag.get('name') == 'SAMLResponse':
@@ -81,7 +81,7 @@ def get_account_roles(saml_assertion=None):
     }
 
     response = requests.post(AWS_SIGN_IN_URL, data=data)
-    soup = BeautifulSoup(response.text)
+    soup = BeautifulSoup(response.text, "html.parser")
     accounts = soup.find('fieldset').find_all(
         "div",
         attrs={"class": "saml-account"},

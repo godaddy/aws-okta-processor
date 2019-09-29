@@ -21,6 +21,14 @@ OKTA_SESSION_URL = "https://{}/api/v1/sessions"
 OKTA_REFRESH_URL = "https://{}/api/v1/sessions/me/lifecycle/refresh"
 OKTA_APPLICATIONS_URL = "https://{}/api/v1/users/me/appLinks"
 
+OKTA_PUSH_FACTOR = "push"
+OKTA_TOTP_FACTOR = "token:software:totp"
+
+OKTA_SUPPORTED_FACTORS = [
+    OKTA_PUSH_FACTOR,
+    OKTA_TOTP_FACTOR,
+]
+
 ZERO = timedelta(0)
 
 
@@ -166,7 +174,9 @@ class Okta:
 
         if factor.answer:
             # Handle answer prompts here
-            json_payload["answer"] = ""
+            if factor.factor == OKTA_TOTP_FACTOR:
+                print_tty("Token: ", newline=False)
+                json_payload["passCode"] = input()
 
         response = self.call(
             endpoint=factor.link,
@@ -184,7 +194,7 @@ class Okta:
         if "sessionToken" in response_json:
             return response_json["sessionToken"]
 
-        if "factorResult" in response_json and factor.factor == "push":
+        if "factorResult" in response_json and factor.factor == OKTA_PUSH_FACTOR:
             if response_json["factorResult"] == "WAITING":
                 factor.link = response_json["_links"]["next"]["href"]
                 time.sleep(1)
@@ -311,12 +321,12 @@ class Okta:
 
 
 def get_supported_factors(factors=None):
-    supported_factors = ["push"]
     matching_factors = OrderedDict()
 
     for factor in factors:
-        if factor["factorType"] in supported_factors:
-            matching_factors[factor["factorType"]] = (
+        if factor["factorType"] in OKTA_SUPPORTED_FACTORS:
+            key = '{} ({})'.format(factor["factorType"], factor["provider"])
+            matching_factors[key] = (
                 Factor(
                     factor=factor["factorType"],
                     link=factor["_links"]["verify"]["href"]
@@ -355,7 +365,8 @@ class Factor:
 
     def has_answer(self):
         answer_map = {
-            "push": False
+            OKTA_PUSH_FACTOR: False,
+            OKTA_TOTP_FACTOR: True
         }
 
         return answer_map[self.factor]

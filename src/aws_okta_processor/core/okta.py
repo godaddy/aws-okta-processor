@@ -1,3 +1,4 @@
+import abc
 import os
 import sys
 import time
@@ -14,6 +15,7 @@ from requests import ConnectTimeout
 from requests import ConnectionError
 from collections import OrderedDict
 from aws_okta_processor.core.print_tty import print_tty
+from six import add_metaclass
 
 
 OKTA_AUTH_URL = "https://{}/api/v1/authn"
@@ -23,11 +25,6 @@ OKTA_APPLICATIONS_URL = "https://{}/api/v1/users/me/appLinks"
 
 OKTA_PUSH_FACTOR = "push"
 OKTA_TOTP_FACTOR = "token:software:totp"
-
-OKTA_SUPPORTED_FACTORS = [
-    OKTA_PUSH_FACTOR,
-    OKTA_TOTP_FACTOR,
-]
 
 ZERO = timedelta(0)
 
@@ -170,13 +167,8 @@ class Okta:
             "Cache-Control": "no-cache"
         }
 
-        json_payload = {"stateToken": state_token}
-
-        if factor.answer:
-            # Handle answer prompts here
-            if factor.factor == OKTA_TOTP_FACTOR:
-                print_tty("Token: ", newline=False)
-                json_payload["passCode"] = input()
+        json_payload = factor.payload()
+        json_payload.update({"stateToken": state_token})
 
         response = self.call(
             endpoint=factor.link,
@@ -194,14 +186,13 @@ class Okta:
         if "sessionToken" in response_json:
             return response_json["sessionToken"]
 
-        if "factorResult" in response_json and factor.factor == OKTA_PUSH_FACTOR:
-            if response_json["factorResult"] == "WAITING":
-                factor.link = response_json["_links"]["next"]["href"]
-                time.sleep(1)
-                return self.verify_factor(
-                    factor=factor,
-                    state_token=state_token
-                )
+        if factor.retry(response_json):
+            factor.link = response_json["_links"]["next"]["href"]
+            time.sleep(1)
+            return self.verify_factor(
+                factor=factor,
+                state_token=state_token
+            )
 
         send_error(response=response)
 
@@ -324,13 +315,12 @@ def get_supported_factors(factors=None):
     matching_factors = OrderedDict()
 
     for factor in factors:
-        if factor["factorType"] in OKTA_SUPPORTED_FACTORS:
+        supported_factor = Factor.factory(factor["factorType"])
+        if supported_factor:
             key = '{} ({})'.format(factor["factorType"], factor["provider"])
-            matching_factors[key] = (
-                Factor(
-                    factor=factor["factorType"],
-                    link=factor["_links"]["verify"]["href"]
-                ))
+            matching_factors[key] = supported_factor(
+                link=factor["_links"]["verify"]["href"]
+            )
 
     return matching_factors
 
@@ -357,16 +347,59 @@ def send_error(response=None, json=True, exit=True):
         sys.exit(1)
 
 
+@add_metaclass(abc.ABCMeta)
 class Factor:
-    def __init__(self, factor=None, link=None):
-        self.factor = factor
+    def __init__(self, link=None):
+        self.factor = None
         self.link = link
-        self.answer = self.has_answer()
 
-    def has_answer(self):
-        answer_map = {
-            OKTA_PUSH_FACTOR: False,
-            OKTA_TOTP_FACTOR: True
+    @staticmethod
+    def factory(factor):
+        SUPPORTED_FACTORS = {
+            OKTA_PUSH_FACTOR: FactorPush,
+            OKTA_TOTP_FACTOR: FactorTOTP,
         }
 
-        return answer_map[self.factor]
+        return SUPPORTED_FACTORS.get(factor)
+
+    @abc.abstractmethod
+    def payload():
+        """Returns dictionary with payload to verify factor-type."""
+        pass
+
+    @abc.abstractmethod
+    def retry(self, response):
+        """Returns boolean indicating whether response is retryable."""
+        pass
+
+
+class FactorPush(Factor):
+    def __init__(self, link=None):
+        super(FactorPush, self).__init__(link=link)
+
+        self.factor = OKTA_PUSH_FACTOR
+        self.RETRYABLE_RESULTS = [
+            "WAITING",
+        ]
+
+    @staticmethod
+    def payload():
+        return {}
+
+    def retry(self, response):
+        return response.get("factorResult") in self.RETRYABLE_RESULTS
+
+
+class FactorTOTP(Factor):
+    def __init__(self, link=None):
+        super(FactorTOTP, self).__init__(link=link)
+
+        self.factor = OKTA_TOTP_FACTOR
+
+    @staticmethod
+    def payload():
+        print_tty("Token: ", newline=False)
+        return {"passCode": input()}
+
+    def retry(self, response):
+        return False

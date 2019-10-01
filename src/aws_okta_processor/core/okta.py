@@ -23,9 +23,6 @@ OKTA_SESSION_URL = "https://{}/api/v1/sessions"
 OKTA_REFRESH_URL = "https://{}/api/v1/sessions/me/lifecycle/refresh"
 OKTA_APPLICATIONS_URL = "https://{}/api/v1/users/me/appLinks"
 
-OKTA_PUSH_FACTOR = "push"
-OKTA_TOTP_FACTOR = "token:software:totp"
-
 ZERO = timedelta(0)
 
 
@@ -315,13 +312,15 @@ def get_supported_factors(factors=None):
     matching_factors = OrderedDict()
 
     for factor in factors:
-        supported_factor = Factor.factory(factor["factorType"])
-        if supported_factor:
+        try:
+            supported_factor = FactorBase.factory(factor["factorType"])
             key = '{}:{}'.format(
                 factor["factorType"], factor["provider"]).lower()
             matching_factors[key] = supported_factor(
                 link=factor["_links"]["verify"]["href"]
             )
+        except NotImplementedError:
+            pass
 
     return matching_factors
 
@@ -348,20 +347,22 @@ def send_error(response=None, json=True, exit=True):
         sys.exit(1)
 
 
+class FactorType:
+    PUSH = "push"
+    TOTP = "token:software:totp"
+
+
 @add_metaclass(abc.ABCMeta)
-class Factor:
+class FactorBase(object):
     def __init__(self, link=None):
-        self.factor = None
         self.link = link
 
-    @staticmethod
-    def factory(factor):
-        SUPPORTED_FACTORS = {
-            OKTA_PUSH_FACTOR: FactorPush,
-            OKTA_TOTP_FACTOR: FactorTOTP,
-        }
-
-        return SUPPORTED_FACTORS.get(factor)
+    @classmethod
+    def factory(cls, factor):
+        for impl in cls.__subclasses__():
+            if factor == impl.factor:
+                return impl
+        raise NotImplementedError("Factor type not implemented: %s" % factor)
 
     @abc.abstractmethod
     def payload():
@@ -374,11 +375,12 @@ class Factor:
         pass
 
 
-class FactorPush(Factor):
+class FactorPush(FactorBase):
+    factor = FactorType.PUSH
+
     def __init__(self, link=None):
         super(FactorPush, self).__init__(link=link)
 
-        self.factor = OKTA_PUSH_FACTOR
         self.RETRYABLE_RESULTS = [
             "WAITING",
         ]
@@ -391,11 +393,11 @@ class FactorPush(Factor):
         return response.get("factorResult") in self.RETRYABLE_RESULTS
 
 
-class FactorTOTP(Factor):
+class FactorTOTP(FactorBase):
+    factor = FactorType.TOTP
+
     def __init__(self, link=None):
         super(FactorTOTP, self).__init__(link=link)
-
-        self.factor = OKTA_TOTP_FACTOR
 
     @staticmethod
     def payload():

@@ -317,7 +317,8 @@ def get_supported_factors(factors=None):
     for factor in factors:
         supported_factor = Factor.factory(factor["factorType"])
         if supported_factor:
-            key = '{} ({})'.format(factor["factorType"], factor["provider"])
+            key = '{}:{}'.format(
+                factor["factorType"], factor["provider"]).lower()
             matching_factors[key] = supported_factor(
                 link=factor["_links"]["verify"]["href"]
             )

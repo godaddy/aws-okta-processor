@@ -292,11 +292,11 @@ class TestOkta(TestBase):
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.os.makedirs')
-    @patch('aws_okta_processor.core.okta.print_tty')
+    @patch('aws_okta_processor.core.okta.print_tty', new=MagicMock())
+    @patch('aws_okta_processor.core.prompt.print_tty', new=MagicMock())
     @responses.activate
     def test_okta_mfa_push_multiple_factor_challenge(
             self,
-            mock_print_tty,
             mock_makedirs,
             mock_open,
             mock_chmod,

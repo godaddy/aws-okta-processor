@@ -116,6 +116,8 @@ key          --key          AWS_OKTA_KEY          Key used in generating AWS ses
 environment  --environment                        Output command to set ENV variables
 ------------ -------------- --------------------- ----------------------------------------
 silent       --silent                             Silence Info output
+------------ -------------- --------------------- ----------------------------------------
+factor       --factor                             MFA type. `push:okta` and `token:software:totp:okta` supported.
 ============ ============== ===================== ========================================
 
 ^^^^^^^^
@@ -124,11 +126,11 @@ Examples
 
 If you do not want aws-okta-processor to prompt for any selection input you can export the following::
 
-    $ export AWS_OKTA_APPLICATION=<application_url> AWS_OKTA_ROLE=<role_arn>
+    $ export AWS_OKTA_APPLICATION=<application_url> AWS_OKTA_ROLE=<role_arn> AWS_OKTA_FACTOR=<factor_type>
 
 Or pass additional options to the command::
 
-    $ aws-okta-processor authenticate --user <user_name> --organization <organization>.okta.com --application <application_url> --role <role_arn>
+    $ aws-okta-processor authenticate --user <user_name> --organization <organization>.okta.com --application <application_url> --role <role_arn> --factor <factor_type>
 
 -------
 Caching
@@ -161,10 +163,10 @@ If you want to store a seperate AWS role session cache for each role assumed usi
 Named profiles for different roles can then be defined in ``~/.aws/credentials`` with content like this::
 
     [role_one]
-    credential_process=aws-okta-processor authenticate --user <user_name> --organization <organization>.okta.com --application <application_url> --role <role_one_arn> --key role_one
+    credential_process=aws-okta-processor authenticate --user <user_name> --organization <organization>.okta.com --application <application_url> --role <role_one_arn> --factor <factor_type> --key role_one
 
     [role_two]
-    credential_process=aws-okta-processor authenticate --user <user_name> --organization <organization>.okta.com --application <application_url> --role <role_two_arn> --key role_two
+    credential_process=aws-okta-processor authenticate --user <user_name> --organization <organization>.okta.com --application <application_url> --role <role_two_arn> --factor <factor_type> --key role_two
 
 To clear all AWS session caches run::
 

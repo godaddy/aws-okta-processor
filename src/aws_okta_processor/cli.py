@@ -2,7 +2,6 @@
 aws-okta-processor
 
 Usage:
-  aws-okta-processor dothing
   aws-okta-processor authenticate [--environment] [--organization=<okta_organization>]
                                   [--user=<user_name>] [--pass=<user_pass>]
                                   [--application=<okta_application>]

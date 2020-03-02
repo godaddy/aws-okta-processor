@@ -39,6 +39,8 @@ jobs:
       - name: Coverage
         if: startsWith(matrix.platform, 'ubuntu') && matrix.python-version == '3.8'
         run: make coverage
+      - name: Print
+        run: echo "${{ github.event.ref }}"
       - name: Coverage Publish
         if: startsWith(matrix.platform, 'ubuntu') && matrix.python-version == '3.8'
         uses: codecov/codecov-action@v1

@@ -6,8 +6,8 @@ aws-okta-processor
    :target: https://pypi.python.org/pypi/aws-okta-processor
    :alt: Latest Version
 
-.. image:: https://travis-ci.com/godaddy/aws-okta-processor.svg?branch=master
-   :target: https://travis-ci.com/godaddy/aws-okta-processor
+.. image:: https://github.com/godaddy/aws-okta-processor/workflows/.github/workflows/build/badge.svg
+   :target: https://github.com/godaddy/aws-okta-processor
    :alt: Build Status
 
 .. image:: https://codecov.io/gh/godaddy/aws-okta-processor/branch/master/graph/badge.svg

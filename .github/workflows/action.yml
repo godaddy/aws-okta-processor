@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Package Publish
-        if: startsWith(matrix.platform, 'ubuntu') && matrix.python-version == '3.8' && github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+        if: startsWith(matrix.platform, 'ubuntu') && matrix.python-version == '3.8' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.TWINE_TOKEN }}

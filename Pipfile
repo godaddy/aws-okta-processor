@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = ">=2.8.0,<4.1"
+pytest = "*"
 codecov = "*"
 mock = "*"
 pytest-cov = "*"
@@ -12,6 +12,7 @@ readme-renderer = "*"
 docutils = "*"
 "flake8" = "*"
 responses = "*"
+atomicwrites = "*"
 
 [packages]
 aws-okta-processor = {path = "."}

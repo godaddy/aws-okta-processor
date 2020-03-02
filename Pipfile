@@ -12,6 +12,7 @@ readme-renderer = "*"
 docutils = "*"
 "flake8" = "*"
 responses = "*"
+atomicwrites = "*"
 
 [packages]
 aws-okta-processor = {path = "."}

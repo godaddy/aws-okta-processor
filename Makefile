@@ -1,6 +1,6 @@
 init:
 	pip install pipenv --upgrade
-	pip install wheel
+	pip install wheel twine
 	pipenv install --dev
 
 test:

@@ -6,7 +6,7 @@ aws-okta-processor
    :target: https://pypi.python.org/pypi/aws-okta-processor
    :alt: Latest Version
 
-.. image:: https://github.com/godaddy/aws-okta-processor/workflows/.github/workflows/build.yml/badge.svg
+.. image:: https://github.com/godaddy/aws-okta-processor/workflows/.github/workflows/build.yml/badge.svg?branch=master
    :target: https://github.com/godaddy/aws-okta-processor/actions?query=workflow%3A.github%2Fworkflows%2Fbuild.yml
    :alt: Build Status
 

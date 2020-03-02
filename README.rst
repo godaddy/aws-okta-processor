@@ -7,7 +7,7 @@ aws-okta-processor
    :alt: Latest Version
 
 .. image:: https://github.com/godaddy/aws-okta-processor/workflows/.github/workflows/build.yml/badge.svg
-   :target: https://github.com/godaddy/aws-okta-processor
+   :target: https://github.com/godaddy/aws-okta-processor/actions?query=workflow%3A.github%2Fworkflows%2Fbuild.yml
    :alt: Build Status
 
 .. image:: https://codecov.io/gh/godaddy/aws-okta-processor/branch/master/graph/badge.svg

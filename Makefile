@@ -1,5 +1,6 @@
 init:
 	pip install pipenv --upgrade
+	pip install wheel
 	pipenv install --dev
 
 test:

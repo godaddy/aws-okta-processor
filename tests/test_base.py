@@ -36,5 +36,7 @@ class TestBase(TestCase):
             "--key": "key",
             "--duration": "3600",
             "--factor": None,
-            "--silent": False
+            "--silent": False,
+            "--no-okta-cache": False,
+            "--no-aws-cache": False
         }

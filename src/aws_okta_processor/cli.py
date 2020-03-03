@@ -9,7 +9,7 @@ Usage:
                                   [--duration=<duration_seconds>]
                                   [--key=<key>]
                                   [--factor=<factor>]
-                                  [--silent]
+                                  [--silent] [--no-okta-cache] [--no-aws-cache]
 
   aws-okta-processor -h | --help
   aws-okta-processor --version
@@ -17,6 +17,8 @@ Usage:
 Options:
   -h --help                                                  Show this screen.
   --version                                                  Show version.
+  --no-okta-cache                                            Do not read okta cache.
+  --no-aws-cache                                             Do not read aws cache.
   -e --environment                                           Dump auth into ENV variables.
   -u <user_name> --user=<user_name>                          Okta user name.
   -p <user_pass> --pass=<user_pass>                          Okta user password.

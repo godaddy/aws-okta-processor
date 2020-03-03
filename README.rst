@@ -96,29 +96,33 @@ Other Configurable Variables
 Additional variables can also be passed to aws-okta-processors ``authenticate`` command 
 as options or environment variables as outlined in the table below.
 
-============ ============== ===================== ========================================
-Variable     Option         Environment Variable  Description
-============ ============== ===================== ========================================
-user         --user         AWS_OKTA_USER         Okta user name
------------- -------------- --------------------- ----------------------------------------
-password     --pass         AWS_OKTA_PASS         Okta user password
------------- -------------- --------------------- ----------------------------------------
-organization --organization AWS_OKTA_ORGANIZATION Okta FQDN for Organization
------------- -------------- --------------------- ----------------------------------------
-application  --application  AWS_OKTA_APPLICATION  Okta AWS application URL
------------- -------------- --------------------- ----------------------------------------
-role         --role         AWS_OKTA_ROLE         AWS Role ARN
------------- -------------- --------------------- ----------------------------------------
-duration     --duration     AWS_OKTA_DURATION     Duration in seconds for AWS session
------------- -------------- --------------------- ----------------------------------------
-key          --key          AWS_OKTA_KEY          Key used in generating AWS session cache
------------- -------------- --------------------- ----------------------------------------
-environment  --environment                        Output command to set ENV variables
------------- -------------- --------------------- ----------------------------------------
-silent       --silent                             Silence Info output
------------- -------------- --------------------- ----------------------------------------
-factor       --factor                             MFA type. `push:okta` and `token:software:totp:okta` supported.
-============ ============== ===================== ========================================
+============= =============== ====================== ========================================
+Variable      Option          Environment Variable   Description
+============= =============== ====================== ========================================
+user          --user          AWS_OKTA_USER          Okta user name
+------------- --------------- ---------------------- ----------------------------------------
+password      --pass          AWS_OKTA_PASS          Okta user password
+------------- --------------- ---------------------- ----------------------------------------
+organization  --organization  AWS_OKTA_ORGANIZATION  Okta FQDN for Organization
+------------- --------------- ---------------------- ----------------------------------------
+application   --application   AWS_OKTA_APPLICATION   Okta AWS application URL
+------------- --------------- ---------------------- ----------------------------------------
+role          --role          AWS_OKTA_ROLE          AWS Role ARN
+------------- --------------- ---------------------- ----------------------------------------
+duration      --duration      AWS_OKTA_DURATION      Duration in seconds for AWS session
+------------- --------------- ---------------------- ----------------------------------------
+key           --key           AWS_OKTA_KEY           Key used in generating AWS session cache
+------------- --------------- ---------------------- ----------------------------------------
+environment   --environment                         Output command to set ENV variables
+------------- --------------- ---------------------- ----------------------------------------
+silent        --silent                              Silence Info output
+------------- --------------- ---------------------- ----------------------------------------
+factor        --factor                              MFA type. `push:okta` and `token:software:totp:okta` supported.
+------------- --------------- ---------------------- ----------------------------------------
+no_okta_cache --no-okta-cache AWS_OKTA_NO_OKTA_CACHE Do not read okta cache
+------------- --------------- ---------------------- ----------------------------------------
+no_aws_cache  --no-aws-cache  AWS_OKTA_NO_AWS_CACHE  Do not read aws cache
+============= =============== ====================== ========================================
 
 ^^^^^^^^
 Examples

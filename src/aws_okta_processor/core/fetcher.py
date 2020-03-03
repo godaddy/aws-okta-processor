@@ -30,6 +30,10 @@ class SAMLFetcher(CachedCredentialFetcher):
         return self._make_file_safe(key_hash)
 
     def fetch_credentials(self):
+        if self._configuration["AWS_OKTA_NO_AWS_CACHE"]:
+            response = self._get_credentials()
+            self._write_to_cache(response)
+
         credentials = super(SAMLFetcher, self).fetch_credentials()
 
         return {
@@ -53,7 +57,8 @@ class SAMLFetcher(CachedCredentialFetcher):
             user_pass=self._authenticate.get_pass(),
             organization=self._configuration["AWS_OKTA_ORGANIZATION"],
             factor=self._configuration["AWS_OKTA_FACTOR"],
-            silent=self._configuration["AWS_OKTA_SILENT"]
+            silent=self._configuration["AWS_OKTA_SILENT"],
+            no_okta_cache=self._configuration["AWS_OKTA_NO_OKTA_CACHE"]
         )
 
         self._configuration["AWS_OKTA_USER"] = ''

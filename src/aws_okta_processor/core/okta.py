@@ -46,7 +46,8 @@ class Okta:
             user_pass=None,
             organization=None,
             factor=None,
-            silent=None
+            silent=None,
+            no_okta_cache=None
     ):
         self.user_name = user_name
         self.silent = silent
@@ -56,7 +57,10 @@ class Okta:
         self.cache_file_path = self.get_cache_file_path()
         self.okta_session_id = None
 
-        okta_session = self.get_okta_session()
+        okta_session = None
+
+        if not no_okta_cache:
+            okta_session = self.get_okta_session()
 
         if okta_session:
             self.refresh_okta_session_id(

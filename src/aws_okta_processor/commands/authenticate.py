@@ -28,7 +28,9 @@ CONFIG_MAP = {
             "--duration": "AWS_OKTA_DURATION",
             "--key": "AWS_OKTA_KEY",
             "--factor": "AWS_OKTA_FACTOR",
-            "--silent": "AWS_OKTA_SILENT"
+            "--silent": "AWS_OKTA_SILENT",
+            "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
+            "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE"
         }
 
 

@@ -113,11 +113,11 @@ duration      --duration      AWS_OKTA_DURATION      Duration in seconds for AWS
 ------------- --------------- ---------------------- ----------------------------------------
 key           --key           AWS_OKTA_KEY           Key used in generating AWS session cache
 ------------- --------------- ---------------------- ----------------------------------------
-environment   --environment                         Output command to set ENV variables
+environment   --environment                          Output command to set ENV variables
 ------------- --------------- ---------------------- ----------------------------------------
-silent        --silent                              Silence Info output
+silent        --silent                               Silence Info output
 ------------- --------------- ---------------------- ----------------------------------------
-factor        --factor                              MFA type. `push:okta` and `token:software:totp:okta` supported.
+factor        --factor                               MFA type. `push:okta` and `token:software:totp:okta` supported.
 ------------- --------------- ---------------------- ----------------------------------------
 no_okta_cache --no-okta-cache AWS_OKTA_NO_OKTA_CACHE Do not read okta cache
 ------------- --------------- ---------------------- ----------------------------------------

@@ -35,7 +35,7 @@ CONFIG_MAP = {
 
 
 class Authenticate(Base):
-    def authenticate(self)
+    def authenticate(self):
         cache = JSONFileCache()
         saml_fetcher = SAMLFetcher(
             self,
@@ -45,7 +45,7 @@ class Authenticate(Base):
         credentials = saml_fetcher.fetch_credentials()
 
         return credentials
-    
+
     def run(self):
 
         credentials = self.authenticate()

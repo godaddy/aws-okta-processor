@@ -35,7 +35,7 @@ CONFIG_MAP = {
 
 
 class Authenticate(Base):
-    def run(self):
+    def authenticate(self)
         cache = JSONFileCache()
         saml_fetcher = SAMLFetcher(
             self,
@@ -43,6 +43,12 @@ class Authenticate(Base):
         )
 
         credentials = saml_fetcher.fetch_credentials()
+
+        return credentials
+    
+    def run(self):
+
+        credentials = self.authenticate()
 
         if self.configuration["AWS_OKTA_ENVIRONMENT"]:
             if os.name == 'nt':

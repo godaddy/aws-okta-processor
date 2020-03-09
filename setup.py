@@ -75,7 +75,7 @@ setup(
     ],
     keywords='aws cli okta saml',
     install_requires=REQUIRES,
-    python_requires=">=2.7.5",
+    python_requires=">=3.6.0",
     tests_require=TEST_REQUIREMENTS,
     entry_points={
         'console_scripts': [

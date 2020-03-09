@@ -2,10 +2,6 @@
 aws-okta-processor
 ==================
 
-.. image:: https://img.shields.io/pypi/v/aws-okta-processor.svg
-   :target: https://pypi.python.org/pypi/aws-okta-processor
-   :alt: Latest Version
-
 .. image:: https://github.com/godaddy/aws-okta-processor/workflows/.github/workflows/build.yml/badge.svg?branch=master
    :target: https://github.com/godaddy/aws-okta-processor/actions?query=workflow%3A.github%2Fworkflows%2Fbuild.yml
    :alt: Build Status
@@ -14,6 +10,21 @@ aws-okta-processor
    :target: https://codecov.io/gh/godaddy/aws-okta-processor
    :alt: Coverage
 
+.. image:: https://img.shields.io/pypi/v/aws-okta-processor.svg
+   :target: https://pypi.python.org/pypi/aws-okta-processor
+   :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/status/aws-okta-processor
+   :target: https://pypi.python.org/pypi/aws-okta-processor
+   :alt: Status
+
+.. image:: https://img.shields.io/pypi/pyversions/aws-okta-processor
+   :target: https://pypi.python.org/pypi/aws-okta-processor
+   :alt: Python Version
+
+.. image:: https://img.shields.io/pypi/dm/aws-okta-processor
+   :target: https://pypi.python.org/pypi/aws-okta-processor
+   :alt: Downloads
 
 This package provides a command for fetching AWS credentials through Okta.
 

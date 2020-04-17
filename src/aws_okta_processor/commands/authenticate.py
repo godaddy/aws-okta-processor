@@ -50,6 +50,7 @@ EXTEND_CONFIG_MAP = {
             "AWS_OKTA_ACCOUNT_ALIAS": "account-alias"
         }
 
+
 class Authenticate(Base):
     def authenticate(self):
         cache = JSONFileCache()
@@ -107,4 +108,5 @@ class Authenticate(Base):
                 else:
                     configuration[var] = None
 
-        return self.extend_configuration(configuration, 'authenticate', EXTEND_CONFIG_MAP)
+        return self.extend_configuration(configuration, 'authenticate',
+                                         EXTEND_CONFIG_MAP)

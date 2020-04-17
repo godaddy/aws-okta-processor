@@ -41,7 +41,7 @@ class Base(object):
             return DOTFILE
         return None
 
-    def extend_configuration(self, configuration, command):
+    def extend_configuration(self, configuration, command, mapping):
         files = []
         user_file = Base.get_userfile()
         if user_file is not None:
@@ -64,6 +64,7 @@ class Base(object):
 
             for k, v in configuration.items():
                 if v is None:
-                    configuration[k] = options.get(k.lower(), None)
+                    option_name = mapping[k]
+                    configuration[k] = options.get(option_name, None)
 
         return configuration

@@ -34,16 +34,11 @@ class TestBase(TestBase):
 
         config = authenticate.extend_configuration({
             'AWS_OKTA_ENVIRONMENT': None,
-            'AWS_OKTA_USER': None,
-            'AWS_OKTA_PASS': None,
-            'AWS_OKTA_ORGANIZATION': None,
-            'AWS_OKTA_OPTION1': 'okta-option1',
-        }, 'authenticate')
+            'AWS_OKTA_ORGANIZATION': 'org1',
+        }, 'authenticate', {
+            'AWS_OKTA_ENVIRONMENT': 'environment',
+            'AWS_OKTA_ORGANIZATION': 'organization'
+        })
 
         self.assertEqual('okta-env1', config['AWS_OKTA_ENVIRONMENT'])
-        self.assertEqual('okta-user1', config['AWS_OKTA_USER'])
-        self.assertEqual('okta-pass1', config['AWS_OKTA_PASS'])
-        self.assertEqual('okta-org1', config['AWS_OKTA_ORGANIZATION'])
-
-        # this should not be overriden by any files
-        self.assertEqual('okta-option1', config['AWS_OKTA_OPTION1'])
+        self.assertEqual('org1', config['AWS_OKTA_ORGANIZATION'])

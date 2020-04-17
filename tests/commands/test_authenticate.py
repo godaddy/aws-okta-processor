@@ -38,4 +38,4 @@ class TestAuthenticate(TestBase):
         self.assertEqual('okta-env1', config['AWS_OKTA_ENVIRONMENT'])
         self.assertEqual('okta-user1', config['AWS_OKTA_USER'])
         self.assertEqual('okta-pass1', config['AWS_OKTA_PASS'])
-        self.assertEqual('okta-org1', config['AWS_OKTA_ORGANIZATION'])
+        self.assertEqual('org1-from-home', config['AWS_OKTA_ORGANIZATION'])

@@ -1,6 +1,6 @@
 [defaults]
-aws_okta_pass=okta-pass1
+pass=okta-pass1
 
 [authenticate]
-aws_okta_user=okta-user1
-aws_okta_option1=okta_option1_override2
+user=okta-user1
+option1=okta_option1_override2

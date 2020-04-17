@@ -31,9 +31,24 @@ CONFIG_MAP = {
             "--silent": "AWS_OKTA_SILENT",
             "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
             "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
-            "--account": "AWS_ACCOUNT"
+            "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS"
         }
 
+EXTEND_CONFIG_MAP = {
+            "AWS_OKTA_ENVIRONMENT": "environment",
+            "AWS_OKTA_USER": "user",
+            "AWS_OKTA_PASS": "pass",
+            "AWS_OKTA_ORGANIZATION": "organization",
+            "AWS_OKTA_APPLICATION": "application",
+            "AWS_OKTA_ROLE": "role",
+            "AWS_OKTA_DURATION": "duration",
+            "AWS_OKTA_KEY": "key",
+            "AWS_OKTA_FACTOR": "factor",
+            "AWS_OKTA_SILENT": "silent",
+            "AWS_OKTA_NO_OKTA_CACHE": "no-okta-cache",
+            "AWS_OKTA_NO_AWS_CACHE": "no-aws-cache",
+            "AWS_OKTA_ACCOUNT_ALIAS": "account-alias"
+        }
 
 class Authenticate(Base):
     def authenticate(self):
@@ -92,4 +107,4 @@ class Authenticate(Base):
                 else:
                     configuration[var] = None
 
-        return self.extend_configuration(configuration, 'authenticate')
+        return self.extend_configuration(configuration, 'authenticate', EXTEND_CONFIG_MAP)

@@ -120,7 +120,7 @@ application   --application   AWS_OKTA_APPLICATION   Okta AWS application URL
 ------------- --------------- ---------------------- ----------------------------------------
 role          --role          AWS_OKTA_ROLE          AWS Role ARN
 ------------- --------------- ---------------------- ----------------------------------------
-account       --account       AWS_ACCOUNT            AWS Account Filter
+account_alias --account-alias AWS_OKTA_ACCOUNT_ALIAS AWS Account Filter
 ------------- --------------- ---------------------- ----------------------------------------
 duration      --duration      AWS_OKTA_DURATION      Duration in seconds for AWS session
 ------------- --------------- ---------------------- ----------------------------------------
@@ -202,14 +202,14 @@ directory.
 .. code-block:: ini
 
     [defaults]
-    aws_okta_user=jdoe
+    user=jdoe
 
     [authenticate]
-    aws_okta_user=ssmith
+    user=ssmith
 
 In this example...
 
-* ``authenticate > aws_okta_user`` overrides ``defaults > aws_okta_user``
+* ``authenticate > user`` overrides ``defaults > user``
 * ``{workingDir}/.awsoktaprocessor`` overrides ``~/.awsoktaprocessor``
 * ``aws-okta-processor`` arguments override any options from dotfiles
 

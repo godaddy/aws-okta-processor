@@ -1,6 +1,16 @@
 import os
 
+from aws_okta_processor.commands.base import Base
+
 FIXTURE_PATH = os.path.join(os.path.dirname(__file__), 'fixtures')
+
+
+class TestCommand(Base):
+    def __init__(self, options):
+        super().__init__(self, options)
+
+    def get_configuration(self, options=None):
+        return {}
 
 
 def get_fixture(path):

@@ -6,14 +6,6 @@ from tests.test_base import TestBase
 from aws_okta_processor.commands.base import Base
 
 
-class TestCommand(Base):
-    def __init__(self, options):
-        super().__init__(self, options)
-
-    def get_configuration(self, options=None):
-        return {}
-
-
 class TestBase(TestBase):
     @patch('os.path.expanduser', side_effect=tests.expand_user_side_effect)
     def test_get_userfile_should_locate_user_file(self, mock_expanduser):
@@ -30,7 +22,7 @@ class TestBase(TestBase):
     @patch('aws_okta_processor.commands.base.Base.get_cwdfile',
            return_value=tests.get_fixture('.awsoktaprocessor'))
     def test_extends_configuration_should_extend_user_and_cwd(self, mock_userfile, mock_cwdfile):
-        authenticate = TestCommand(self.OPTIONS)
+        authenticate = tests.TestCommand(self.OPTIONS)
 
         config = authenticate.extend_configuration({
             'AWS_OKTA_ENVIRONMENT': None,

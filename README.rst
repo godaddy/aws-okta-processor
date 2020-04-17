@@ -120,6 +120,8 @@ application   --application   AWS_OKTA_APPLICATION   Okta AWS application URL
 ------------- --------------- ---------------------- ----------------------------------------
 role          --role          AWS_OKTA_ROLE          AWS Role ARN
 ------------- --------------- ---------------------- ----------------------------------------
+account_alias --account-alias AWS_OKTA_ACCOUNT_ALIAS AWS Account Filter
+------------- --------------- ---------------------- ----------------------------------------
 duration      --duration      AWS_OKTA_DURATION      Duration in seconds for AWS session
 ------------- --------------- ---------------------- ----------------------------------------
 key           --key           AWS_OKTA_KEY           Key used in generating AWS session cache
@@ -187,6 +189,29 @@ To clear all AWS session caches run::
 
     $ rm ~/.aws/boto/cache/*
 
+
+-----------------------------
+Project or User Configuration
+-----------------------------
+
+``aws-okta-processor`` can inherit arguments from a ``.awsoktaprocessor`` file located in the user's home directory or the current working
+directory.
+
+*.awsoktaprocessor*
+
+.. code-block:: ini
+
+    [defaults]
+    user=jdoe
+
+    [authenticate]
+    user=ssmith
+
+In this example...
+
+* ``authenticate > user`` overrides ``defaults > user``
+* ``{workingDir}/.awsoktaprocessor`` overrides ``~/.awsoktaprocessor``
+* ``aws-okta-processor`` arguments override any options from dotfiles
 
 ------------
 Getting Help

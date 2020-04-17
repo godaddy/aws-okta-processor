@@ -1,0 +1,6 @@
+[defaults]
+pass=okta-pass1
+
+[authenticate]
+user=okta-user1
+option1=okta_option1_override2

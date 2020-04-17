@@ -1,0 +1,6 @@
+[defaults]
+environment=okta-env1
+
+[authenticate]
+organization=org1-from-home
+option1=okta_option1_override

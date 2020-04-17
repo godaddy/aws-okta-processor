@@ -1,8 +1,8 @@
 from unittest import TestCase
 from mock import patch
 from mock import MagicMock
-from test_base import SAML_RESPONSE
-from test_base import SIGN_IN_RESPONSE
+from tests.test_base import SAML_RESPONSE
+from tests.test_base import SIGN_IN_RESPONSE
 
 from aws_okta_processor.core import saml
 

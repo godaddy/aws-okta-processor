@@ -1,4 +1,6 @@
 import sys
+from fnmatch import fnmatch
+
 import six
 import base64
 import requests
@@ -26,7 +28,7 @@ def get_saml_assertion(saml_response=None):
     sys.exit(1)
 
 
-def get_aws_roles(saml_assertion=None):
+def get_aws_roles(saml_assertion=None, accounts_filter=None):
     aws_roles = OrderedDict()
     role_principals = {}
     decoded_saml = base64.b64decode(saml_assertion)
@@ -54,6 +56,10 @@ def get_aws_roles(saml_assertion=None):
 
         for account_role in account_roles:
             account_name = account_role.account_name
+            if accounts_filter is not None and len(accounts_filter) > 0:
+                if fnmatch(account_name, accounts_filter) is False:
+                    continue
+
             role_arn = account_role.role_arn
             account_role.principal_arn = role_principals[role_arn]
 

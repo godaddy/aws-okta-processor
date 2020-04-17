@@ -1,5 +1,6 @@
 import boto3
 import json
+
 import aws_okta_processor.core.saml as saml
 import aws_okta_processor.core.prompt as prompt
 
@@ -84,7 +85,9 @@ class SAMLFetcher(CachedCredentialFetcher):
         )
 
         aws_roles = saml.get_aws_roles(
-            saml_assertion=saml_assertion
+            saml_assertion=saml_assertion,
+            accounts_filter=self._configuration.get(
+                'AWS_OKTA_ACCOUNT_ALIAS', None)
         )
 
         aws_role = prompt.get_item(

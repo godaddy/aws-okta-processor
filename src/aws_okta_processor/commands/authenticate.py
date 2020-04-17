@@ -30,7 +30,8 @@ CONFIG_MAP = {
             "--factor": "AWS_OKTA_FACTOR",
             "--silent": "AWS_OKTA_SILENT",
             "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
-            "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE"
+            "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
+            "--account": "AWS_ACCOUNT"
         }
 
 
@@ -82,7 +83,7 @@ class Authenticate(Base):
         configuration = {}
 
         for param, var in CONFIG_MAP.items():
-            if options[param]:
+            if options.get(param, None):
                 configuration[var] = options[param]
 
             if var not in configuration.keys():
@@ -91,4 +92,4 @@ class Authenticate(Base):
                 else:
                     configuration[var] = None
 
-        return configuration
+        return self.extend_configuration(configuration, 'authenticate')

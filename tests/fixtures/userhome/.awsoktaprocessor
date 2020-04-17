@@ -1,0 +1,6 @@
+[defaults]
+aws_okta_environment=okta-env1
+
+[authenticate]
+aws_okta_organization=okta-org1
+aws_okta_option1=okta_option1_override

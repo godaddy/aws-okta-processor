@@ -85,3 +85,59 @@ class TestFetcher(TestBase):
             call('[ 2 ] Role-Two', indents=1),
             call('Selection: ', newline=False)
         ])
+
+    @patch("boto3.client")
+    @patch('aws_okta_processor.core.fetcher.print_tty')
+    @patch('aws_okta_processor.core.fetcher.prompt.print_tty')
+    @patch('aws_okta_processor.core.fetcher.prompt.input', return_value='1')
+    @patch('aws_okta_processor.core.fetcher.Okta')
+    def test_fetcher_should_prompt_all_accounts(
+            self,
+            mock_okta,
+            mock_prompt,
+            mock_prompt_print_tty,
+            mock_print_tty,
+            mock_client
+    ):
+
+        def assume_role_side_effect(*args, **kwargs):
+            if kwargs['RoleArn'] == 'arn:aws:iam::1:role/Role-One':
+                return {
+                    'Credentials': {
+                        'AccessKeyId': 'test-key1',
+                        'SecretAccessKey': 'test-secret1',
+                        'SessionToken': 'test-token1',
+                        'Expiration': datetime(2020, 4, 17, 12, 0, 0, 0)
+                    }
+                }
+            raise RuntimeError('invalid RoleArn')
+
+        self.OPTIONS["--pass"] = 'testpass'
+
+        mock_c = mock.Mock()
+        mock_c.assume_role_with_saml.side_effect = assume_role_side_effect
+        mock_okta().get_saml_response.return_value = SAML_RESPONSE
+        mock_client.return_value = mock_c
+
+        authenticate = Authenticate(self.OPTIONS)
+        fetcher = SAMLFetcher(authenticate, cache={})
+
+        creds = fetcher.fetch_credentials()
+        self.assertDictEqual({
+            'AccessKeyId': 'test-key1',
+            'Expiration': '2020-04-17T12:00:00',
+            'SecretAccessKey': 'test-secret1',
+            'SessionToken': 'test-token1'
+        }, creds)
+
+        self.assertEqual(7, mock_prompt_print_tty.call_count)
+
+        MagicMock.assert_has_calls(mock_prompt_print_tty, [
+            call('Select AWS Role:'),
+            call('Account: 1', indents=0),
+            call('[ 1 ] Role-One', indents=1),
+            call('[ 2 ] Role-Two', indents=1),
+            call('Account: 2', indents=0),
+            call('[ 3 ] Role-One', indents=1),
+            call('Selection: ', newline=False)
+        ])

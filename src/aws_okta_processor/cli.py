@@ -26,7 +26,7 @@ Options:
   -o <okta_organization> --organization=<okta_organization>  Okta organization domain.
   -a <okta_application> --application=<okta_application>     Okta application url.
   -r <role_name> --role=<role_name>                          AWS role ARN.
-  -a <account> --account=<account>                           AWS account filter (uses wildcards) [default: no filter].
+  -a <account> --account=<account>                           AWS account filter (uses wildcards).
   -d <duration_seconds> --duration=<duration_seconds>        Duration of role session [default: 3600].
   -k <key> --key=<key>                                       Key used for generating and accessing cache.
   -f <factor> --factor=<factor>                              Factor type for MFA.

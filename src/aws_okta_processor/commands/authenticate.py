@@ -75,20 +75,37 @@ class Authenticate(Base):
 
         if self.configuration["AWS_OKTA_ENVIRONMENT"]:
             if os.name == 'nt':
-                print(NT_EXPORT_STRING.format(
-                    credentials["AccessKeyId"],
-                    credentials["SecretAccessKey"],
-                    credentials["SessionToken"]
-                ))
+                print(self.nt_output(credentials))
             else:
-                print(UNIX_EXPORT_STRING.format(
-                    credentials["AccessKeyId"],
-                    credentials["SecretAccessKey"],
-                    credentials["SessionToken"]
-                ))
+                print(self.unix_output(credentials))
+
         else:
             credentials["Version"] = 1
             print(json.dumps(credentials))
+
+    def nt_output(self, credentials):
+        """ Outputs the export command for Windows based systems """
+
+        return NT_EXPORT_STRING.format(
+            credentials["AccessKeyId"],
+            credentials["SecretAccessKey"],
+            credentials["SessionToken"]
+        )
+
+    def unix_output(self, credentials):
+        """ Checks which shell target we should output the export command """
+
+        # We assume Bash as the default shell target
+        export_string = UNIX_EXPORT_STRING
+
+        if self.configuration["AWS_OKTA_TARGET_SHELL"] == "fish":
+            export_string = UNIX_FISH_EXPORT_STRING
+
+        return export_string.format(
+            credentials["AccessKeyId"],
+            credentials["SecretAccessKey"],
+            credentials["SessionToken"]
+        )
 
     def get_pass(self):
         if self.configuration["AWS_OKTA_PASS"]:

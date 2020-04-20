@@ -35,7 +35,8 @@ CONFIG_MAP = {
             "--silent": "AWS_OKTA_SILENT",
             "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
             "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
-            "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS"
+            "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS",
+            "--target-shell": "AWS_OKTA_TARGET_SHELL"
         }
 
 EXTEND_CONFIG_MAP = {
@@ -51,7 +52,8 @@ EXTEND_CONFIG_MAP = {
             "AWS_OKTA_SILENT": "silent",
             "AWS_OKTA_NO_OKTA_CACHE": "no-okta-cache",
             "AWS_OKTA_NO_AWS_CACHE": "no-aws-cache",
-            "AWS_OKTA_ACCOUNT_ALIAS": "account-alias"
+            "AWS_OKTA_ACCOUNT_ALIAS": "account-alias",
+            "AWS_OKTA_TARGET_SHELL": "target-shell"
         }
 
 

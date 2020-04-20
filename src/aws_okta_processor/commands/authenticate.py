@@ -14,6 +14,10 @@ UNIX_EXPORT_STRING = ("export AWS_ACCESS_KEY_ID='{}' && "
                       "export AWS_SECRET_ACCESS_KEY='{}' && "
                       "export AWS_SESSION_TOKEN='{}'")
 
+UNIX_FISH_EXPORT_STRING = ("set --export AWS_ACCESS_KEY_ID '{}'; and "
+                      "set --export AWS_SECRET_ACCESS_KEY '{}'; and "
+                      "set --export AWS_SESSION_TOKEN '{}';")
+
 NT_EXPORT_STRING = ("$env:AWS_ACCESS_KEY_ID='{}'; "
                     "$env:AWS_SECRET_ACCESS_KEY='{}'; "
                     "$env:AWS_SESSION_TOKEN='{}'")

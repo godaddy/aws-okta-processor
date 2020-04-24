@@ -96,7 +96,7 @@ For Linux or OSX run::
 
     $ eval $(aws-okta-processor authenticate --environment --user <user_name> --organization <organization>.okta.com)
 
-On Unix systems is allowed to pass a `--target-shell` in order to change the
+On Unix systems pass a `--target-shell` in order to change the
 export command output. Bash is the default target shell.
 We also allow [fish shell](https://fishshell.com/) as a valid target::
 

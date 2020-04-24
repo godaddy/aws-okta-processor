@@ -14,6 +14,10 @@ UNIX_EXPORT_STRING = ("export AWS_ACCESS_KEY_ID='{}' && "
                       "export AWS_SECRET_ACCESS_KEY='{}' && "
                       "export AWS_SESSION_TOKEN='{}'")
 
+UNIX_FISH_EXPORT_STRING = ("set --export AWS_ACCESS_KEY_ID '{}'; and "
+                           "set --export AWS_SECRET_ACCESS_KEY '{}'; and "
+                           "set --export AWS_SESSION_TOKEN '{}';")
+
 NT_EXPORT_STRING = ("$env:AWS_ACCESS_KEY_ID='{}'; "
                     "$env:AWS_SECRET_ACCESS_KEY='{}'; "
                     "$env:AWS_SESSION_TOKEN='{}'")
@@ -31,7 +35,8 @@ CONFIG_MAP = {
             "--silent": "AWS_OKTA_SILENT",
             "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
             "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
-            "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS"
+            "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS",
+            "--target-shell": "AWS_OKTA_TARGET_SHELL"
         }
 
 EXTEND_CONFIG_MAP = {
@@ -47,7 +52,8 @@ EXTEND_CONFIG_MAP = {
             "AWS_OKTA_SILENT": "silent",
             "AWS_OKTA_NO_OKTA_CACHE": "no-okta-cache",
             "AWS_OKTA_NO_AWS_CACHE": "no-aws-cache",
-            "AWS_OKTA_ACCOUNT_ALIAS": "account-alias"
+            "AWS_OKTA_ACCOUNT_ALIAS": "account-alias",
+            "AWS_OKTA_TARGET_SHELL": "target-shell"
         }
 
 
@@ -69,20 +75,37 @@ class Authenticate(Base):
 
         if self.configuration["AWS_OKTA_ENVIRONMENT"]:
             if os.name == 'nt':
-                print(NT_EXPORT_STRING.format(
-                    credentials["AccessKeyId"],
-                    credentials["SecretAccessKey"],
-                    credentials["SessionToken"]
-                ))
+                print(self.nt_output(credentials))
             else:
-                print(UNIX_EXPORT_STRING.format(
-                    credentials["AccessKeyId"],
-                    credentials["SecretAccessKey"],
-                    credentials["SessionToken"]
-                ))
+                print(self.unix_output(credentials))
+
         else:
             credentials["Version"] = 1
             print(json.dumps(credentials))
+
+    def nt_output(self, credentials):
+        """ Outputs the export command for Windows based systems """
+
+        return NT_EXPORT_STRING.format(
+            credentials["AccessKeyId"],
+            credentials["SecretAccessKey"],
+            credentials["SessionToken"]
+        )
+
+    def unix_output(self, credentials):
+        """ Checks which shell target we should output the export command """
+
+        # We assume Bash as the default shell target
+        export_string = UNIX_EXPORT_STRING
+
+        if self.configuration["AWS_OKTA_TARGET_SHELL"] == "fish":
+            export_string = UNIX_FISH_EXPORT_STRING
+
+        return export_string.format(
+            credentials["AccessKeyId"],
+            credentials["SecretAccessKey"],
+            credentials["SessionToken"]
+        )
 
     def get_pass(self):
         if self.configuration["AWS_OKTA_PASS"]:

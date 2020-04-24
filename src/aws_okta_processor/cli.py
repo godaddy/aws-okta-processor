@@ -11,6 +11,7 @@ Usage:
                                   [--key=<key>]
                                   [--factor=<factor>]
                                   [--silent] [--no-okta-cache] [--no-aws-cache]
+                                  [--target-shell=<target_shell>]
 
   aws-okta-processor -h | --help
   aws-okta-processor --version
@@ -31,6 +32,7 @@ Options:
   -k <key> --key=<key>                                       Key used for generating and accessing cache.
   -f <factor> --factor=<factor>                              Factor type for MFA.
   -s --silent                                                Run silently.
+  --target-shell <target_shell>                              Target shell to output the export command.
 
 Help:
   For help using this tool, please reach out to our Slack channel:

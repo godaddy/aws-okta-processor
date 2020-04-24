@@ -7,6 +7,54 @@ from tests.test_base import TestBase
 
 
 class TestAuthenticate(TestBase):
+
+    def test_output_export_command_with_fish_as_target_shell(self):
+        """ Tests the export command for fish shell """
+
+        self.OPTIONS["--target-shell"] = "fish"
+        auth = Authenticate(self.OPTIONS)
+        credentials = {
+            "AccessKeyId": "XXXXX",
+            "SecretAccessKey": "YYYYY",
+            "SessionToken": "ZZZZZ"
+        }
+        self.assertNotIsInstance(
+            auth.unix_output(credentials).index("set --export"),
+            ValueError
+        )
+
+    def test_output_export_command_with_default_target_shell(self):
+        """ Tests the export command for bash (default target shell) """
+
+        auth = Authenticate(self.OPTIONS)
+        credentials = {
+            "AccessKeyId": "XXXXX",
+            "SecretAccessKey": "YYYYY",
+            "SessionToken": "ZZZZZ"
+        }
+        self.assertNotIsInstance(
+            auth.unix_output(credentials).index("export "),
+            ValueError
+        )
+        self.assertNotIsInstance(
+            auth.unix_output(credentials).index(" && "),
+            ValueError
+        )
+
+    def test_output_export_command_for_windows(self):
+        """ Tests the export command for windows operating system """
+
+        auth = Authenticate(self.OPTIONS)
+        credentials = {
+            "AccessKeyId": "XXXXX",
+            "SecretAccessKey": "YYYYY",
+            "SessionToken": "ZZZZZ"
+        }
+        self.assertNotIsInstance(
+            auth.nt_output(credentials).index("$env:"),
+            ValueError
+        )
+
     def test_get_pass_config(self):
         self.OPTIONS["--pass"] = "user_pass_two"
         authenticate = Authenticate(self.OPTIONS)

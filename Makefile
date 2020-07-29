@@ -1,7 +1,7 @@
 PYTHONPATH=./src/:tests/
 
 init:
-	pip install pipenv --upgrade
+	pip install pipenv==2018.11.26
 	pip install wheel twine
 	pipenv install --dev
 

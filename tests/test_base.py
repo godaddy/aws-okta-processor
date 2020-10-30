@@ -33,6 +33,7 @@ class TestBase(TestCase):
             "--organization": "org.okta.com",
             "--application": None,
             "--role": None,
+            "--region": None,
             "--key": "key",
             "--duration": "3600",
             "--factor": None,

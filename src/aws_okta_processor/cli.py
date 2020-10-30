@@ -5,7 +5,7 @@ Usage:
   aws-okta-processor authenticate [--environment] [--organization=<okta_organization>]
                                   [--user=<user_name>] [--pass=<user_pass>]
                                   [--application=<okta_application>]
-                                  [--role=<role_name>]
+                                  [--role=<role_name>][--region=<region_name>]
                                   [--account-alias=<account_alias>]
                                   [--duration=<duration_seconds>]
                                   [--key=<key>]
@@ -27,6 +27,7 @@ Options:
   -o <okta_organization> --organization=<okta_organization>  Okta organization domain.
   -a <okta_application> --application=<okta_application>     Okta application url.
   -r <role_name> --role=<role_name>                          AWS role ARN.
+  -R <region_name> --region=<region_name>                    AWS region name.
   -A <account> --account-alias=<account>                     AWS account alias filter (uses wildcards).
   -d <duration_seconds> --duration=<duration_seconds>        Duration of role session [default: 3600].
   -k <key> --key=<key>                                       Key used for generating and accessing cache.

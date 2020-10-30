@@ -128,6 +128,8 @@ role          --role          AWS_OKTA_ROLE          AWS Role ARN
 ------------- --------------- ---------------------- ----------------------------------------
 account_alias --account-alias AWS_OKTA_ACCOUNT_ALIAS AWS Account Filter
 ------------- --------------- ---------------------- ----------------------------------------
+region        --region        AWS_OKTA_REGION        AWS Region
+------------- --------------- ---------------------- ----------------------------------------
 duration      --duration      AWS_OKTA_DURATION      Duration in seconds for AWS session
 ------------- --------------- ---------------------- ----------------------------------------
 key           --key           AWS_OKTA_KEY           Key used in generating AWS session cache

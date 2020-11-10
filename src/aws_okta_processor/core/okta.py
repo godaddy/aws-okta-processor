@@ -68,8 +68,16 @@ class Okta:
             )
 
         if not self.okta_session_id:
+            if not user_name:
+                print_tty(string="UserName: ", newline=False)
+                user_name = input()
+
             if not user_pass:
                 user_pass = getpass.getpass()
+
+            if not organization:
+                print_tty(string="Organization: ", newline=False)
+                self.organization = input()
 
             self.okta_single_use_token = self.get_okta_single_use_token(
                 user_name=user_name,

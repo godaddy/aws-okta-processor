@@ -16,4 +16,4 @@ atomicwrites = "*"
 importlib-metadata = "*"
 
 [packages]
-aws-okta-processor = {path = "."}
+aws-okta-processor = {path = ".", editable=true}

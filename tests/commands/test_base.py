@@ -7,6 +7,10 @@ from aws_okta_processor.commands.base import Base
 
 
 class TestBase(TestBase):
+    def test_get_config(self):
+        with self.assertRaises(NotImplementedError) as context:
+            Base(self.OPTIONS)
+
     @patch('os.path.expanduser', side_effect=tests.expand_user_side_effect)
     def test_get_userfile_should_locate_user_file(self, mock_expanduser):
         actual = Base.get_userfile()

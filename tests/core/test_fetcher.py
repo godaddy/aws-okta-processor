@@ -57,7 +57,7 @@ class TestFetcher(TestBase):
                 }
             raise RuntimeError('invalid RoleArn')
 
-        self.OPTIONS["--account-alias"] = '* 1'
+        self.OPTIONS["--account-alias"] = '1*'
         self.OPTIONS["--pass"] = 'testpass'
 
         mock_c = mock.Mock()

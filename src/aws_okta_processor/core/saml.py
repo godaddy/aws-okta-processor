@@ -57,7 +57,8 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None):
         for account_role in account_roles:
             account_name = account_role.account_name
             if accounts_filter is not None and len(accounts_filter) > 0:
-                if fnmatch(account_name, accounts_filter) is False:
+                account_name_alias = account_name.split(" ")[1]
+                if not fnmatch(account_name_alias, accounts_filter):
                     continue
 
             role_arn = account_role.role_arn

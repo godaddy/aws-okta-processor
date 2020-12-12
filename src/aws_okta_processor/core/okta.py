@@ -326,6 +326,7 @@ def get_supported_factors(factors=None):
     for factor in factors:
         try:
             supported_factor = FactorBase.factory(factor["factorType"])
+
             key = '{}:{}'.format(
                 factor["factorType"], factor["provider"]).lower()
             matching_factors[key] = supported_factor(
@@ -362,6 +363,7 @@ def send_error(response=None, json=True, exit=True):
 class FactorType:
     PUSH = "push"
     TOTP = "token:software:totp"
+    HARDWARE = "token:hardware"
 
 
 @add_metaclass(abc.ABCMeta)
@@ -414,6 +416,21 @@ class FactorTOTP(FactorBase):
     @staticmethod
     def payload():
         print_tty("Token: ", newline=False)
+        return {"passCode": input()}
+
+    def retry(self, response):
+        return False
+
+
+class FactorHardwareToken(FactorBase):
+    factor = FactorType.HARDWARE
+
+    def __init__(self, link=None):
+        super(FactorHardwareToken, self).__init__(link=link)
+
+    @staticmethod
+    def payload():
+        print_tty("Hardware Token: ", newline=False)
         return {"passCode": input()}
 
     def retry(self, response):

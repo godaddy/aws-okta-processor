@@ -1,0 +1,1 @@
+{"status":"MFA_REQUIRED", "stateToken": "state_token", "_embedded": {"factors": [{"factorType": "token:hardware", "provider": "YUBICO", "_links": {"verify": {"href": "https://organization.okta.com/api/v1/authn/factors/id/verify"}}}]}}

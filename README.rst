@@ -32,7 +32,18 @@ This package provides a command for fetching AWS credentials through Okta.
 Installation
 ------------
 
-The easiest way to install aws-okta-processor is to use `pip`_ in a ``virtualenv``::
+The recommended way to install aws-okta-processor is using `pipx`_. This has the
+benefit that the command is available in your shell without needing to activate
+a virtualenv while still keeping its dependencies isolated from site-packages::
+
+    $ pipx install aws-okta-processor
+
+and, to upgrade to a new version::
+
+    $ pipx upgrade aws-okta-processor
+
+
+You can also install with `pip`_ in a ``virtualenv``::
 
     $ pip install aws-okta-processor
 
@@ -44,8 +55,9 @@ or for your user::
 
     $ pip install --user aws-okta-processor
 
-If you have the aws-cli installed and want to upgrade to the latest version
-you can run::
+
+If you have aws-okta-processor installed with `pip`_ and want to upgrade to the latest
+version you can run::
 
     $ pip install --upgrade aws-okta-processor
 
@@ -240,6 +252,7 @@ work on `okta-aws-cli-assume-role <https://github.com/oktadeveloper/okta-aws-cli
 
 
 .. _`pip`: http://www.pip-installer.org/en/latest/
+.. _`pipx`: https://pipxproject.github.io/pipx/
 .. _`download the tarball`: https://pypi.org/project/aws-okta-processor/
 .. _`AWS Named Profiles`: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html
 .. _`credential_process`: https://docs.aws.amazon.com/cli/latest/topic/config-vars.html#sourcing-credentials-from-external-processes

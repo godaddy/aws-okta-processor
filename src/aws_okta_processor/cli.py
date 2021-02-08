@@ -13,6 +13,17 @@ Usage:
                                   [--silent] [--no-okta-cache] [--no-aws-cache]
                                   [--target-shell=<target_shell>]
 
+  aws-okta-processor get-roles    [--environment] [--organization=<okta_organization>]
+                                  [--user=<user_name>] [--pass=<user_pass>]
+                                  [--application=<okta_application>]
+                                  [--role=<role_name>]
+                                  [--duration=<duration_seconds>]
+                                  [--key=<key>]
+                                  [--factor=<factor>]
+                                  [--silent] [--no-okta-cache] [--no-aws-cache]
+                                  [--target-shell=<target_shell>]
+                                  [--output=<output>]
+                                  [--format=<format>]
   aws-okta-processor -h | --help
   aws-okta-processor --version
 
@@ -34,6 +45,8 @@ Options:
   -f <factor> --factor=<factor>                              Factor type for MFA.
   -s --silent                                                Run silently.
   --target-shell <target_shell>                              Target shell to output the export command.
+  --output=<output>                                          Output type (json, text) [default: json]
+  --format=<format>                                          Format string for the output [default: "{account}-{role}"]
 
 Help:
   For help using this tool, please reach out to our Slack channel:
@@ -67,9 +80,11 @@ def main():
     # Here we'll try to dynamically match the command the user is trying to run
     # with a pre-defined command class we've already created.
     for (k, v) in six.iteritems(options):
-        if hasattr(commands, k) and v:
-            module = getattr(commands, k)
-            commands = getmembers(module, isclass)
-            command_class = get_command(commands=commands)
-            command = command_class(options)
-            command.run()
+        if not k.startswith('--'):
+            command = k.replace('-', '_')
+            if hasattr(commands, command) and v:
+                module = getattr(commands, command)
+                commands = getmembers(module, isclass)
+                command_class = get_command(commands=commands)
+                command = command_class(options)
+                command.run()

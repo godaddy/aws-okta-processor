@@ -17,3 +17,9 @@ importlib-metadata = "*"
 
 [packages]
 aws-okta-processor = {path = ".", editable=true}
+docopt = ">=0.6.2"
+requests = ">=2.21.0"
+"boto3" = ">=1.9.134"
+"bs4" = ">=0.0.1"
+"contextlib2" = ">=0.5.5"
+six = ">=1.12.0"

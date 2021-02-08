@@ -44,20 +44,13 @@ class SAMLFetcher(CachedCredentialFetcher):
             'Expiration': credentials['expiry_time']
         }
 
-    def _get_credentials(self):
-        # Do NOT load credentials from ENV or ~/.aws/credentials
-        client = boto3.client(
-            'sts',
-            aws_access_key_id='',
-            aws_secret_access_key='',
-            aws_session_token='',
-            region_name=self._configuration["AWS_OKTA_REGION"]
-        )
-
+    def _get_app_roles(self):
+        user = self._configuration["AWS_OKTA_USER"]
+        organization = self._configuration["AWS_OKTA_ORGANIZATION"]
         okta = Okta(
-            user_name=self._configuration["AWS_OKTA_USER"],
+            user_name=user,
             user_pass=self._authenticate.get_pass(),
-            organization=self._configuration["AWS_OKTA_ORGANIZATION"],
+            organization=organization,
             factor=self._configuration["AWS_OKTA_FACTOR"],
             silent=self._configuration["AWS_OKTA_SILENT"],
             no_okta_cache=self._configuration["AWS_OKTA_NO_OKTA_CACHE"]
@@ -90,6 +83,30 @@ class SAMLFetcher(CachedCredentialFetcher):
             accounts_filter=self._configuration.get(
                 'AWS_OKTA_ACCOUNT_ALIAS', None)
         )
+
+        return aws_roles, saml_assertion, application_url, user, organization
+
+    def get_app_roles(self):
+
+        aws_roles, saml_assertion, application_url, user, organization = self._get_app_roles()
+        return {
+            "Application": application_url,
+            "Accounts": aws_roles,
+            "User": user,
+            "Organization": organization
+        }
+
+    def _get_credentials(self):
+        # Do NOT load credentials from ENV or ~/.aws/credentials
+        client = boto3.client(
+            'sts',
+            aws_access_key_id='',
+            aws_secret_access_key='',
+            aws_session_token='',
+            region_name=self._configuration["AWS_OKTA_REGION"]
+        )
+
+        aws_roles, saml_assertion, _application_url, _user, _organization = self._get_app_roles()
 
         aws_role = prompt.get_item(
             items=aws_roles,

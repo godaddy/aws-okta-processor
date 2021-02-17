@@ -128,7 +128,7 @@ class TestGetRolesCommand(TestBase):
         command = GetRolesCommand(self.OPTIONS)
         command.run()
         mock_sys_stdout_write.assert_called_once_with(
-            'test-account,role1-deploy'
+            'test-account,role1-deploy\n'
         )
 
     def test_get_pass_config(self):

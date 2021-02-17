@@ -1,6 +1,4 @@
 """
-aws-okta-processor
-
 Usage:
   aws-okta-processor [options] <command> [<args>...]
 
@@ -20,15 +18,12 @@ See 'aws-okta-processor help <command>' for more information on a specific comma
 """  # noqa
 
 
-#from inspect import getmembers, isclass
-
 from docopt import docopt
 
 from . import __version__ as VERSION
 
-import six
-
 from . import commands
+
 
 def get_command(commands=None):
     for command in commands:
@@ -54,15 +49,3 @@ def main():
         command.run()
     else:
         exit("%r is not a aws-okta-processor command. See 'aws-okta-processor help'." % args['<command>'])
-
-    # Here we'll try to dynamically match the command the user is trying to run
-    # with a pre-defined command class we've already created.
-    # for (k, v) in six.iteritems(options):
-    #     if not k.startswith('--'):
-    #         command = k.replace('-', '_')
-    #         if hasattr(commands, command) and v:
-    #             module = getattr(commands, command)
-    #             commands = getmembers(module, isclass)
-    #             command_class = get_command(commands=commands)
-    #             command = command_class(options)
-    #             command.run()

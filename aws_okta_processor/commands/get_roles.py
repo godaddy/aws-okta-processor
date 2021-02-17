@@ -19,8 +19,9 @@ Options:
     -f <factor>, --factor=<factor>                              Factor type for MFA.
     -s --silent                                                 Run silently.
     --target-shell <target_shell>                               Target shell to output the export command.
-    --output=<output>                                           Output type (json, text) [default: json]
-    --output-format=<format>                                    Format string for the output [default: "{account}-{role}"]
+    --output=<output>                                           Output type (json, text, profiles) [default: json]
+    --output-format=<format>                                    Format string for the output
+                                                                    [default: {account},{role}]
 """
 
 from __future__ import print_function
@@ -109,14 +110,14 @@ class GetRolesCommand(Base):
         if output == "json":
             sys.stdout.write(json.dumps(accounts_and_roles))
         else:
-            output_format = self.configuration.get("AWS_OKTA_OUTPUT_FORMAT", "{account}-{role}")
+            output_format = self.configuration.get("AWS_OKTA_OUTPUT_FORMAT", "{account},{role}")
             if output == "profiles":
                 output_format = '\n[{account}-{role_suffix}]\ncredential_process=aws-okta-processor authenticate ' \
                                 '--organization="{organization}" --user="{user}" --application="{application_url}" ' \
-                                '--role="{role}" --key="{account}-{role}"\n'
+                                '--role="{role}" --key="{account}-{role}"'
             formatted_roles = self.get_formatted_roles(accounts_and_roles, output_format)
             for role in formatted_roles:
-                sys.stdout.write(role)
+                sys.stdout.write(role + "\n")
 
     def get_formatted_roles(self, accounts_and_roles, output_format):
         application_url = accounts_and_roles["application_url"]

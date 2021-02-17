@@ -14,7 +14,7 @@ Help:
   For help using this tool, please reach out to our Slack channel:
   https://godaddy-oss-slack.herokuapp.com/
 
-See 'aws-okta-processor help <command>' for more information on a specific command.
+See 'aws-okta-processor <command> -h' for more information on a specific command.
 """  # noqa
 
 

@@ -25,15 +25,6 @@ from . import __version__ as VERSION
 from . import commands
 
 
-def get_command(commands=None):
-    for command in commands:
-        command_name = command[0]
-
-        if command_name != 'Base':
-            command_class = command[1]
-            return command_class
-
-
 def main():
     """Main CLI entrypoint."""
     args = docopt(__doc__, version=VERSION, options_first=True)
@@ -48,4 +39,4 @@ def main():
         command = commands.get_roles.GetRolesCommand(options)
         command.run()
     else:
-        exit("%r is not a aws-okta-processor command. See 'aws-okta-processor help'." % args['<command>'])
+        exit("%r is not a aws-okta-processor command. See 'aws-okta-processor --help'." % args['<command>'])

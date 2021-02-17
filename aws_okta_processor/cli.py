@@ -42,4 +42,4 @@ def main():
         else:
             exit("%r is not a aws-okta-processor command. See 'aws-okta-processor --help'." % args['<command>'])
     except KeyboardInterrupt:
-      exit(0)
+        exit(0)

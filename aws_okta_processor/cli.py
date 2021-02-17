@@ -29,14 +29,17 @@ def main():
     """Main CLI entrypoint."""
     args = docopt(__doc__, version=VERSION, options_first=True)
 
-    argv = [args['<command>']] + args['<args>']
-    if args['<command>'] == 'authenticate':
-        options = docopt(commands.authenticate.__doc__, argv=argv)
-        command = commands.authenticate.Authenticate(options)
-        command.run()
-    elif args['<command>'] == 'get-roles':
-        options = docopt(commands.get_roles.__doc__, argv=argv)
-        command = commands.get_roles.GetRolesCommand(options)
-        command.run()
-    else:
-        exit("%r is not a aws-okta-processor command. See 'aws-okta-processor --help'." % args['<command>'])
+    try:
+        argv = [args['<command>']] + args['<args>']
+        if args['<command>'] == 'authenticate':
+            options = docopt(commands.authenticate.__doc__, argv=argv)
+            command = commands.authenticate.Authenticate(options)
+            command.run()
+        elif args['<command>'] == 'get-roles':
+            options = docopt(commands.get_roles.__doc__, argv=argv)
+            command = commands.get_roles.GetRolesCommand(options)
+            command.run()
+        else:
+            exit("%r is not a aws-okta-processor command. See 'aws-okta-processor --help'." % args['<command>'])
+    except KeyboardInterrupt:
+      exit(0)

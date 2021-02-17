@@ -13,8 +13,8 @@ import sys
 NAME = 'aws_okta_processor'
 WORKING_DIR = os.path.dirname(__file__)
 
-# if WORKING_DIR != '':
-#     os.chdir(WORKING_DIR)
+if WORKING_DIR != '':
+    os.chdir(WORKING_DIR)
 
 ABS_PATH = os.path.abspath(WORKING_DIR)
 PACKAGE_PATH = os.path.join(ABS_PATH, NAME)

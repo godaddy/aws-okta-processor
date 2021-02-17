@@ -1,3 +1,5 @@
+import os
+
 from unittest.mock import patch
 
 from tests.test_base import TestBase
@@ -103,7 +105,8 @@ class TestGetRolesCommand(TestBase):
     @patch("aws_okta_processor.commands.get_roles.sys.stdout.write")
     def test_run_should_return_text(self, mock_sys_stdout_write, mock_get_accounts_and_roles):
         self.OPTIONS["--output"] = "text"
-        self.OPTIONS["--output-format"] = "{account},{role}"
+        os.environ["AWS_OKTA_OUTPUT_FORMAT"] = "{account},{role}"
+
         mock_get_accounts_and_roles.return_value = {
             "application_url": "app-url",
             "accounts": [

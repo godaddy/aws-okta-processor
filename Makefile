@@ -1,4 +1,4 @@
-PYTHONPATH=./src/:tests/
+PYTHONPATH=./:tests/
 
 init:
 	pip install --upgrade pipenv

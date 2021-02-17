@@ -6,7 +6,7 @@ Options:
   -h, --help     Show this screen.
   --version      Show version.
 
-Command:
+Commands:
   authenticate  used to authenticate into AWS using Okta
   get-roles     used to get AWS roles
 

@@ -61,7 +61,7 @@ CONFIG_MAP = {
         }
 
 
-class GetRolesCommand(Base):
+class GetRoles(Base):
     def get_accounts_and_roles(self):
         cache = JSONFileCache()
         saml_fetcher = SAMLFetcher(

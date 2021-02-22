@@ -37,7 +37,7 @@ def main():
             command.run()
         elif args['<command>'] == 'get-roles':
             options = docopt(commands.get_roles.__doc__, argv=argv)
-            command = commands.get_roles.GetRolesCommand(options)
+            command = commands.get_roles.GetRoles(options)
             command.run()
         else:
             exit("%r is not a aws-okta-processor command. See 'aws-okta-processor --help'." % args['<command>'])

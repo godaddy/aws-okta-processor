@@ -4,11 +4,11 @@ from unittest.mock import patch
 
 from tests.test_base import TestBase
 
-from aws_okta_processor.commands.get_roles import GetRoles
+from aws_okta_processor.commands.getroles import GetRoles
 
 
 class TestGetRolesCommand(TestBase):
-    @patch("aws_okta_processor.commands.get_roles.SAMLFetcher.get_app_roles")
+    @patch("aws_okta_processor.commands.getroles.SAMLFetcher.get_app_roles")
     def test_get_accounts_and_roles_should_return_valid_results(self, mock_get_app_roles):
         self.OPTIONS["--output"] = "json"
         mock_get_app_roles.return_value = {
@@ -42,8 +42,8 @@ class TestGetRolesCommand(TestBase):
             'user': 'jdoe'
         }, actual)
 
-    @patch("aws_okta_processor.commands.get_roles.GetRoles.get_accounts_and_roles")
-    @patch("aws_okta_processor.commands.get_roles.sys.stdout.write")
+    @patch("aws_okta_processor.commands.getroles.GetRoles.get_accounts_and_roles")
+    @patch("aws_okta_processor.commands.getroles.sys.stdout.write")
     def test_run_should_return_json(self, mock_sys_stdout_write, mock_get_accounts_and_roles):
         self.OPTIONS["--output"] = "json"
         mock_get_accounts_and_roles.return_value = {
@@ -72,8 +72,8 @@ class TestGetRolesCommand(TestBase):
             '"organization": "test-org"}'
         )
 
-    @patch("aws_okta_processor.commands.get_roles.GetRoles.get_accounts_and_roles")
-    @patch("aws_okta_processor.commands.get_roles.sys.stdout.write")
+    @patch("aws_okta_processor.commands.getroles.GetRoles.get_accounts_and_roles")
+    @patch("aws_okta_processor.commands.getroles.sys.stdout.write")
     def test_run_should_return_profiles(self, mock_sys_stdout_write, mock_get_accounts_and_roles):
         self.OPTIONS["--output"] = "profiles"
         mock_get_accounts_and_roles.return_value = {
@@ -101,8 +101,8 @@ class TestGetRolesCommand(TestBase):
             ' --user="jdoe" --application="app-url" --role="role1-deploy" --key="test-account-role1-deploy"\n'
         )
 
-    @patch("aws_okta_processor.commands.get_roles.GetRoles.get_accounts_and_roles")
-    @patch("aws_okta_processor.commands.get_roles.sys.stdout.write")
+    @patch("aws_okta_processor.commands.getroles.GetRoles.get_accounts_and_roles")
+    @patch("aws_okta_processor.commands.getroles.sys.stdout.write")
     def test_run_should_return_text(self, mock_sys_stdout_write, mock_get_accounts_and_roles):
         self.OPTIONS["--output"] = "text"
         os.environ["AWS_OKTA_OUTPUT_FORMAT"] = "{account},{role}"

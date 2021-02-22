@@ -36,8 +36,8 @@ def main():
             command = commands.authenticate.Authenticate(options)
             command.run()
         elif args['<command>'] == 'get-roles':
-            options = docopt(commands.get_roles.__doc__, argv=argv)
-            command = commands.get_roles.GetRoles(options)
+            options = docopt(commands.getroles.__doc__, argv=argv)
+            command = commands.getroles.GetRoles(options)
             command.run()
         else:
             exit("%r is not a aws-okta-processor command. See 'aws-okta-processor --help'." % args['<command>'])

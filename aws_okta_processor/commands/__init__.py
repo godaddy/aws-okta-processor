@@ -1,2 +1,2 @@
 from . import authenticate # noqa
-from . import get_roles # noqa
+from . import getroles # noqa

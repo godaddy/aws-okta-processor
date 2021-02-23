@@ -96,7 +96,6 @@ class Okta:
 
             self.get_okta_session_id()
 
-
     def read_aop_from_okta_session(self, okta_session):
         if "aws-okta-processor" in okta_session:
             aop_options = okta_session["aws-okta-processor"]
@@ -104,7 +103,6 @@ class Okta:
             self.organization = aop_options.get("organization", None)
 
             del okta_session["aws-okta-processor"]
-
 
     def get_cache_file_path(self):
         home_directory = os.path.expanduser('~')

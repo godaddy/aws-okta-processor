@@ -84,7 +84,7 @@ class SAMLFetcher(CachedCredentialFetcher):
                 'AWS_OKTA_ACCOUNT_ALIAS', None)
         )
 
-        return aws_roles, saml_assertion, application_url, user, organization
+        return aws_roles, saml_assertion, application_url, okta.user_name, okta.organization
 
     def get_app_roles(self):
 

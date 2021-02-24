@@ -54,8 +54,8 @@ class Okta:
         self.factor = factor
         self.session = requests.Session()
         self.organization = organization
-        self.cache_file_path = self.get_cache_file_path()
         self.okta_session_id = None
+        self.cache_file_path = self.get_cache_file_path()
 
         okta_session = None
 
@@ -63,28 +63,46 @@ class Okta:
             okta_session = self.get_okta_session()
 
         if okta_session:
+            self.read_aop_from_okta_session(okta_session)
+
             self.refresh_okta_session_id(
                 okta_session=okta_session
             )
 
+        if not self.organization:
+            print_tty(string="Organization: ", newline=False)
+            self.organization = input()
+
+        if not self.user_name:
+            print_tty(string="UserName: ", newline=False)
+            self.user_name = input()
+
         if not self.okta_session_id:
-            if not user_name:
+            if not self.user_name:
                 print_tty(string="UserName: ", newline=False)
-                user_name = input()
+                self.user_name = input()
 
             if not user_pass:
                 user_pass = getpass.getpass()
 
-            if not organization:
+            if not self.organization:
                 print_tty(string="Organization: ", newline=False)
                 self.organization = input()
 
             self.okta_single_use_token = self.get_okta_single_use_token(
-                user_name=user_name,
+                user_name=self.user_name,
                 user_pass=user_pass
             )
 
             self.get_okta_session_id()
+
+    def read_aop_from_okta_session(self, okta_session):
+        if "aws-okta-processor" in okta_session:
+            aop_options = okta_session["aws-okta-processor"]
+            self.user_name = aop_options.get("user_name", None)
+            self.organization = aop_options.get("organization", None)
+
+            del okta_session["aws-okta-processor"]
 
     def get_cache_file_path(self):
         home_directory = os.path.expanduser('~')
@@ -107,8 +125,14 @@ class Okta:
         return cache_file_path
 
     def set_okta_session(self, okta_session=None):
+        session_data = dict(okta_session, **{
+            "aws-okta-processor": {
+                "user_name": self.user_name,
+                "organization": self.organization
+            }
+        })
         with open(self.cache_file_path, "w") as file:
-            json.dump(okta_session, file)
+            json.dump(session_data, file)
 
         os.chmod(self.cache_file_path, 0o600)
 

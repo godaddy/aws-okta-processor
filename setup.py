@@ -17,7 +17,7 @@ if WORKING_DIR != '':
     os.chdir(WORKING_DIR)
 
 ABS_PATH = os.path.abspath(WORKING_DIR)
-PACKAGE_PATH = os.path.join(ABS_PATH, 'src', NAME)
+PACKAGE_PATH = os.path.join(ABS_PATH, NAME)
 VERSION_FILE = os.path.join(PACKAGE_PATH, '__init__.py')
 README_FILE = os.path.join(ABS_PATH, 'README.rst')
 
@@ -59,8 +59,8 @@ setup(
     author='GoDaddy',
     author_email='oss@godaddy.com',
     license='MIT',
-    packages=find_packages('src'),
-    package_dir={'': 'src'},
+    packages=find_packages(),
+    package_dir={"": "."},
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',

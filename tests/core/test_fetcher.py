@@ -31,6 +31,21 @@ class TestFetcher(TestBase):
 
         fetcher.fetch_credentials()
 
+    @patch('aws_okta_processor.core.fetcher.SAMLFetcher._get_app_roles')
+    def test_get_app_roles(self, mock_get_app_roles):
+
+        mock_get_app_roles.return_value = ("accounts", None, "app-url", "jdoe", 'test-org')
+        authenticate = Authenticate(self.OPTIONS)
+        fetcher = SAMLFetcher(authenticate, cache={})
+        actual = fetcher.get_app_roles()
+
+        self.assertEqual({
+            'Accounts': 'accounts',
+            'Application': 'app-url',
+            'Organization': 'test-org',
+            'User': 'jdoe'
+        }, actual)
+
     @patch("boto3.client")
     @patch('aws_okta_processor.core.fetcher.print_tty')
     @patch('aws_okta_processor.core.fetcher.prompt.print_tty')

@@ -235,6 +235,44 @@ In this example...
 * ``{workingDir}/.awsoktaprocessor`` overrides ``~/.awsoktaprocessor``
 * ``aws-okta-processor`` arguments override any options from dotfiles
 
+-----------------------------
+Get Roles
+-----------------------------
+
+To get roles, use the ``get-roles`` command. This command supports outputing the roles as AWS profiles, JSON, or custom formatted text.
+
+.. code-block:: bash
+
+   # write all the roles as AWS profiles
+   aws-okta-processor get-roles -u jdoe -o mycompany.okta.com --output=profiles > ~/.aws/credentials
+   
+   # get account and role
+   aws-okta-processor get-roles -u jdoe -o mycompany.okta.com --output=text --output-format="{account},{role}"
+
+   # get JSON
+   aws-okta-processor get-roles -u jdoe -o mycompany.okta.com --output=json
+
+
+Output Types
+
+* ``json`` (default): output as JSON
+* ``profiles``: output AWS profiles to be stored in ``~/.aws/credentials``
+* ``text``: custom formatted text using ``--output-format`` and tokens
+
+Output Format Tokens
+
+* ``{account}``: name of the account
+* ``{account_id}``: account Id
+* ``{account_raw}``: account information as seen on Okta site (``Account: blah-blah (id)``)
+* ``{application_url}``: full Okta application url
+* ``{organization}``: organization as provided
+* ``{role}``: role ARN
+* ``{role_suffix}``: last element of the role (delimited using ``AWS_OKTA_ROLE_SUFFIX_DELIMITER`` or ``-``)
+* ``{user}``: user as provided
+
+
+
+
 ------------
 Getting Help
 ------------

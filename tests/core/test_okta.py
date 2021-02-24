@@ -12,6 +12,7 @@ from tests.test_base import SAML_RESPONSE
 from mock import patch
 from mock import call
 from mock import MagicMock
+from mock import mock_open
 from datetime import datetime
 from collections import OrderedDict
 from requests import ConnectionError
@@ -100,6 +101,7 @@ class TestOkta(TestBase):
         self.assertEqual(okta.organization, "organization.okta.com")
         self.assertEqual(okta.okta_session_id, "session_token")
 
+    @patch('aws_okta_processor.core.okta.Okta.read_aop_from_okta_session')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.datetime', StubDate)
@@ -113,7 +115,8 @@ class TestOkta(TestBase):
             mock_makedirs,
             mock_isfile,
             mock_open,
-            mock_chmod
+            mock_chmod,
+            mock_read_aop_session
     ):
         StubDate.now = classmethod(lambda cls, tz: datetime(1, 1, 1, 0, 0, tzinfo=tz))
 
@@ -122,10 +125,12 @@ class TestOkta(TestBase):
         mock_enter.read.return_value = SESSION_RESPONSE
         mock_open().__enter__.return_value = mock_enter
 
+        session_refresh = json.loads(SESSION_RESPONSE)
+
         responses.add(
             responses.POST,
             'https://organization.okta.com/api/v1/sessions/me/lifecycle/refresh',
-            json=json.loads(SESSION_RESPONSE)
+            json=session_refresh
         )
 
         okta = Okta(
@@ -136,6 +141,8 @@ class TestOkta(TestBase):
 
         self.assertEqual(okta.okta_session_id, "session_token")
         self.assertEqual(okta.organization, "organization.okta.com")
+
+        mock_read_aop_session.assert_called_once_with(session_refresh)
 
     @patch('aws_okta_processor.core.okta.os.makedirs')
     @patch('aws_okta_processor.core.okta.print_tty')
@@ -288,6 +295,78 @@ class TestOkta(TestBase):
         self.assertEqual(okta.okta_single_use_token, "single_use_token")
         self.assertEqual(okta.organization, "organization.okta.com")
         self.assertEqual(okta.okta_session_id, "session_token")
+
+    @patch('aws_okta_processor.core.okta.Okta.get_okta_single_use_token')
+    @patch('aws_okta_processor.core.okta.Okta.get_okta_session_id')
+    @patch('aws_okta_processor.core.okta.input')
+    def test_read_aop_from_okta_session_should_read_aop_options(
+        self,
+        mock_input,
+        mock_get_session_id,
+        mock_get_token
+    ):
+        okta = Okta(
+            user_name="user_name",
+            user_pass="user_pass",
+            organization="organization.okta.com",
+            no_okta_cache=False
+        )
+        okta.read_aop_from_okta_session({
+            "aws-okta-processor": {
+                "user_name": "user2_name",
+                "organization": "organization2.okta.com"
+            }
+        })
+
+        self.assertEqual(okta.user_name, "user2_name")
+        self.assertEqual(okta.organization, "organization2.okta.com")
+
+
+    @patch('aws_okta_processor.core.okta.os.chmod')
+    @patch('aws_okta_processor.core.okta.Okta.get_cache_file_path', return_value='/tmp/test.json')
+    @patch('aws_okta_processor.core.okta.Okta.get_okta_single_use_token')
+    @patch('aws_okta_processor.core.okta.Okta.get_okta_session_id')
+    @patch('aws_okta_processor.core.okta.input')
+    @patch('builtins.open', new_callable=mock_open)
+    def test_set_okta_session_should_write_session_data(
+        self,
+        mock_open_file,
+        mock_input,
+        mock_get_session_id,
+        mock_get_token,
+        mock_get_cache_file,
+        mock_chmod
+    ):
+        okta = Okta(
+            user_name="user_name",
+            user_pass="user_pass",
+            organization="organization.okta.com",
+            no_okta_cache=False
+        )
+        okta.set_okta_session({
+            "session_stuff": "yes"
+        })
+
+        mock_open_file.assert_called_once_with('/tmp/test.json', 'w')
+        mock_open_file().write.assert_has_calls([
+            call('{'),
+            call('"session_stuff"'),
+            call(': '),
+            call('"yes"'),
+            call(', '),
+            call('"aws-okta-processor"'),
+            call(': '),
+            call('{'),
+            call('"user_name"'),
+            call(': '),
+            call('"user_name"'),
+            call(', '),
+            call('"organization"'),
+            call(': '),
+            call('"organization.okta.com"'),
+            call('}'),
+            call('}')
+        ])
 
     @patch('aws_okta_processor.core.okta.input')
     @patch('aws_okta_processor.core.okta.os.chmod')

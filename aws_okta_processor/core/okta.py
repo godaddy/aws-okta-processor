@@ -191,7 +191,38 @@ class Okta:
             key=self.factor
         )
 
+        if factor and factor.issue():
+            self.issue_factor(factor=factor, state_token=state_token)
+
         return self.verify_factor(factor=factor, state_token=state_token)
+
+    def issue_factor(self, factor=None, state_token=None):
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache"
+        }
+
+        json_payload = {"stateToken": state_token}
+
+        response = self.call(
+            endpoint=factor.link,
+            headers=headers,
+            json_payload=json_payload
+        )
+
+        response_json = {}
+
+        try:
+            response_json = response.json()
+        except ValueError:
+            send_error(response=response, json=False)
+
+        if ("factorResult" in response_json and
+                response_json["factorResult"] == "CHALLENGE"):
+            return
+
+        send_error(response=response)
 
     def verify_factor(self, factor=None, state_token=None):
         headers = {
@@ -388,6 +419,7 @@ class FactorType:
     PUSH = "push"
     TOTP = "token:software:totp"
     HARDWARE = "token:hardware"
+    EMAIL = "email"
 
 
 @add_metaclass(abc.ABCMeta)
@@ -412,6 +444,11 @@ class FactorBase(object):
         """Returns boolean indicating whether response is retryable."""
         pass
 
+    @abc.abstractmethod
+    def issue(self):
+        """Returns boolean indicating if factor requires a challenge to be issued."""
+        pass
+
 
 class FactorPush(FactorBase):
     factor = FactorType.PUSH
@@ -430,6 +467,9 @@ class FactorPush(FactorBase):
     def retry(self, response):
         return response.get("factorResult") in self.RETRYABLE_RESULTS
 
+    def issue(self):
+        return False
+
 
 class FactorTOTP(FactorBase):
     factor = FactorType.TOTP
@@ -443,6 +483,9 @@ class FactorTOTP(FactorBase):
         return {"passCode": input()}
 
     def retry(self, response):
+        return False
+
+    def issue(self):
         return False
 
 
@@ -459,3 +502,24 @@ class FactorHardwareToken(FactorBase):
 
     def retry(self, response):
         return False
+
+    def issue(self):
+        return False
+
+
+class FactorEmail(FactorBase):
+    factor = FactorType.EMAIL
+
+    def __init__(self, link=None):
+        super(FactorEmail, self).__init__(link=link)
+
+    @staticmethod
+    def payload():
+        print_tty("Email Token: ", newline=False)
+        return {"passCode": input()}
+
+    def retry(self, response):
+        return False
+
+    def issue(self):
+        return True

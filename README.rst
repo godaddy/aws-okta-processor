@@ -150,7 +150,7 @@ environment   --environment                          Output command to set ENV v
 ------------- --------------- ---------------------- ----------------------------------------
 silent        --silent                               Silence Info output
 ------------- --------------- ---------------------- ----------------------------------------
-factor        --factor        AWS_OKTA_FACTOR        MFA type. `push:okta`, `token:software:totp:okta`, `token:software:totp:google` and `token:hardware:yubico` are supported.
+factor        --factor        AWS_OKTA_FACTOR        MFA type. `push:okta`, `token:software:totp:okta`, `token:software:totp:google`, `token:hardware:yubico` and `email:okta` are supported.
 ------------- --------------- ---------------------- ----------------------------------------
 no_okta_cache --no-okta-cache AWS_OKTA_NO_OKTA_CACHE Do not read okta cache
 ------------- --------------- ---------------------- ----------------------------------------

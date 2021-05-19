@@ -2,5 +2,6 @@
     {"factorType": "token:software:totp", "provider": "GOOGLE", "_links": {"verify": {"href": "https://organization.okta.com/api/v1/authn/factors/id/verify"}}},
     {"factorType": "push", "provider": "OKTA", "_links": {"verify": {"href": "https://organization.okta.com/api/v1/authn/factors/id/verify"}}},
     {"factorType": "token:software:totp", "provider": "OKTA", "_links": {"verify": {"href": "https://organization.okta.com/api/v1/authn/factors/id/verify"}}},
-    {"factorType": "token:hardware", "provider": "YUBICO", "_links": {"verify": {"href": "https://organization.okta.com/api/v1/authn/factors/id/verify"}}}
+    {"factorType": "token:hardware", "provider": "YUBICO", "_links": {"verify": {"href": "https://organization.okta.com/api/v1/authn/factors/id/verify"}}},
+    {"factorType": "email", "provider": "OKTA", "_links": {"verify": {"href": "https://organization.okta.com/api/v1/authn/factors/id/verify"}}}
 ]}}

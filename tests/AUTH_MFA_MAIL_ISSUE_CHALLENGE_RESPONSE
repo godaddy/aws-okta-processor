@@ -1,0 +1,1 @@
+{"stateToken":"state_token","status":"MFA_CHALLENGE","factorResult":"CHALLENGE","challengeType":"FACTOR","_embedded":{"factor":{"id":"emfy0szqz5ltShGFG0h7","factorType":"email","provider":"OKTA"}}}

@@ -1,4 +1,5 @@
-from tests.test_base import TestBase
+from tests.test_base import TestBase, AUTH_MFA_MAIL_RESPONSE, \
+    AUTH_MFA_MAIL_ISSUE_CHALLENGE_RESPONSE
 from tests.test_base import SESSION_RESPONSE
 from tests.test_base import AUTH_TOKEN_RESPONSE
 from tests.test_base import AUTH_MFA_PUSH_RESPONSE
@@ -412,6 +413,63 @@ class TestOkta(TestBase):
         self.assertEqual(okta.organization, "organization.okta.com")
         self.assertEqual(okta.okta_session_id, "session_token")
 
+    @patch('aws_okta_processor.core.okta.input')
+    @patch('aws_okta_processor.core.okta.os.chmod')
+    @patch('aws_okta_processor.core.okta.open')
+    @patch('aws_okta_processor.core.okta.os.makedirs')
+    @patch('aws_okta_processor.core.okta.print_tty')
+    @responses.activate
+    def test_okta_mfa_email_challenge(
+            self,
+            mock_print_tty,
+            mock_makedirs,
+            mock_open,
+            mock_chmod,
+            mock_input
+    ):
+        mock_input.return_value = "123456"
+
+        responses.add(
+            responses.POST,
+            'https://organization.okta.com/api/v1/authn',
+            json=json.loads(AUTH_MFA_MAIL_RESPONSE)
+        )
+        
+        responses.add(
+            responses.POST,
+            'https://organization.okta.com/api/v1/authn/factors/id/verify',
+            json=json.loads(AUTH_MFA_MAIL_ISSUE_CHALLENGE_RESPONSE)
+        )
+        
+        responses.add(
+            responses.POST,
+            'https://organization.okta.com/api/v1/authn/factors/id/verify',
+            json=json.loads(AUTH_TOKEN_RESPONSE)
+        )
+
+        responses.add(
+            responses.POST,
+            'https://organization.okta.com/api/v1/authn/factors/id/verify',
+            json=json.loads(AUTH_TOKEN_RESPONSE)
+        )
+
+        responses.add(
+            responses.POST,
+            'https://organization.okta.com/api/v1/sessions',
+            json=json.loads(SESSION_RESPONSE)
+        )
+
+        okta = Okta(
+            user_name="user_name",
+            user_pass="user_pass",
+            organization="organization.okta.com"
+        )
+
+        self.assertEqual(okta.okta_single_use_token, "single_use_token")
+        self.assertEqual(okta.organization, "organization.okta.com")
+        self.assertEqual(okta.okta_session_id, "session_token")
+
+
     @patch('aws_okta_processor.core.prompt.input')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
@@ -462,6 +520,47 @@ class TestOkta(TestBase):
         self.assertEqual(okta.organization, "organization.okta.com")
         self.assertEqual(okta.okta_session_id, "session_token")
 
+
+    @patch('aws_okta_processor.core.okta.os.chmod')
+    @patch('aws_okta_processor.core.okta.open')
+    @patch('aws_okta_processor.core.okta.os.makedirs')
+    @patch('aws_okta_processor.core.okta.print_tty')
+    @responses.activate
+    def test_okta_mfa_issue_challenge_value_error(
+            self,
+            mock_print_tty,
+            mock_makedirs,
+            mock_open,
+            mock_chmod
+    ):
+        responses.add(
+            responses.POST,
+            'https://organization.okta.com/api/v1/authn',
+            json=json.loads(AUTH_MFA_MAIL_RESPONSE)
+        )
+
+        responses.add(
+            responses.POST,
+            'https://organization.okta.com/api/v1/authn/factors/id/verify',
+            body="NOT JSON",
+            status=500
+        )
+
+        with self.assertRaises(SystemExit):
+            Okta(
+                user_name="user_name",
+                user_pass="user_pass",
+                organization="organization.okta.com"
+            )
+
+        print_tty_calls = [
+            call("Error: Status Code: 500"),
+            call("Error: Invalid JSON")
+        ]
+
+        mock_print_tty.assert_has_calls(print_tty_calls)
+
+
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.os.makedirs')
@@ -500,6 +599,7 @@ class TestOkta(TestBase):
         ]
 
         mock_print_tty.assert_has_calls(print_tty_calls)
+
 
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')

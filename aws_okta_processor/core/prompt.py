@@ -1,7 +1,7 @@
 import sys
 import six
 
-from collections import Mapping
+from collections.abc import Mapping
 from aws_okta_processor.core.print_tty import print_tty
 
 

@@ -14,6 +14,7 @@ docutils = "*"
 responses = "*"
 atomicwrites = "*"
 importlib-metadata = "*"
+typing-extensions = "*"
 
 [packages]
 aws-okta-processor = {path = ".", editable=true}

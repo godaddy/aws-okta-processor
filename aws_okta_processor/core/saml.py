@@ -4,7 +4,7 @@ from fnmatch import fnmatch
 import six
 import base64
 import requests
-import xml.etree.ElementTree as ElementTree
+import defusedxml.ElementTree as ElementTree
 
 from bs4 import BeautifulSoup
 from collections import OrderedDict

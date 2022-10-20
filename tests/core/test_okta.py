@@ -297,7 +297,7 @@ class TestOkta(TestBase):
         self.assertEqual(okta.okta_session_id, "session_token")
 
     @patch('aws_okta_processor.core.okta.Okta.get_okta_single_use_token')
-    @patch('aws_okta_processor.core.okta.Okta.get_okta_session_id')
+    @patch('aws_okta_processor.core.okta.Okta.create_and_store_okta_session')
     @patch('aws_okta_processor.core.okta.input')
     def test_read_aop_from_okta_session_should_read_aop_options(
         self,
@@ -325,7 +325,7 @@ class TestOkta(TestBase):
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.Okta.get_cache_file_path', return_value='/tmp/test.json')
     @patch('aws_okta_processor.core.okta.Okta.get_okta_single_use_token')
-    @patch('aws_okta_processor.core.okta.Okta.get_okta_session_id')
+    @patch('aws_okta_processor.core.okta.Okta.create_and_store_okta_session')
     @patch('aws_okta_processor.core.okta.input')
     @patch('builtins.open', new_callable=mock_open)
     def test_set_okta_session_should_write_session_data(

@@ -18,11 +18,18 @@ AWS_SIGN_IN_URL = "https://signin.aws.amazon.com/saml"
 
 
 def get_saml_assertion(saml_response=None):
+    """ Extracts the SAML assertion from the saml_response HTML by finding the appropriate HTML element. """
     soup = BeautifulSoup(saml_response, "html.parser")
 
     for input_tag in soup.find_all('input'):
         if input_tag.get('name') == 'SAMLResponse':
             return input_tag.get('value')
+
+    if soup.find('div', {"id": "okta-sign-in"}) or soup.find('div', {"id": "password-verification-challenge"}):
+        # No assertion in the response, since Okta is presenting an MFA or password challenge. The okta session
+        # we supplied is not sufficient.
+        print_tty("SAMLResponse tag not found.")
+        return None
 
     print_tty("ERROR: SAMLResponse tag was not found!")
     sys.exit(1)

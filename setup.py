@@ -27,7 +27,8 @@ REQUIRES = [
     'boto3>=1.9.134',
     'bs4>=0.0.1',
     'contextlib2>=0.5.5',
-    'six>=1.12.0'
+    'six>=1.12.0',
+    'defusedxml>=0.7.1'
 ]
 
 TEST_REQUIREMENTS = [

@@ -50,7 +50,7 @@ class SAMLFetcher(CachedCredentialFetcher):
         user_pass = self._authenticate.get_pass()
         organization = self._configuration["AWS_OKTA_ORGANIZATION"]
         no_okta_cache = self._configuration["AWS_OKTA_NO_OKTA_CACHE"]
-        
+
         okta = Okta(
             user_name=user,
             user_pass=user_pass,
@@ -98,11 +98,11 @@ class SAMLFetcher(CachedCredentialFetcher):
             saml_assertion = saml.get_saml_assertion(
                 saml_response=saml_response
             )
-                
+
         if not saml_assertion:
             print_tty("ERROR: SAMLResponse tag was not found!")
             sys.exit(1)
-            
+
         aws_roles = saml.get_aws_roles(
             saml_assertion=saml_assertion,
             accounts_filter=self._configuration.get(

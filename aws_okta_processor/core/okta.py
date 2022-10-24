@@ -96,7 +96,7 @@ class Okta:
                 user_pass=user_pass
             )
 
-            # This call sets self.okta_session_id and
+            # This call sets self.okta_session_id
             self.create_and_store_okta_session()
 
     def read_aop_from_okta_session(self, okta_session):
@@ -238,7 +238,6 @@ class Okta:
 
     def create_and_store_okta_session(self):
         """ Creates a new Okta session and caches it in our cache file for future use.
-        
         https://developer.okta.com/docs/reference/api/sessions/#get-started
         """
         headers = {

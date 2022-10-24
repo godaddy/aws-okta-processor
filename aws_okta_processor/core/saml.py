@@ -25,10 +25,16 @@ def get_saml_assertion(saml_response=None):
         if input_tag.get('name') == 'SAMLResponse':
             return input_tag.get('value')
 
-    if soup.find('div', {"id": "okta-sign-in"}) or soup.find('div', {"id": "password-verification-challenge"}):
-        # No assertion in the response, since Okta is presenting an MFA or password challenge. The okta session
-        # we supplied is not sufficient.
-        print_tty("SAMLResponse tag not found.")
+    if soup.find('div', {"id": "okta-sign-in"}):
+        # Supplied Okta session not sufficient to get SAML assertion.
+        # This condition may be missed if Okta significantly changes the app-level MFA page
+        print_tty("SAMLResponse tag not found due to MFA challenge.")
+        return None
+
+    if soup.find('div', {"id": "password-verification-challenge"}):
+        # Supplied Okta session not sufficient to get SAML assertion.
+        # This condition may be missed if Okta significantly changes the app-level re-auth page
+        print_tty("SAMLResponse tag not found due to password verification challenge.")
         return None
 
     print_tty("ERROR: SAMLResponse tag was not found!")

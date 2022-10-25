@@ -1,5 +1,6 @@
 import boto3
 import json
+import sys
 
 import aws_okta_processor.core.saml as saml
 import aws_okta_processor.core.prompt as prompt
@@ -46,14 +47,17 @@ class SAMLFetcher(CachedCredentialFetcher):
 
     def _get_app_roles(self):
         user = self._configuration["AWS_OKTA_USER"]
+        user_pass = self._authenticate.get_pass()
         organization = self._configuration["AWS_OKTA_ORGANIZATION"]
+        no_okta_cache = self._configuration["AWS_OKTA_NO_OKTA_CACHE"]
+
         okta = Okta(
             user_name=user,
-            user_pass=self._authenticate.get_pass(),
+            user_pass=user_pass,
             organization=organization,
             factor=self._configuration["AWS_OKTA_FACTOR"],
             silent=self._configuration["AWS_OKTA_SILENT"],
-            no_okta_cache=self._configuration["AWS_OKTA_NO_OKTA_CACHE"]
+            no_okta_cache=no_okta_cache
         )
 
         self._configuration["AWS_OKTA_USER"] = ''
@@ -73,10 +77,31 @@ class SAMLFetcher(CachedCredentialFetcher):
         saml_response = okta.get_saml_response(
             application_url=application_url
         )
-
         saml_assertion = saml.get_saml_assertion(
             saml_response=saml_response
         )
+
+        if not saml_assertion and not no_okta_cache:
+            # Try again, but without using the cached Okta session
+            print_tty("Creating new Okta session.")
+            okta = Okta(
+                user_name=user,
+                user_pass=user_pass,
+                organization=organization,
+                factor=self._configuration["AWS_OKTA_FACTOR"],
+                silent=self._configuration["AWS_OKTA_SILENT"],
+                no_okta_cache=True
+            )
+            saml_response = okta.get_saml_response(
+                application_url=application_url
+            )
+            saml_assertion = saml.get_saml_assertion(
+                saml_response=saml_response
+            )
+
+        if not saml_assertion:
+            print_tty("ERROR: SAMLResponse tag was not found!")
+            sys.exit(1)
 
         aws_roles = saml.get_aws_roles(
             saml_assertion=saml_assertion,

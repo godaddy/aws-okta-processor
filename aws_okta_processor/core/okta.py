@@ -60,9 +60,11 @@ class Okta:
         okta_session = None
 
         if not no_okta_cache:
-            okta_session = self.get_okta_session()
+            # Get session from cache
+            okta_session = self.get_okta_session_from_cache_file()
 
         if okta_session:
+            # Refresh the session ID of the cached session
             self.read_aop_from_okta_session(okta_session)
 
             self.refresh_okta_session_id(
@@ -94,7 +96,8 @@ class Okta:
                 user_pass=user_pass
             )
 
-            self.get_okta_session_id()
+            # This call sets self.okta_session_id
+            self.create_and_store_okta_session()
 
     def read_aop_from_okta_session(self, okta_session):
         if "aws-okta-processor" in okta_session:
@@ -105,6 +108,9 @@ class Okta:
             del okta_session["aws-okta-processor"]
 
     def get_cache_file_path(self):
+        """ Returns the file path for the session cache file:
+        ~/.aws-okta-processor/cache/<username>-<organization>-session.json
+        """
         home_directory = os.path.expanduser('~')
         cache_directory = os.path.join(
             home_directory,
@@ -125,6 +131,7 @@ class Okta:
         return cache_file_path
 
     def set_okta_session(self, okta_session=None):
+        """ Saves the given Okta session in our cache file. """
         session_data = dict(okta_session, **{
             "aws-okta-processor": {
                 "user_name": self.user_name,
@@ -136,7 +143,7 @@ class Okta:
 
         os.chmod(self.cache_file_path, 0o600)
 
-    def get_okta_session(self):
+    def get_okta_session_from_cache_file(self):
         session = {}
 
         if os.path.isfile(self.cache_file_path):
@@ -229,7 +236,10 @@ class Okta:
 
         send_error(response=response)
 
-    def get_okta_session_id(self):
+    def create_and_store_okta_session(self):
+        """ Creates a new Okta session and caches it in our cache file for future use.
+        https://developer.okta.com/docs/reference/api/sessions/#get-started
+        """
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json"

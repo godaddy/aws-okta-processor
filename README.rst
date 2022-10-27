@@ -40,7 +40,7 @@ a virtualenv while still keeping its dependencies isolated from site-packages::
 
 and, to upgrade to a new version::
 
-    $ pipx install --upgrade aws-okta-processor
+    $ pipx upgrade aws-okta-processor
 
 
 You can also install with `pip`_ in a ``virtualenv``::

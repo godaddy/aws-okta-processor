@@ -46,22 +46,21 @@ NT_EXPORT_STRING = ("$env:AWS_ACCESS_KEY_ID='{}'; "
                     "$env:AWS_SESSION_TOKEN='{}'")
 
 CONFIG_MAP = {
-    "--environment": "AWS_OKTA_ENVIRONMENT",
-    "--user": "AWS_OKTA_USER",
-    "--pass": "AWS_OKTA_PASS",
-    "--organization": "AWS_OKTA_ORGANIZATION",
-    "--application": "AWS_OKTA_APPLICATION",
-    "--role": "AWS_OKTA_ROLE",
-    "--sign-in-url": "AWS_OKTA_SIGN_IN_URL",
-    "--duration": "AWS_OKTA_DURATION",
-    "--key": "AWS_OKTA_KEY",
-    "--factor": "AWS_OKTA_FACTOR",
-    "--silent": "AWS_OKTA_SILENT",
-    "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
-    "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
-    "--output": "AWS_OKTA_OUTPUT",
-    "--output-format": "AWS_OKTA_OUTPUT_FORMAT",
-}
+            "--environment": "AWS_OKTA_ENVIRONMENT",
+            "--user": "AWS_OKTA_USER",
+            "--pass": "AWS_OKTA_PASS",
+            "--organization": "AWS_OKTA_ORGANIZATION",
+            "--application": "AWS_OKTA_APPLICATION",
+            "--role": "AWS_OKTA_ROLE",
+            "--duration": "AWS_OKTA_DURATION",
+            "--key": "AWS_OKTA_KEY",
+            "--factor": "AWS_OKTA_FACTOR",
+            "--silent": "AWS_OKTA_SILENT",
+            "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
+            "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
+            "--output": "AWS_OKTA_OUTPUT",
+            "--output-format": "AWS_OKTA_OUTPUT_FORMAT",
+        }
 
 
 class GetRoles(Base):

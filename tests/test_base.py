@@ -6,7 +6,6 @@ WORKING_DIR = os.path.dirname(__file__)
 ABS_PATH = os.path.abspath(WORKING_DIR)
 SAML_RESPONSE_PATH = os.path.join(ABS_PATH, "SAML_RESPONSE")
 SAML_RESPONSE = open(SAML_RESPONSE_PATH, 'r').read()
-SIGN_IN_URL = "https://signin.aws.amazon.com/saml"
 SIGN_IN_RESPONSE_PATH = os.path.join(ABS_PATH, "SIGN_IN_RESPONSE")
 SIGN_IN_RESPONSE = open(SIGN_IN_RESPONSE_PATH, 'r').read()
 SESSION_RESPONSE_PATH = os.path.join(ABS_PATH, "SESSION_RESPONSE")
@@ -37,6 +36,7 @@ class TestBase(TestCase):
             "--application": None,
             "--role": None,
             "--region": None,
+            "--sign-in-url", None,
             "--key": "key",
             "--duration": "3600",
             "--factor": None,

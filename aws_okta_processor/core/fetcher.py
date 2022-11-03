@@ -10,6 +10,7 @@ from aws_okta_processor.core.okta import Okta
 from botocore.credentials import CachedCredentialFetcher
 from aws_okta_processor.core.print_tty import print_tty
 
+
 class SAMLFetcher(CachedCredentialFetcher):
     def __init__(self, authenticate, cache=None, expiry_window_seconds=600):
         self._authenticate = authenticate

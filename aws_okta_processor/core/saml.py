@@ -41,7 +41,7 @@ def get_saml_assertion(saml_response=None):
     sys.exit(1)
 
 
-def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=AWS_SIGN_IN_URL):
+def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=None):
     aws_roles = OrderedDict()
     role_principals = {}
     decoded_saml = base64.b64decode(saml_assertion)
@@ -94,7 +94,7 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=AWS_SIG
     return aws_roles
 
 
-def get_account_roles(saml_assertion=None, sign_in_url=AWS_SIGN_IN_URL):
+def get_account_roles(saml_assertion=None, sign_in_url=None):
     role_accounts = []
 
     data = {
@@ -102,7 +102,8 @@ def get_account_roles(saml_assertion=None, sign_in_url=AWS_SIGN_IN_URL):
         "RelayState": ""
     }
 
-    response = requests.post(sign_in_url, data=data)
+    
+    response = requests.post(sign_in_url or AWS_SIGN_IN_URL, data=data)
     soup = BeautifulSoup(response.text, "html.parser")
     accounts = soup.find('fieldset').find_all(
         "div",

@@ -3,6 +3,7 @@ from mock import patch
 from mock import MagicMock
 from tests.test_base import SAML_RESPONSE
 from tests.test_base import SIGN_IN_RESPONSE
+from tests.test_base import SIGN_IN_URL
 
 from aws_okta_processor.core import saml
 
@@ -26,7 +27,7 @@ class TestSAMLUtils(TestCase):
         mock_response.text = SIGN_IN_RESPONSE
         mock_requests.post.return_value = mock_response
 
-        account_roles = saml.get_account_roles(saml_assertion="ASSERTION")
+        account_roles = saml.get_account_roles(saml_assertion="ASSERTION", sign_in_url=SIGN_IN_URL)  # noqa
 
         self.assertEqual(
             account_roles[0].account_name,

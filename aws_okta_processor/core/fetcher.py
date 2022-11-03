@@ -10,6 +10,7 @@ from aws_okta_processor.core.okta import Okta
 from botocore.credentials import CachedCredentialFetcher
 from aws_okta_processor.core.print_tty import print_tty
 
+AWS_SIGN_IN_URL = "https://signin.aws.amazon.com/saml"
 
 class SAMLFetcher(CachedCredentialFetcher):
     def __init__(self, authenticate, cache=None, expiry_window_seconds=600):
@@ -108,8 +109,7 @@ class SAMLFetcher(CachedCredentialFetcher):
             accounts_filter=self._configuration.get(
                 'AWS_OKTA_ACCOUNT_ALIAS', None),
             sign_in_url=self._configuration.get(
-                'AWS_OKTA_SIGN_IN_URL', "https://signin.aws.amazon.com/saml"
-            ),
+                'AWS_OKTA_SIGN_IN_URL', AWS_SIGN_IN_URL)
         )
 
         return aws_roles, saml_assertion, application_url, okta.user_name, okta.organization

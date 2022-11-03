@@ -37,7 +37,6 @@ class TestBase(TestCase):
             "--application": None,
             "--role": None,
             "--region": None,
-            "--sign-in-url": None,
             "--key": "key",
             "--duration": "3600",
             "--factor": None,

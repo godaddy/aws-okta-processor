@@ -13,6 +13,7 @@ Options:
     -a <okta_application>, --application=<okta_application>     Okta application url.
     -r <role_name>, --role=<role_name>                          AWS role ARN.
     -R <region_name>, --region=<region_name>                    AWS region name.
+    -U <sign_in_url>, --sign-in-url=<sign_in_url>               AWS Sign In URL.
     -A <account>, --account-alias=<account>                     AWS account alias filter (uses wildcards).
     -d <duration_seconds>, --duration=<duration_seconds>        Duration of role session [default: 3600].
     -k <key>, --key=<key>                                       Key used for generating and accessing cache.
@@ -44,40 +45,42 @@ NT_EXPORT_STRING = ("$env:AWS_ACCESS_KEY_ID='{}'; "
                     "$env:AWS_SESSION_TOKEN='{}'")
 
 CONFIG_MAP = {
-            "--environment": "AWS_OKTA_ENVIRONMENT",
-            "--user": "AWS_OKTA_USER",
-            "--pass": "AWS_OKTA_PASS",
-            "--organization": "AWS_OKTA_ORGANIZATION",
-            "--application": "AWS_OKTA_APPLICATION",
-            "--role": "AWS_OKTA_ROLE",
-            "--region": "AWS_OKTA_REGION",
-            "--duration": "AWS_OKTA_DURATION",
-            "--key": "AWS_OKTA_KEY",
-            "--factor": "AWS_OKTA_FACTOR",
-            "--silent": "AWS_OKTA_SILENT",
-            "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
-            "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
-            "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS",
-            "--target-shell": "AWS_OKTA_TARGET_SHELL"
-        }
+    "--environment": "AWS_OKTA_ENVIRONMENT",
+    "--user": "AWS_OKTA_USER",
+    "--pass": "AWS_OKTA_PASS",
+    "--organization": "AWS_OKTA_ORGANIZATION",
+    "--application": "AWS_OKTA_APPLICATION",
+    "--role": "AWS_OKTA_ROLE",
+    "--region": "AWS_OKTA_REGION",
+    "--sign-in-url": "AWS_OKTA_SIGN_IN_URL",
+    "--duration": "AWS_OKTA_DURATION",
+    "--key": "AWS_OKTA_KEY",
+    "--factor": "AWS_OKTA_FACTOR",
+    "--silent": "AWS_OKTA_SILENT",
+    "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
+    "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
+    "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS",
+    "--target-shell": "AWS_OKTA_TARGET_SHELL",
+}
 
 EXTEND_CONFIG_MAP = {
-            "AWS_OKTA_ENVIRONMENT": "environment",
-            "AWS_OKTA_USER": "user",
-            "AWS_OKTA_PASS": "pass",
-            "AWS_OKTA_ORGANIZATION": "organization",
-            "AWS_OKTA_APPLICATION": "application",
-            "AWS_OKTA_ROLE": "role",
-            "AWS_OKTA_REGION": "region",
-            "AWS_OKTA_DURATION": "duration",
-            "AWS_OKTA_KEY": "key",
-            "AWS_OKTA_FACTOR": "factor",
-            "AWS_OKTA_SILENT": "silent",
-            "AWS_OKTA_NO_OKTA_CACHE": "no-okta-cache",
-            "AWS_OKTA_NO_AWS_CACHE": "no-aws-cache",
-            "AWS_OKTA_ACCOUNT_ALIAS": "account-alias",
-            "AWS_OKTA_TARGET_SHELL": "target-shell"
-        }
+    "AWS_OKTA_ENVIRONMENT": "environment",
+    "AWS_OKTA_USER": "user",
+    "AWS_OKTA_PASS": "pass",
+    "AWS_OKTA_ORGANIZATION": "organization",
+    "AWS_OKTA_APPLICATION": "application",
+    "AWS_OKTA_ROLE": "role",
+    "AWS_OKTA_REGION": "region",
+    "AWS_OKTA_SIGN_IN_URL": "sign_in_url",
+    "AWS_OKTA_DURATION": "duration",
+    "AWS_OKTA_KEY": "key",
+    "AWS_OKTA_FACTOR": "factor",
+    "AWS_OKTA_SILENT": "silent",
+    "AWS_OKTA_NO_OKTA_CACHE": "no-okta-cache",
+    "AWS_OKTA_NO_AWS_CACHE": "no-aws-cache",
+    "AWS_OKTA_ACCOUNT_ALIAS": "account-alias",
+    "AWS_OKTA_TARGET_SHELL": "target-shell",
+}
 
 
 class Authenticate(Base):

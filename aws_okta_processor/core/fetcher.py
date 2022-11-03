@@ -106,7 +106,10 @@ class SAMLFetcher(CachedCredentialFetcher):
         aws_roles = saml.get_aws_roles(
             saml_assertion=saml_assertion,
             accounts_filter=self._configuration.get(
-                'AWS_OKTA_ACCOUNT_ALIAS', None)
+                "AWS_OKTA_ACCOUNT_ALIAS", None),
+            sign_in_url=self._configuration.get(
+                "AWS_OKTA_SIGN_IN_URL", "https://signin.aws.amazon.com/saml"
+            ),
         )
 
         return aws_roles, saml_assertion, application_url, okta.user_name, okta.organization

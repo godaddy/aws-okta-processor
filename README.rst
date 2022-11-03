@@ -157,6 +157,8 @@ no_okta_cache --no-okta-cache AWS_OKTA_NO_OKTA_CACHE Do not read okta cache
 no_aws_cache  --no-aws-cache  AWS_OKTA_NO_AWS_CACHE  Do not read aws cache
 ------------- --------------- ---------------------- ----------------------------------------
 target_shell  --target-shell  AWS_OKTA_TARGET_SHELL  Target shell to format export command
+------------- --------------- ---------------------- ----------------------------------------
+sign_in_url   --sign-in-url   AWS_OKTA_SIGN_IN_URL   AWS Sign In URL
 ============= =============== ====================== ========================================
 
 ^^^^^^^^

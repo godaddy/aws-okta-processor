@@ -11,10 +11,9 @@ from collections import OrderedDict
 from aws_okta_processor.core.print_tty import print_tty
 
 
-SAML_ATTRIBUTE = '{urn:oasis:names:tc:SAML:2.0:assertion}Attribute'
-SAML_ATTRIBUTE_ROLE = 'https://aws.amazon.com/SAML/Attributes/Role'
-SAML_ATTRIBUTE_VALUE = '{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue'
-AWS_SIGN_IN_URL = "https://signin.aws.amazon.com/saml"
+SAML_ATTRIBUTE = "{urn:oasis:names:tc:SAML:2.0:assertion}Attribute"
+SAML_ATTRIBUTE_ROLE = "https://aws.amazon.com/SAML/Attributes/Role"
+SAML_ATTRIBUTE_VALUE = "{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue"
 
 
 def get_saml_assertion(saml_response=None):
@@ -25,7 +24,7 @@ def get_saml_assertion(saml_response=None):
         if input_tag.get('name') == 'SAMLResponse':
             return input_tag.get('value')
 
-    if soup.find('div', {"id": "okta-sign-in"}):
+    if soup.find("div", {"id": "okta-sign-in"}):
         # Supplied Okta session not sufficient to get SAML assertion.
         # This condition may be missed if Okta significantly changes the app-level MFA page
         print_tty("SAMLResponse tag not found due to MFA challenge.")
@@ -41,7 +40,7 @@ def get_saml_assertion(saml_response=None):
     sys.exit(1)
 
 
-def get_aws_roles(saml_assertion=None, accounts_filter=None):
+def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=None):
     aws_roles = OrderedDict()
     role_principals = {}
     decoded_saml = base64.b64decode(saml_assertion)
@@ -65,7 +64,9 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None):
 
     # Skip get_account_roles if only one role returned.
     if len(role_principals) > 1:
-        account_roles = get_account_roles(saml_assertion=saml_assertion)
+        account_roles = get_account_roles(
+            saml_assertion=saml_assertion, sign_in_url=sign_in_url
+        )
 
         for account_role in account_roles:
             account_name = account_role.account_name
@@ -92,7 +93,7 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None):
     return aws_roles
 
 
-def get_account_roles(saml_assertion=None):
+def get_account_roles(saml_assertion=None, sign_in_url=None):
     role_accounts = []
 
     data = {
@@ -100,7 +101,7 @@ def get_account_roles(saml_assertion=None):
         "RelayState": ""
     }
 
-    response = requests.post(AWS_SIGN_IN_URL, data=data)
+    response = requests.post(sign_in_url, data=data)
     soup = BeautifulSoup(response.text, "html.parser")
     accounts = soup.find('fieldset').find_all(
         "div",

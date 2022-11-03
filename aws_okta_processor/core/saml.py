@@ -102,7 +102,6 @@ def get_account_roles(saml_assertion=None, sign_in_url=None):
         "RelayState": ""
     }
 
-    
     response = requests.post(sign_in_url or AWS_SIGN_IN_URL, data=data)
     soup = BeautifulSoup(response.text, "html.parser")
     accounts = soup.find('fieldset').find_all(

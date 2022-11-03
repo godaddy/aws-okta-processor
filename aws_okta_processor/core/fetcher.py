@@ -103,6 +103,14 @@ class SAMLFetcher(CachedCredentialFetcher):
             print_tty("ERROR: SAMLResponse tag was not found!")
             sys.exit(1)
 
+        # TODO delete
+        print(self._configuration.get('AWS_OKTA_SIGN_IN_URL'))
+        print(
+            self._configuration.get(
+                'AWS_OKTA_SIGN_IN_URL', 'https://signin.aws.amazon.com/saml'
+            )
+        )
+
         aws_roles = saml.get_aws_roles(
             saml_assertion=saml_assertion,
             accounts_filter=self._configuration.get(

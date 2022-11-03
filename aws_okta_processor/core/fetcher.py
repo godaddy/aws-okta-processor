@@ -116,7 +116,7 @@ class SAMLFetcher(CachedCredentialFetcher):
             accounts_filter=self._configuration.get(
                 'AWS_OKTA_ACCOUNT_ALIAS', None),
             sign_in_url=self._configuration.get(
-                'AWS_OKTA_SIGN_IN_URL', 'https://signin.aws.amazon.com/saml'
+                'AWS_OKTA_SIGN_IN_URL', "https://signin.aws.amazon.com/saml"
             ),
         )
 

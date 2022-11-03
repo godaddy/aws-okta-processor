@@ -47,7 +47,9 @@ class TestSAMLUtils(TestCase):
         mock_requests.post.return_value = mock_response
 
         saml_assertion = saml.get_saml_assertion(saml_response=SAML_RESPONSE)
-        aws_roles = saml.get_aws_roles(saml_assertion=saml_assertion)
+        aws_roles = saml.get_aws_roles(
+            saml_assertion=saml_assertion, sign_in_url=SIGN_IN_URL
+        )
 
         self.assertIn("Account: account-one (1)", aws_roles)
         self.assertIn("arn:aws:iam::1:role/Role-One", aws_roles["Account: account-one (1)"]) # noqa

@@ -59,7 +59,7 @@ CONFIG_MAP = {
             "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
             "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
             "--output": "AWS_OKTA_OUTPUT",
-            "--output-format": "AWS_OKTA_OUTPUT_FORMAT",
+            "--output-format": "AWS_OKTA_OUTPUT_FORMAT"
         }
 
 

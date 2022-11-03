@@ -14,6 +14,7 @@ from aws_okta_processor.core.print_tty import print_tty
 SAML_ATTRIBUTE = '{urn:oasis:names:tc:SAML:2.0:assertion}Attribute'
 SAML_ATTRIBUTE_ROLE = 'https://aws.amazon.com/SAML/Attributes/Role'
 SAML_ATTRIBUTE_VALUE = '{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue'
+AWS_SIGN_IN_URL = "https://signin.aws.amazon.com/saml"
 
 
 def get_saml_assertion(saml_response=None):
@@ -33,15 +34,14 @@ def get_saml_assertion(saml_response=None):
     if soup.find('div', {"id": "password-verification-challenge"}):
         # Supplied Okta session not sufficient to get SAML assertion.
         # This condition may be missed if Okta significantly changes the app-level re-auth page
-        print_tty(
-            "SAMLResponse tag not found due to password verification challenge.")
+        print_tty("SAMLResponse tag not found due to password verification challenge.")
         return None
 
     print_tty("ERROR: SAMLResponse tag was not found!")
     sys.exit(1)
 
 
-def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=None):
+def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=AWS_SIGN_IN_URL):
     aws_roles = OrderedDict()
     role_principals = {}
     decoded_saml = base64.b64decode(saml_assertion)
@@ -94,7 +94,7 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=None):
     return aws_roles
 
 
-def get_account_roles(saml_assertion=None, sign_in_url=None):
+def get_account_roles(saml_assertion=None, sign_in_url=AWS_SIGN_IN_URL):
     role_accounts = []
 
     data = {

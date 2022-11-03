@@ -107,7 +107,7 @@ class SAMLFetcher(CachedCredentialFetcher):
         print(self._configuration.get('AWS_OKTA_SIGN_IN_URL'))
         print(
             self._configuration.get(
-                'AWS_OKTA_SIGN_IN_URL', 'https://signin.aws.amazon.com/saml'
+                'asdfsdfsadfasd', 'https://signin.aws.amazon.com/saml'
             )
         )
 

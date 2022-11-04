@@ -13,6 +13,8 @@ Options:
     -a <okta_application>, --application=<okta_application>     Okta application url.
     -r <role_name>, --role=<role_name>                          AWS role ARN.
     -R <region_name>, --region=<region_name>                    AWS region name.
+    -U <sign_in_url>, --sign-in-url=<sign_in_url>               AWS Sign In URL.
+                                                                    [default: https://signin.aws.amazon.com/saml]
     -A <account>, --account-alias=<account>                     AWS account alias filter (uses wildcards).
     -d <duration_seconds> ,--duration=<duration_seconds>        Duration of role session [default: 3600].
     -k <key>, --key=<key>                                       Key used for generating and accessing cache.

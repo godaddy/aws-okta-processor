@@ -1,0 +1,1 @@
+{"stateToken":"state_token","status":"MFA_REQUIRED","_embedded":{"factors":[{"factorType":"email","provider":"OKTA","_links":{"verify":{"href":"https://organization.okta.com/api/v1/authn/factors/id/verify"}}}]}}

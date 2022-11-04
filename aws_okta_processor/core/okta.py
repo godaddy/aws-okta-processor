@@ -1,11 +1,12 @@
 import abc
+import base64
 import os
 import sys
 import time
 import json
 import requests
 import dateutil
-import getpass
+import subprocess
 import aws_okta_processor.core.prompt as prompt
 
 from datetime import datetime
@@ -80,21 +81,28 @@ class Okta:
             self.user_name = input()
 
         if not self.okta_session_id:
-            if not self.user_name:
-                print_tty(string="UserName: ", newline=False)
-                self.user_name = input()
+            # if not self.user_name:
+            #     print_tty(string="UserName: ", newline=False)
+            #     self.user_name = input()
+            
+            getCredentialCommand = f"(Get-Credential -Message 'aws-okta-processor is requesting credentials for {self.organization}' -UserName {self.user_name}).GetNetworkCredential() | ConvertTo-Json"
+            encodedCommand = base64.b64encode(getCredentialCommand.encode("utf-16")[2:]).decode("utf-8")
+            powershellCommand = f"powershell.exe -NoProfile -NonInteractive -OutputFormat Text -EncodedCommand {encodedCommand}"
+            output = subprocess.check_output(powershellCommand)
+            wincreds = json.loads(output)
 
-            if not user_pass:
-                user_pass = getpass.getpass()
+            # if not user_pass:
+            #     user_pass = getpass.getpass()
 
-            if not self.organization:
-                print_tty(string="Organization: ", newline=False)
-                self.organization = input()
+            # if not self.organization:
+            #     print_tty(string="Organization: ", newline=False)
+            #     self.organization = input()
 
             self.okta_single_use_token = self.get_okta_single_use_token(
-                user_name=self.user_name,
-                user_pass=user_pass
+                user_name=wincreds['UserName'],
+                user_pass=wincreds['Password']
             )
+            wincreds = None
 
             # This call sets self.okta_session_id
             self.create_and_store_okta_session()

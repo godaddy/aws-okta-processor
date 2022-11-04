@@ -8,6 +8,54 @@ import os
 import sys
 
 
+def import_msvcrt():
+    import msvcrt
+    return msvcrt
+
+
+def input_tty():
+    try:
+        msvcrt = import_msvcrt()
+    except ImportError:
+        return unix_input_tty()
+    else:
+        return win_input_tty(msvcrt)
+
+
+def unix_input_tty():
+    with contextlib2.ExitStack() as stack:
+        try:
+            fd = os.open('/dev/tty', os.O_RDWR | os.O_NOCTTY)
+            tty = io.FileIO(fd, 'r+')
+            stack.enter_context(tty)
+            input = io.TextIOWrapper(tty)
+            stack.enter_context(input)
+        except OSError:
+            stack.close()
+            input = sys.stdin
+
+        line = input.readline()
+        if line[-1] == '\n':
+            line = line[:-1]
+        return line
+
+
+def win_input_tty(msvcrt):
+    pw = ""
+    while 1:
+        c = msvcrt.getwch()
+        if c == '\r' or c == '\n':
+            break
+        if c == '\003':
+            raise KeyboardInterrupt
+        if c == '\b':
+            pw = pw[:-1]
+        else:
+            pw = pw + c
+
+    return pw
+
+
 def unix_print_tty(string='', indents=0, newline=True):
     with contextlib2.ExitStack() as stack:
         string = indent(indents) + string
@@ -63,11 +111,6 @@ def indent(indents=None):
         indent += '  '
 
     return indent
-
-
-def import_msvcrt():
-    import msvcrt
-    return msvcrt
 
 
 def print_tty(string='', indents=0, newline=True, silent=False):

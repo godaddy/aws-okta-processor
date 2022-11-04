@@ -14,7 +14,7 @@ from datetime import tzinfo
 from requests import ConnectTimeout
 from requests import ConnectionError
 from collections import OrderedDict
-from aws_okta_processor.core.print_tty import print_tty
+from aws_okta_processor.core.tty import print_tty, input_tty
 from six import add_metaclass
 
 
@@ -73,23 +73,23 @@ class Okta:
 
         if not self.organization:
             print_tty(string="Organization: ", newline=False)
-            self.organization = input()
+            self.organization = input_tty()
 
         if not self.user_name:
             print_tty(string="UserName: ", newline=False)
-            self.user_name = input()
+            self.user_name = input_tty()
 
         if not self.okta_session_id:
             if not self.user_name:
                 print_tty(string="UserName: ", newline=False)
-                self.user_name = input()
+                self.user_name = input_tty()
 
             if not user_pass:
                 user_pass = getpass.getpass()
 
             if not self.organization:
                 print_tty(string="Organization: ", newline=False)
-                self.organization = input()
+                self.organization = input_tty()
 
             self.okta_single_use_token = self.get_okta_single_use_token(
                 user_name=self.user_name,
@@ -450,7 +450,7 @@ class FactorTOTP(FactorBase):
     @staticmethod
     def payload():
         print_tty("Token: ", newline=False)
-        return {"passCode": input()}
+        return {"passCode": input_tty()}
 
     def retry(self, response):
         return False
@@ -465,7 +465,7 @@ class FactorHardwareToken(FactorBase):
     @staticmethod
     def payload():
         print_tty("Hardware Token: ", newline=False)
-        return {"passCode": input()}
+        return {"passCode": input_tty()}
 
     def retry(self, response):
         return False

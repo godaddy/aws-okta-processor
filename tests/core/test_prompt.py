@@ -65,7 +65,7 @@ class TestPrompt(TestCase):
         )
 
     @patch('aws_okta_processor.core.prompt.print_tty')
-    @patch('aws_okta_processor.core.prompt.input')
+    @patch('aws_okta_processor.core.prompt.input_tty')
     def test_get_selection(self, mock_input, mock_print_tty):
         mock_input.return_value = 1
         options = ["one", "two"]
@@ -77,7 +77,7 @@ class TestPrompt(TestCase):
         )
 
     @patch('aws_okta_processor.core.prompt.print_tty')
-    @patch('aws_okta_processor.core.prompt.input')
+    @patch('aws_okta_processor.core.prompt.input_tty')
     def test_get_selection_bad_input(self, mock_input, mock_print_tty):
         mock_input.side_effect = ["bad_input", 2]
         options = ["one", "two"]
@@ -89,7 +89,7 @@ class TestPrompt(TestCase):
         )
 
     @patch('aws_okta_processor.core.prompt.print_tty')
-    @patch('aws_okta_processor.core.prompt.input')
+    @patch('aws_okta_processor.core.prompt.input_tty')
     def test_get_selection_bad_int(self, mock_input, mock_print_tty):
         mock_input.side_effect = [0, 2]
         options = ["one", "two"]
@@ -101,7 +101,7 @@ class TestPrompt(TestCase):
         )
 
     @patch('aws_okta_processor.core.prompt.print_tty')
-    @patch('aws_okta_processor.core.prompt.input')
+    @patch('aws_okta_processor.core.prompt.input_tty')
     def test_get_selection_no_input(self, mock_input, mock_print_tty):
         mock_input.side_effect = [SyntaxError, 2]
         options = ["one", "two"]
@@ -114,7 +114,7 @@ class TestPrompt(TestCase):
 
     @patch('aws_okta_processor.core.prompt.print_tty')
     @patch('aws_okta_processor.core.prompt.sys')
-    @patch('aws_okta_processor.core.prompt.input')
+    @patch('aws_okta_processor.core.prompt.input_tty')
     def test_get_selection_interrupt(self, mock_input, mock_sys, mock_print_tty): # noqa
         mock_input.side_effect = [KeyboardInterrupt, 2]
         options = ["one"]

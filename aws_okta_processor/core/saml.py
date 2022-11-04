@@ -8,7 +8,7 @@ import defusedxml.ElementTree as ElementTree
 
 from bs4 import BeautifulSoup
 from collections import OrderedDict
-from aws_okta_processor.core.print_tty import print_tty
+from aws_okta_processor.core.tty import print_tty
 
 
 SAML_ATTRIBUTE = '{urn:oasis:names:tc:SAML:2.0:assertion}Attribute'

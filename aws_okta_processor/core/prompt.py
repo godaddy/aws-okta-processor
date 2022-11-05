@@ -2,7 +2,7 @@ import sys
 import six
 
 from collections.abc import Mapping
-from aws_okta_processor.core.print_tty import print_tty
+from aws_okta_processor.core.tty import print_tty, input_tty
 
 
 BAD_INPUT_MESSAGE = "WARNING: Please supply a value from 1 to {}!"
@@ -66,7 +66,7 @@ def get_selection(options=None):
     print_tty("Selection: ", newline=False)
 
     try:
-        selection = input()
+        selection = input_tty()
     except KeyboardInterrupt:
         print_tty()
         sys.exit(1)

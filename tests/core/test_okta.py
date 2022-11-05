@@ -252,7 +252,7 @@ class TestOkta(TestBase):
         self.assertEqual(okta.organization, "organization.okta.com")
         self.assertEqual(okta.okta_session_id, "session_token")
 
-    @patch('aws_okta_processor.core.okta.input')
+    @patch('aws_okta_processor.core.okta.input_tty')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.os.makedirs')
@@ -298,7 +298,7 @@ class TestOkta(TestBase):
 
     @patch('aws_okta_processor.core.okta.Okta.get_okta_single_use_token')
     @patch('aws_okta_processor.core.okta.Okta.create_and_store_okta_session')
-    @patch('aws_okta_processor.core.okta.input')
+    @patch('aws_okta_processor.core.okta.input_tty')
     def test_read_aop_from_okta_session_should_read_aop_options(
         self,
         mock_input,
@@ -326,7 +326,7 @@ class TestOkta(TestBase):
     @patch('aws_okta_processor.core.okta.Okta.get_cache_file_path', return_value='/tmp/test.json')
     @patch('aws_okta_processor.core.okta.Okta.get_okta_single_use_token')
     @patch('aws_okta_processor.core.okta.Okta.create_and_store_okta_session')
-    @patch('aws_okta_processor.core.okta.input')
+    @patch('aws_okta_processor.core.okta.input_tty')
     @patch('builtins.open', new_callable=mock_open)
     def test_set_okta_session_should_write_session_data(
         self,
@@ -368,7 +368,7 @@ class TestOkta(TestBase):
             call('}')
         ])
 
-    @patch('aws_okta_processor.core.okta.input')
+    @patch('aws_okta_processor.core.okta.input_tty')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.os.makedirs')
@@ -412,7 +412,7 @@ class TestOkta(TestBase):
         self.assertEqual(okta.organization, "organization.okta.com")
         self.assertEqual(okta.okta_session_id, "session_token")
 
-    @patch('aws_okta_processor.core.prompt.input')
+    @patch('aws_okta_processor.core.prompt.input_tty')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.os.makedirs')

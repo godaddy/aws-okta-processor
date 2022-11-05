@@ -49,7 +49,7 @@ class TestFetcher(TestBase):
     @patch("boto3.client")
     @patch('aws_okta_processor.core.fetcher.print_tty')
     @patch('aws_okta_processor.core.fetcher.prompt.print_tty')
-    @patch('aws_okta_processor.core.fetcher.prompt.input', return_value='1')
+    @patch('aws_okta_processor.core.fetcher.prompt.input_tty', return_value='1')
     @patch('aws_okta_processor.core.fetcher.Okta')
     def test_fetcher_should_filter_accounts(
             self,
@@ -104,7 +104,7 @@ class TestFetcher(TestBase):
     @patch("boto3.client")
     @patch('aws_okta_processor.core.fetcher.print_tty')
     @patch('aws_okta_processor.core.fetcher.prompt.print_tty')
-    @patch('aws_okta_processor.core.fetcher.prompt.input', return_value='1')
+    @patch('aws_okta_processor.core.fetcher.prompt.input_tty', return_value='1')
     @patch('aws_okta_processor.core.fetcher.Okta')
     def test_fetcher_should_prompt_all_accounts(
             self,

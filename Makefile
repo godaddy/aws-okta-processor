@@ -14,8 +14,10 @@ flake8:
 coverage:
 	PYTHONPATH=$(PYTHONPATH) pipenv run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov-report html --cov=aws_okta_processor tests
 
-publish:
+package:
 	python setup.py sdist bdist_wheel
+
+publish: package
 	twine check dist/*
 	twine upload dist/*
 	rm -fr build dist .egg requests.egg-info

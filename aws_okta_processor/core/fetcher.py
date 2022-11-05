@@ -8,7 +8,7 @@ import aws_okta_processor.core.prompt as prompt
 from hashlib import sha1
 from aws_okta_processor.core.okta import Okta
 from botocore.credentials import CachedCredentialFetcher
-from aws_okta_processor.core.print_tty import print_tty
+from aws_okta_processor.core.tty import print_tty
 
 
 class SAMLFetcher(CachedCredentialFetcher):

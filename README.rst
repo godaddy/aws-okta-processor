@@ -79,7 +79,7 @@ aws-okta-processor directory structure on your workstation, you can just run::
 Getting Started
 ---------------
 
-This package is best used in `AWS Named Profiles`_ 
+This package is best used in `AWS Named Profiles`_
 with tools and libraries that recognize `credential_process`_.
 
 To setup aws-okta-processor in a profile create an INI formatted file like this::
@@ -122,7 +122,7 @@ For Windows run::
 Other Configurable Variables
 ----------------------------
 
-Additional variables can also be passed to aws-okta-processors ``authenticate`` command 
+Additional variables can also be passed to aws-okta-processors ``authenticate`` command
 as options or environment variables as outlined in the table below.
 
 ============= =============== ====================== ========================================
@@ -177,7 +177,7 @@ Or pass additional options to the command::
 Caching
 -------
 
-This package leverages caching of both the Okta session and AWS sessions. It's helpful to 
+This package leverages caching of both the Okta session and AWS sessions. It's helpful to
 understand how this caching works to avoid confusion when attempting to switch between AWS roles.
 
 ^^^^
@@ -185,8 +185,8 @@ Okta
 ^^^^
 
 When aws-okta-processor attempts authentication it will check ``~/.aws-okta-processor/cache/``
-for a file named ``<user>-<organization>-session.json`` based on the ``user`` and ``organization`` 
-option values passed. If the file is not found or the session contents are stale then 
+for a file named ``<user>-<organization>-session.json`` based on the ``user`` and ``organization``
+option values passed. If the file is not found or the session contents are stale then
 aws-okta-processor will create a new session and write it to ``~/.aws-okta-processor/cache/``.
 If the file exists and the session is not stale then the existing session gets refreshed.
 
@@ -194,12 +194,12 @@ If the file exists and the session is not stale then the existing session gets r
 AWS
 ^^^
 
-After aws-okta-processor has a session with Okta and an AWS role has been selected it will fetch 
-the role's keys and session token. This session information from the AWS role gets cached as a 
+After aws-okta-processor has a session with Okta and an AWS role has been selected it will fetch
+the role's keys and session token. This session information from the AWS role gets cached as a
 json file under ``~/.aws/boto/cache``. The file name is a SHA1 hash based on a combination the
 ``user``, ``organization`` and ``key`` option values passed to the command.
 
-If you want to store a seperate AWS role session cache for each role assumed using the same 
+If you want to store a seperate AWS role session cache for each role assumed using the same
 ``user`` and ``organization`` option values then pass a unique value to ``key``.
 Named profiles for different roles can then be defined in ``~/.aws/credentials`` with content like this::
 
@@ -247,7 +247,7 @@ To get roles, use the ``get-roles`` command. This command supports outputing the
 
    # write all the roles as AWS profiles
    aws-okta-processor get-roles -u jdoe -o mycompany.okta.com --output=profiles > ~/.aws/credentials
-   
+
    # get account and role
    aws-okta-processor get-roles -u jdoe -o mycompany.okta.com --output=text --output-format="{account},{role}"
 
@@ -279,7 +279,6 @@ Output Format Tokens
 Getting Help
 ------------
 
-* Ask a question on `slack <https://godaddy-oss-slack.herokuapp.com>`__
 * If it turns out that you may have found a bug, please `open an issue <https://github.com/godaddy/aws-okta-processor/issues/new>`__
 
 ---------------

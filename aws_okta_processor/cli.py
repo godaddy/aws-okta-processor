@@ -11,8 +11,8 @@ Commands:
   get-roles     used to get AWS roles
 
 Help:
-  For help using this tool, please reach out to our Slack channel:
-  https://godaddy-oss-slack.herokuapp.com/
+  For help using this tool, visit here for docs and issues:
+  https://github.com/godaddy/aws-okta-processor
 
 See 'aws-okta-processor <command> -h' for more information on a specific command.
 """  # noqa

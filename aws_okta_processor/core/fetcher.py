@@ -133,7 +133,7 @@ class SAMLFetcher(CachedCredentialFetcher):
             region_name=self._configuration["AWS_OKTA_REGION"]
         )
 
-        aws_roles, saml_assertion, _application_url, _user, _organization = self._get_app_roles()
+        aws_roles, saml_assertion, _application_url, user, _organization = self._get_app_roles()
 
         aws_role = prompt.get_item(
             items=aws_roles,
@@ -153,9 +153,27 @@ class SAMLFetcher(CachedCredentialFetcher):
             DurationSeconds=int(self._configuration["AWS_OKTA_DURATION"])
         )
 
+        if self._configuration.get('AWS_OKTA_SECONDARY_ROLE', None) is not None:
+            role_session_name = user
+            secondary_role_arn = self._configuration['AWS_OKTA_SECONDARY_ROLE']
+
+            print_tty(f"Assuming secondary role {secondary_role_arn}")
+            credentials = response['Credentials']
+            client = boto3.client(
+                'sts',
+                aws_access_key_id=credentials['AccessKeyId'],
+                aws_secret_access_key=credentials["SecretAccessKey"],
+                aws_session_token=credentials["SessionToken"],
+                region_name=self._configuration["AWS_OKTA_REGION"],
+            )
+            response = client.assume_role(
+                RoleArn=secondary_role_arn,
+                DurationSeconds=int(self._configuration["AWS_OKTA_DURATION"]),
+                RoleSessionName=role_session_name,
+            )
+
         expiration = (response['Credentials']['Expiration']
                       .isoformat().replace("+00:00", "Z"))
-
         response['Credentials']['Expiration'] = expiration
 
         return response

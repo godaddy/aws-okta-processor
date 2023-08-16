@@ -12,6 +12,7 @@ Options:
     -o <okta_organization>, --organization=<okta_organization>  Okta organization domain.
     -a <okta_application>, --application=<okta_application>     Okta application url.
     -r <role_name>, --role=<role_name>                          AWS role ARN.
+    --secondary-role <secondary_role_arn>                       Secondary AWS role ARN.
     -R <region_name>, --region=<region_name>                    AWS region name.
     -U <sign_in_url>, --sign-in-url=<sign_in_url>               AWS Sign In URL.
                                                                     [default: https://signin.aws.amazon.com/saml]
@@ -52,6 +53,7 @@ CONFIG_MAP = {
             "--organization": "AWS_OKTA_ORGANIZATION",
             "--application": "AWS_OKTA_APPLICATION",
             "--role": "AWS_OKTA_ROLE",
+            "--secondary-role": "AWS_OKTA_SECONDARY_ROLE",
             "--region": "AWS_OKTA_REGION",
             "--sign-in-url": "AWS_OKTA_SIGN_IN_URL",
             "--duration": "AWS_OKTA_DURATION",
@@ -71,6 +73,7 @@ EXTEND_CONFIG_MAP = {
             "AWS_OKTA_ORGANIZATION": "organization",
             "AWS_OKTA_APPLICATION": "application",
             "AWS_OKTA_ROLE": "role",
+            "AWS_OKTA_SECONDARY_ROLE": "secondary-role",
             "AWS_OKTA_REGION": "region",
             "AWS_OKTA_SIGN_IN_URL": "sign_in_url",
             "AWS_OKTA_DURATION": "duration",

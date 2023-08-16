@@ -126,40 +126,42 @@ Additional variables can also be passed to aws-okta-processors ``authenticate`` 
 as options or environment variables as outlined in the table below.
 
 ============= =============== ====================== ========================================
-Variable      Option          Environment Variable   Description
-============= =============== ====================== ========================================
-user          --user          AWS_OKTA_USER          Okta user name
-------------- --------------- ---------------------- ----------------------------------------
-password      --pass          AWS_OKTA_PASS          Okta user password
-------------- --------------- ---------------------- ----------------------------------------
-organization  --organization  AWS_OKTA_ORGANIZATION  Okta FQDN for Organization
-------------- --------------- ---------------------- ----------------------------------------
-application   --application   AWS_OKTA_APPLICATION   Okta AWS application URL
-------------- --------------- ---------------------- ----------------------------------------
-role          --role          AWS_OKTA_ROLE          AWS Role ARN
-------------- --------------- ---------------------- ----------------------------------------
-account_alias --account-alias AWS_OKTA_ACCOUNT_ALIAS AWS Account Filter
-------------- --------------- ---------------------- ----------------------------------------
-region        --region        AWS_OKTA_REGION        AWS Region
-------------- --------------- ---------------------- ----------------------------------------
-duration      --duration      AWS_OKTA_DURATION      Duration in seconds for AWS session
-------------- --------------- ---------------------- ----------------------------------------
-key           --key           AWS_OKTA_KEY           Key used in generating AWS session cache
-------------- --------------- ---------------------- ----------------------------------------
-environment   --environment                          Output command to set ENV variables
-------------- --------------- ---------------------- ----------------------------------------
-silent        --silent                               Silence Info output
-------------- --------------- ---------------------- ----------------------------------------
-factor        --factor        AWS_OKTA_FACTOR        MFA type. `push:okta`, `token:software:totp:okta`, `token:software:totp:google` and `token:hardware:yubico` are supported.
-------------- --------------- ---------------------- ----------------------------------------
-no_okta_cache --no-okta-cache AWS_OKTA_NO_OKTA_CACHE Do not read okta cache
-------------- --------------- ---------------------- ----------------------------------------
-no_aws_cache  --no-aws-cache  AWS_OKTA_NO_AWS_CACHE  Do not read aws cache
-------------- --------------- ---------------------- ----------------------------------------
-target_shell  --target-shell  AWS_OKTA_TARGET_SHELL  Target shell to format export command
-------------- --------------- ---------------------- ----------------------------------------
-sign_in_url   --sign-in-url   AWS_OKTA_SIGN_IN_URL   AWS Sign In URL
-============= =============== ====================== ========================================
+Variable       Option           Environment Variable    Description
+============== ================ ======================= ========================================
+user           --user           AWS_OKTA_USER           Okta user name
+-------------- ---------------- ----------------------- ----------------------------------------
+password       --pass           AWS_OKTA_PASS           Okta user password
+-------------- ---------------- ----------------------- ----------------------------------------
+organization   --organization   AWS_OKTA_ORGANIZATION   Okta FQDN for Organization
+-------------- ---------------- ----------------------- ----------------------------------------
+application    --application    AWS_OKTA_APPLICATION    Okta AWS application URL
+-------------- ---------------- ----------------------- ----------------------------------------
+role           --role           AWS_OKTA_ROLE           AWS Role ARN
+-------------- ---------------- ----------------------- ----------------------------------------
+secondary_role --secondary-role AWS_OKTA_SECONDARY_ROLE Secondary AWS Role ARN
+-------------- ---------------- ----------------------- ----------------------------------------
+account_alias  --account-alias  AWS_OKTA_ACCOUNT_ALIAS  AWS Account Filter
+-------------- ---------------- ----------------------- ----------------------------------------
+region         --region         AWS_OKTA_REGION         AWS Region
+-------------- ---------------- ----------------------- ----------------------------------------
+duration       --duration       AWS_OKTA_DURATION       Duration in seconds for AWS session
+-------------- ---------------- ----------------------- ----------------------------------------
+key            --key            AWS_OKTA_KEY            Key used in generating AWS session cache
+-------------- ---------------- ----------------------- ----------------------------------------
+environment    --environment                            Output command to set ENV variables
+-------------- ---------------- ----------------------- ----------------------------------------
+silent         --silent                                 Silence Info output
+-------------- ---------------- ----------------------- ----------------------------------------
+factor         --factor         AWS_OKTA_FACTOR         MFA type. `push:okta`, `token:software:totp:okta`, `token:software:totp:google` and `token:hardware:yubico` are supported.
+-------------- ---------------- ----------------------- ----------------------------------------
+no_okta_cache  --no-okta-cache  AWS_OKTA_NO_OKTA_CACHE  Do not read okta cache
+-------------- ---------------- ----------------------- ----------------------------------------
+no_aws_cache   --no-aws-cache   AWS_OKTA_NO_AWS_CACHE   Do not read aws cache
+-------------- ---------------- ----------------------- ----------------------------------------
+target_shell   --target-shell   AWS_OKTA_TARGET_SHELL   Target shell to format export command
+-------------- ---------------- ----------------------- ----------------------------------------
+sign_in_url    --sign-in-url    AWS_OKTA_SIGN_IN_URL    AWS Sign In URL
+============== ================ ======================= ========================================
 
 ^^^^^^^^
 Examples
@@ -213,6 +215,16 @@ To clear all AWS session caches run::
 
     $ rm ~/.aws/boto/cache/*
 
+-------------------------
+Assuming a Secondary Role
+-------------------------
+
+If you can only assume a role from another role, you can assume both roles using ``--role`` and ``--secondary-role``. Use
+``--role`` to specify the first role ARN, then ``--secondary-role`` to specify the role ARN assumed from ``--role``.
+
+Example::
+
+    aws-okta-processor authenticate --user jdoe ... --role arn:aws:iam::111111111:role/OpsUser --secondary-role arn:aws:iam::111111111:role/SecretsAdmin
 
 -----------------------------
 Project or User Configuration

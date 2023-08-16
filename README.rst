@@ -125,7 +125,7 @@ Other Configurable Variables
 Additional variables can also be passed to aws-okta-processors ``authenticate`` command
 as options or environment variables as outlined in the table below.
 
-============= =============== ====================== ========================================
+============== ================ ======================= ========================================
 Variable       Option           Environment Variable    Description
 ============== ================ ======================= ========================================
 user           --user           AWS_OKTA_USER           Okta user name

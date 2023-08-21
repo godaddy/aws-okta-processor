@@ -1,3 +1,4 @@
+import re
 import sys
 from fnmatch import fnmatch
 
@@ -95,8 +96,6 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=None):
 
 
 def get_account_roles(saml_assertion=None, sign_in_url=None):
-    role_accounts = []
-
     data = {
         "SAMLResponse": saml_assertion,
         "RelayState": ""
@@ -104,6 +103,17 @@ def get_account_roles(saml_assertion=None, sign_in_url=None):
 
     response = requests.post(sign_in_url or AWS_SIGN_IN_URL, data=data)
     soup = BeautifulSoup(response.text, "html.parser")
+
+    field_set = soup.find('fieldset')
+
+    if field_set:
+        return get_account_roles_v1(soup=soup)
+    else:
+        return get_account_roles_v2(soup=soup)
+
+
+def get_account_roles_v1(soup: BeautifulSoup):
+    role_accounts = []
     accounts = soup.find('fieldset').find_all(
         "div",
         attrs={"class": "saml-account"},
@@ -128,6 +138,39 @@ def get_account_roles(saml_assertion=None, sign_in_url=None):
             role_description = role.label.string
             role_accounts.append(AWSRole(
                 account_name=account_name,
+                role_description=role_description,
+                role_arn=role_arn
+            ))
+
+    return role_accounts
+
+
+def get_account_roles_v2(soup: BeautifulSoup):
+    role_accounts = []
+
+    accounts = (
+        soup.find(name="ul", attrs={"class": re.compile(r'saml-form_custom_list__.*')})
+        .find_all(name="li", attrs={"class": re.compile(r'saml-form_custom_list_item__.*')}, recursive=False)
+    )
+
+    for account in accounts:
+        account_name = account.find(
+            name="div",
+            attrs={"class": re.compile(r'saml-form_account_name_div__.*')}
+        ).string
+
+        roles = account.find(
+            name="div",
+            attrs={"class": re.compile(r'saml-form_account_role_div__.*')}).find_all(
+            name="div",
+            attrs={"class": re.compile(r'saml-form_role_div__.*')}
+        )
+
+        for role in roles:
+            role_arn = role.a['id']
+            role_description = role.a.string
+            role_accounts.append(AWSRole(
+                account_name=f"Account: {account_name}",
                 role_description=role_description,
                 role_arn=role_arn
             ))

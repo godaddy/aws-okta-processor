@@ -1,0 +1,209 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="next-head-count" content="2">
+    <meta name="anchor">
+    <meta name="csrf_token" content="{{ csrf_token }}">
+    <meta name="session_id" content="{{ session_id }}">
+    <meta name="panorama" content="IAD">
+    <link rel="preload" href="/v2/assets/_next/static/css/f3479e34554b1a9d.css" as="style">
+    <link rel="stylesheet" href="/v2/assets/_next/static/css/f3479e34554b1a9d.css" data-n-g="">
+    <link rel="preload" href="/v2/assets/_next/static/css/f8b8f036cdf0bb50.css" as="style">
+    <link rel="stylesheet" href="/v2/assets/_next/static/css/f8b8f036cdf0bb50.css" data-n-p="">
+    <link rel="preload" href="/v2/assets/_next/static/css/375a46e5ef662d91.css" as="style">
+    <link rel="stylesheet" href="/v2/assets/_next/static/css/375a46e5ef662d91.css" data-n-p="">
+    <noscript data-n-css=""></noscript>
+    <script defer="" nomodule="" src="/v2/assets/_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script>
+    <script src="/v2/assets/_next/static/chunks/webpack-4545d8c89f9dd42d.js" defer=""></script>
+    <script src="/v2/assets/_next/static/chunks/framework-7751730b10fa0f74.js" defer=""></script>
+    <script src="/v2/assets/_next/static/chunks/main-c5a9d6ddd40eaa4a.js" defer=""></script>
+    <script src="/v2/assets/_next/static/chunks/pages/_app-237401455a8f5e40.js" defer=""></script>
+    <script src="/v2/assets/_next/static/chunks/345-770df1a8a0579da3.js" defer=""></script>
+    <script src="/v2/assets/_next/static/chunks/876-64fdd015247a9e2d.js" defer=""></script>
+    <script src="/v2/assets/_next/static/chunks/pages/saml-4fb319e37f976013.js" defer=""></script>
+    <script src="/v2/assets/_next/static/TRvQLWJL0kLa-Pcsj3RRS/_buildManifest.js" defer=""></script>
+    <script src="/v2/assets/_next/static/TRvQLWJL0kLa-Pcsj3RRS/_ssgManifest.js" defer=""></script>
+    <link rel="stylesheet" type="text/css" href="/v2/assets/_next/static/css/4e9764025b340522.css">
+    <title>Amazon Web Services Sign-In</title></head>
+<body>
+<div id="root">
+    <div id="__next">
+        <div data-testid="console-layout">
+            <main class="console-layout_layout__grid__dcaJ2">
+                <div class="console-layout_layout__header__EXMWp">
+                    <div class="console-layout_spacer__hUnSa">
+                        <svg aria-labelledby="uniqueTitleID" class="aws-logo-classic_logo__5PLEh"
+                             xmlns="http://www.w3.org/2000/svg" version="2.0" focusable="false" aria-hidden="true"
+                             data-testid="awsc-logo" viewBox="0 0 29 17"><title id="uniqueTitleID">AWS Logo</title>
+                            <path class="aws-logo-classic_logo-top__qUILK"
+                                  d="M8.38 6.17a2.6 2.6 0 00.11.83c.08.232.18.456.3.67a.4.4 0 01.07.21.36.36 0 01-.18.28l-.59.39a.43.43 0 01-.24.08.38.38 0 01-.28-.13 2.38 2.38 0 01-.34-.43c-.09-.16-.18-.34-.28-.55a3.44 3.44 0 01-2.74 1.29 2.54 2.54 0 01-1.86-.67 2.36 2.36 0 01-.68-1.79 2.43 2.43 0 01.84-1.92 3.43 3.43 0 012.29-.72 6.75 6.75 0 011 .07c.35.05.7.12 1.07.2V3.3a2.06 2.06 0 00-.44-1.49 2.12 2.12 0 00-1.52-.43 4.4 4.4 0 00-1 .12 6.85 6.85 0 00-1 .32l-.33.12h-.14c-.14 0-.2-.1-.2-.29v-.46A.62.62 0 012.3.87a.78.78 0 01.27-.2A6 6 0 013.74.25 5.7 5.7 0 015.19.07a3.37 3.37 0 012.44.76 3 3 0 01.77 2.29l-.02 3.05zM4.6 7.59a3 3 0 001-.17 2 2 0 00.88-.6 1.36 1.36 0 00.32-.59 3.18 3.18 0 00.09-.81V5A7.52 7.52 0 006 4.87h-.88a2.13 2.13 0 00-1.38.37 1.3 1.3 0 00-.46 1.08 1.3 1.3 0 00.34 1c.278.216.63.313.98.27zm7.49 1a.56.56 0 01-.36-.09.73.73 0 01-.2-.37L9.35.93a1.39 1.39 0 01-.08-.38c0-.15.07-.23.22-.23h.92a.56.56 0 01.36.09.74.74 0 01.19.37L12.53 7 14 .79a.61.61 0 01.18-.37.59.59 0 01.37-.09h.75a.62.62 0 01.38.09.74.74 0 01.18.37L17.31 7 18.92.76a.74.74 0 01.19-.37.56.56 0 01.36-.09h.87a.21.21 0 01.23.23 1 1 0 010 .15s0 .13-.06.23l-2.26 7.2a.74.74 0 01-.19.37.6.6 0 01-.36.09h-.8a.53.53 0 01-.37-.1.64.64 0 01-.18-.37l-1.45-6-1.44 6a.64.64 0 01-.18.37.55.55 0 01-.37.1l-.82.02zm12 .24a6.29 6.29 0 01-1.44-.16 4.21 4.21 0 01-1.07-.37.69.69 0 01-.29-.26.66.66 0 01-.06-.27V7.3c0-.19.07-.29.21-.29a.57.57 0 01.18 0l.23.1c.32.143.656.25 1 .32.365.08.737.12 1.11.12a2.47 2.47 0 001.36-.31 1 1 0 00.48-.88.88.88 0 00-.25-.65 2.29 2.29 0 00-.94-.49l-1.35-.43a2.83 2.83 0 01-1.49-.94 2.24 2.24 0 01-.47-1.36 2 2 0 01.25-1c.167-.3.395-.563.67-.77a3 3 0 011-.48A4.1 4.1 0 0124.4.08a4.4 4.4 0 01.62 0l.61.1.53.15.39.16c.105.062.2.14.28.23a.57.57 0 01.08.31v.44c0 .2-.07.3-.21.3a.92.92 0 01-.36-.12 4.35 4.35 0 00-1.8-.36 2.51 2.51 0 00-1.24.26.92.92 0 00-.44.84c0 .249.1.488.28.66.295.236.635.41 1 .51l1.32.42a2.88 2.88 0 011.44.9 2.1 2.1 0 01.43 1.31 2.38 2.38 0 01-.24 1.08 2.34 2.34 0 01-.68.82 3 3 0 01-1 .53 4.59 4.59 0 01-1.35.22l.03-.01z"></path>
+                            <path class="aws-logo-classic_logo-bottom__GC1g0"
+                                  d="M25.82 13.43a20.07 20.07 0 01-11.35 3.47A20.54 20.54 0 01.61 11.62c-.29-.26 0-.62.32-.42a27.81 27.81 0 0013.86 3.68 27.54 27.54 0 0010.58-2.16c.52-.22.96.34.45.71z"></path>
+                            <path class="aws-logo-classic_logo-bottom__GC1g0"
+                                  d="M27.1 12c-.4-.51-2.6-.24-3.59-.12-.3 0-.34-.23-.07-.42 1.75-1.23 4.63-.88 5-.46.37.42-.09 3.3-1.74 4.68-.25.21-.49.09-.38-.18.34-.95 1.17-3.02.78-3.5z"></path>
+                        </svg>
+                    </div>
+                    <span class="console-layout_language__menu__4mH_q"><div data-language-menu="true"
+                                                                            class="awsui_button-dropdown_sne0l_14t3j_93"><div
+                            class="awsui_root_qwoo0_1gdar_143"><div class=""><button aria-haspopup="true"
+                                                                                     aria-expanded="false"
+                                                                                     class="awsui_button_vjswe_5vzgt_101 awsui_variant-normal_vjswe_5vzgt_124"
+                                                                                     type="button"
+                                                                                     data-awsui-focus-visible="true"><span
+                            class="awsui_content_vjswe_5vzgt_97">English</span><span
+                            class="awsui_icon_vjswe_5vzgt_903 awsui_icon-right_vjswe_5vzgt_908 awsui_rotate-down_sne0l_14t3j_129 awsui_icon_h11ix_31bp4_98 awsui_size-normal-mapped-height_h11ix_31bp4_151 awsui_size-normal_h11ix_31bp4_147 awsui_variant-normal_h11ix_31bp4_219"><svg
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false" aria-hidden="true"><path
+                            class="filled stroke-linejoin-round"
+                            d="M4 5h8l-4 6-4-6z"></path></svg></span></button></div><div tabindex="-1"></div><div><div
+                            tabindex="-1"></div><div
+                            class="awsui_dropdown_qwoo0_1gdar_93 awsui_with-limited-width_qwoo0_1gdar_215"
+                            data-open="false" data-animating="false" aria-hidden="true"><div
+                            class="awsui_dropdown-content-wrapper_qwoo0_1gdar_93"><div
+                            class="awsui_ie11-wrapper_qwoo0_1gdar_257"><div
+                            class="awsui_dropdown-content_qwoo0_1gdar_93"><ul
+                            class="awsui_options-list_19gcf_11qov_93 awsui_decrease-top-margin_19gcf_11qov_113"
+                            style="position: static;" role="menu" tabindex="-1"></ul></div></div></div></div><div
+                            tabindex="-1"></div></div></div></div></span></div>
+                <div class="console-layout_layout__content__NJJ2U">
+                    <div class="saml">
+                        <div class="saml-form_saml_form_div__B8x9Z" id="saml_form">
+                            <div data-remove-padding="true"
+                                 class="awsui_root_14iqq_bcjyw_97 awsui_variant-default_14iqq_bcjyw_114">
+                                <div class="awsui_header_14iqq_bcjyw_137 awsui_with-paddings_14iqq_bcjyw_163">
+                                    <div data-set-display="true"
+                                         class="awsui_root_2qdw9_1edi2_93 awsui_root-variant-h2_2qdw9_1edi2_114 awsui_root-no-actions_2qdw9_1edi2_108">
+                                        <div class="awsui_main_2qdw9_1edi2_130 awsui_main-variant-h2_2qdw9_1edi2_147">
+                                            <div class="awsui_title_2qdw9_1edi2_183 awsui_title-variant-h2_2qdw9_1edi2_192">
+                                                <h2 class="awsui_heading_2qdw9_1edi2_237 awsui_heading-variant-h2_2qdw9_1edi2_251">
+                                                    <span class="awsui_heading-text_2qdw9_1edi2_262 awsui_heading-text-variant-h2_2qdw9_1edi2_273"><div
+                                                            class="saml-form_error_div__70mVx"></div><div
+                                                            class="saml-form_role_div__BeMu2"><div
+                                                            class="saml-form_title_1__oMXe7">AWS account access</div><div
+                                                            class="saml-form_title_2__b0Ie_" data-testid="roles-count">(7)</div></div><div
+                                                            class="saml-form_text__BojK2">Select the name of the role you wish to access below. Your assigned roles are organized by the account.</div><div
+                                                            class="saml-form_filter__BeFO1"><span
+                                                            class="saml-form_text_filter__aAQih awsui_root_1sdq3_hqxda_93"><div
+                                                            class="awsui_input_1sdq3_hqxda_107 awsui_input-container_2rhyz_7fj5p_218"><span
+                                                            class="awsui_input-icon_2rhyz_7fj5p_223 awsui_input-icon-left_2rhyz_7fj5p_230"><span
+                                                            class="awsui_icon_h11ix_31bp4_98 awsui_size-normal-mapped-height_h11ix_31bp4_151 awsui_size-normal_h11ix_31bp4_147 awsui_variant-subtle_h11ix_31bp4_228"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                                                            focusable="false" aria-hidden="true"><circle cx="7" cy="7"
+                                                                                                         r="5"></circle><path
+                                                            d="m15 15-4.5-4.5"></path></svg></span></span><input
+                                                            aria-label="Find roles by account name, ID, or service"
+                                                            placeholder="Find roles by account name, ID, or service"
+                                                            class="awsui_input_2rhyz_7fj5p_97 awsui_input-type-search_2rhyz_7fj5p_195 awsui_input-has-icon-left_2rhyz_7fj5p_190"
+                                                            autocomplete="off" type="search" value=""></div><span
+                                                            aria-live="polite" aria-atomic="true"
+                                                            class="awsui_results_1sdq3_hqxda_111"></span></span></div></span>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="awsui_content_14iqq_bcjyw_216 awsui_with-paddings_14iqq_bcjyw_163">
+                                    <div>
+                                        <ul class="saml-form_custom_list__LuP_V">
+                                            <li class="saml-form_custom_list_item__H1wPE">
+                                                <div class="flex flex-row">
+                                                    <div class="flex-grow">
+                                                        <div class="saml-form_account_name_div__dDGkX">account-one</div>
+                                                        <div class="saml-form_account_id_div__Q1PBA">0123-4567-8910
+                                                        </div>
+                                                        <div class="saml-form_account_role_div__FhQmy">
+                                                            <div class="saml-form_role_div__BeMu2"><a
+                                                                    class="saml-form_role_text__Cfxwn"
+                                                                    id="arn:aws:iam::1:role/Role-One"
+                                                                    data-testid="roleLink-arn:aws:iam::012345678910:role"
+                                                                    role="button"
+                                                                    aria-label="Account ID 0123-4567-8910 Role Name Mock-Role-Name-One"
+                                                                    tabindex="0">Mock-Role-Name-One</a>
+                                                                <p class="saml-form_space__uJWq3"></p></div>
+                                                            <div class="saml-form_role_div__BeMu2"><a
+                                                                    class="saml-form_role_text__Cfxwn"
+                                                                    id="arn:aws:iam::1:role/Role-Two"
+                                                                    data-testid="roleLink-arn:aws:iam::012345678910:role"
+                                                                    role="button"
+                                                                    aria-label="Account ID 0123-4567-8910 Role Name Mock-Role-Name-Two"
+                                                                    tabindex="0">GD-AWS-USA-CPO-MWCManaged-ReadOnly</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="saml-form_custom_list_item__H1wPE">
+                                                <div class="flex flex-row">
+                                                    <div class="flex-grow">
+                                                        <div class="saml-form_account_name_div__dDGkX">account-two</div>
+                                                        <div class="saml-form_account_id_div__Q1PBA">1098-7654-3210
+                                                        </div>
+                                                        <div class="saml-form_account_role_div__FhQmy">
+                                                            <div class="saml-form_role_div__BeMu2"><a
+                                                                    class="saml-form_role_text__Cfxwn"
+                                                                    id="arn:aws:iam::2:role/Role-One"
+                                                                    data-testid="roleLink-arn:aws:iam::941741055772:role"
+                                                                    role="button"
+                                                                    aria-label="Account ID 1098-7654-3210 Role Name Mock-Role-Name-One"
+                                                                    tabindex="0">Mock-Role-Name-One</a>
+                                                                <p class="saml-form_space__uJWq3"></p></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="console-layout_layout__footer__29ZK9">
+                    <div id="console-nav-footer">
+                        <div id="console-nav-footer-inner" data-testid="awsc-nav-footer"
+                             class="console-layout_awsc-footer__inner__pYj46" aria-label="Footer">
+                            <div data-testid="awsc-nav-footer-content" id="awsc-nav-footer-content"
+                                 class="console-layout_awsc-footer__inner__content__Y2M95">
+                                <div class="console-layout_awsc-footer__inner__content__left__oB_Dy"></div>
+                                <div class="console-layout_awsc-footer__inner__content__center__I7xJP"><span
+                                        data-testid="awsc-footer-copyright">© 2023, Amazon Web Services, Inc. or its affiliates.</span>
+                                </div>
+                                <div class="console-layout_awsc-footer__inner__content__right__Xm0P2">
+                                    <ul class="console-layout_seller-of-record-list__YcmyS">
+                                        <li class="console-layout_seller-of-record-list__item__zYEYa"><a
+                                                data-testid="awsc-footer-privacy-policy"
+                                                class="console-layout_link__PAR7a"
+                                                href="https://aws.amazon.com/privacy/" target="_blank"
+                                                rel="noreferrer noopener" title="Privacy">Privacy</a></li>
+                                        <li class="console-layout_seller-of-record-list__item__zYEYa"><a
+                                                data-testid="awsc-footer-terms-of-use"
+                                                class="console-layout_link__PAR7a" href="https://aws.amazon.com/terms/"
+                                                target="_blank" rel="noreferrer noopener" title="Terms">Terms </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script id="__NEXT_DATA__" type="application/json">{
+        "props": {
+            "pageProps": {}
+        },
+        "page": "/saml",
+        "query": {},
+        "buildId": "TRvQLWJL0kLa-Pcsj3RRS",
+        "assetPrefix": "/v2/assets",
+        "nextExport": true,
+        "autoExport": true,
+        "isFallback": false,
+        "scriptLoader": []
+    }</script>
+</div>
+<next-route-announcer><p aria-live="assertive" id="__next-route-announcer__" role="alert"
+                         style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap; overflow-wrap: normal;"></p>
+</next-route-announcer>
+</body>
+</html>

@@ -83,9 +83,11 @@ class GetRoles(Base):
 
         accounts = app_and_role["Accounts"]
         for name_raw in accounts:
-            account_parts = re.match(r"(Account:) ([a-zA-Z0-9-_]+) \(([0-9]+)\)", name_raw)
+            account_parts = re.match(
+                r"(Account:) ([a-zA-Z0-9-_]+)(?: \(([0-9]+)\))?", name_raw
+            )
             account = account_parts[2]
-            account_id = account_parts[3]
+            account_id = account_parts[3] or account_parts[2]
             roles = accounts[name_raw]
             result_roles = []
             result_account = {

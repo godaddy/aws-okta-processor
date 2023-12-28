@@ -85,7 +85,7 @@ class Okta:
                 self.user_name = input_tty()
 
             if not user_pass:
-                user_pass = getpass.getpass()
+                user_pass = getpass.getpass("Password: ")
 
             if not self.organization:
                 print_tty(string="Organization: ", newline=False)
@@ -449,8 +449,7 @@ class FactorTOTP(FactorBase):
 
     @staticmethod
     def payload():
-        print_tty("Token: ", newline=False)
-        return {"passCode": input_tty()}
+        return {"passCode": getpass.getpass("Token: ")}
 
     def retry(self, response):
         return False
@@ -464,8 +463,7 @@ class FactorHardwareToken(FactorBase):
 
     @staticmethod
     def payload():
-        print_tty("Hardware Token: ", newline=False)
-        return {"passCode": input_tty()}
+        return {"passCode": getpass.getpass("Hardware Token: ")}
 
     def retry(self, response):
         return False

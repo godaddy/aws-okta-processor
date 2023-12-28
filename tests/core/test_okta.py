@@ -252,7 +252,7 @@ class TestOkta(TestBase):
         self.assertEqual(okta.organization, "organization.okta.com")
         self.assertEqual(okta.okta_session_id, "session_token")
 
-    @patch('aws_okta_processor.core.okta.input_tty')
+    @patch('aws_okta_processor.core.okta.getpass.getpass')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.os.makedirs')
@@ -264,9 +264,9 @@ class TestOkta(TestBase):
             mock_makedirs,
             mock_open,
             mock_chmod,
-            mock_input
+            mock_get_pass
     ):
-        mock_input.return_value = "123456"
+        mock_get_pass.return_value = "123456"
 
         responses.add(
             responses.POST,
@@ -368,7 +368,7 @@ class TestOkta(TestBase):
             call('}')
         ])
 
-    @patch('aws_okta_processor.core.okta.input_tty')
+    @patch('aws_okta_processor.core.okta.getpass.getpass')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
     @patch('aws_okta_processor.core.okta.os.makedirs')
@@ -380,9 +380,9 @@ class TestOkta(TestBase):
             mock_makedirs,
             mock_open,
             mock_chmod,
-            mock_input
+            mock_getpass
     ):
-        mock_input.return_value = "123456"
+        mock_getpass.return_value = "123456"
 
         responses.add(
             responses.POST,

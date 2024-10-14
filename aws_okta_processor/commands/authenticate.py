@@ -36,15 +36,18 @@ from botocore.credentials import JSONFileCache
 
 UNIX_EXPORT_STRING = ("export AWS_ACCESS_KEY_ID='{}' && "
                       "export AWS_SECRET_ACCESS_KEY='{}' && "
-                      "export AWS_SESSION_TOKEN='{}'")
+                      "export AWS_SESSION_TOKEN='{}' && "
+                      "export AWS_CREDENTIAL_EXPIRATION='{}'")
 
 UNIX_FISH_EXPORT_STRING = ("set --export AWS_ACCESS_KEY_ID '{}'; and "
                            "set --export AWS_SECRET_ACCESS_KEY '{}'; and "
-                           "set --export AWS_SESSION_TOKEN '{}';")
+                           "set --export AWS_SESSION_TOKEN '{}'; and "
+                           "set --export AWS_CREDENTIAL_EXPIRATION '{}';")
 
 NT_EXPORT_STRING = ("$env:AWS_ACCESS_KEY_ID='{}'; "
                     "$env:AWS_SECRET_ACCESS_KEY='{}'; "
-                    "$env:AWS_SESSION_TOKEN='{}'")
+                    "$env:AWS_SESSION_TOKEN='{}'; "
+                    "$env:AWS_CREDENTIAL_EXPIRATION='{}'")
 
 CONFIG_MAP = {
             "--environment": "AWS_OKTA_ENVIRONMENT",
@@ -119,7 +122,8 @@ class Authenticate(Base):
         return NT_EXPORT_STRING.format(
             credentials["AccessKeyId"],
             credentials["SecretAccessKey"],
-            credentials["SessionToken"]
+            credentials["SessionToken"],
+            credentials["Expiration"]
         )
 
     def unix_output(self, credentials):
@@ -134,7 +138,8 @@ class Authenticate(Base):
         return export_string.format(
             credentials["AccessKeyId"],
             credentials["SecretAccessKey"],
-            credentials["SessionToken"]
+            credentials["SessionToken"],
+            credentials["Expiration"]
         )
 
     def get_pass(self):

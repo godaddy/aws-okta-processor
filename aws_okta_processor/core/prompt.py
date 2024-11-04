@@ -97,20 +97,13 @@ def get_options(items=None, options=None, depth=0):
         if isinstance(value, Mapping):
             print_tty(key, indents=depth)
 
-            options = get_options(
-                items=value,
-                options=options,
-                depth=depth + 1
-            )
+            options = get_options(items=value, options=options, depth=depth + 1)
 
         else:
             # If the key is an ARN just get everything to left of /
-            key = key.split('/')[-1]
+            key = key.split("/")[-1]
 
-            print_tty(
-                "[ {} ] {}".format(len(options) + 1, key),
-                indents=depth
-            )
+            print_tty("[ {} ] {}".format(len(options) + 1, key), indents=depth)
 
             options.append(value)
 

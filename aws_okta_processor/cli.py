@@ -17,7 +17,6 @@ Help:
 See 'aws-okta-processor <command> -h' for more information on a specific command.
 """  # noqa
 
-
 from docopt import docopt
 
 from . import __version__ as VERSION
@@ -30,16 +29,19 @@ def main():
     args = docopt(__doc__, version=VERSION, options_first=True)
 
     try:
-        argv = [args['<command>']] + args['<args>']
-        if args['<command>'] == 'authenticate':
+        argv = [args["<command>"]] + args["<args>"]
+        if args["<command>"] == "authenticate":
             options = docopt(commands.authenticate.__doc__, argv=argv)
             command = commands.authenticate.Authenticate(options)
             command.run()
-        elif args['<command>'] == 'get-roles':
+        elif args["<command>"] == "get-roles":
             options = docopt(commands.getroles.__doc__, argv=argv)
             command = commands.getroles.GetRoles(options)
             command.run()
         else:
-            exit("%r is not a aws-okta-processor command. See 'aws-okta-processor --help'." % args['<command>'])
+            exit(
+                "%r is not a aws-okta-processor command. See 'aws-okta-processor --help'."
+                % args["<command>"]
+            )
     except KeyboardInterrupt:
         exit(0)

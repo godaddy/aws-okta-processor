@@ -37,39 +37,40 @@ from .base import Base
 from aws_okta_processor.core.fetcher import SAMLFetcher
 from botocore.credentials import JSONFileCache
 
-UNIX_EXPORT_STRING = ("export AWS_ACCESS_KEY_ID='{}' && "
-                      "export AWS_SECRET_ACCESS_KEY='{}' && "
-                      "export AWS_SESSION_TOKEN='{}'")
+UNIX_EXPORT_STRING = (
+    "export AWS_ACCESS_KEY_ID='{}' && "
+    "export AWS_SECRET_ACCESS_KEY='{}' && "
+    "export AWS_SESSION_TOKEN='{}'"
+)
 
-NT_EXPORT_STRING = ("$env:AWS_ACCESS_KEY_ID='{}'; "
-                    "$env:AWS_SECRET_ACCESS_KEY='{}'; "
-                    "$env:AWS_SESSION_TOKEN='{}'")
+NT_EXPORT_STRING = (
+    "$env:AWS_ACCESS_KEY_ID='{}'; "
+    "$env:AWS_SECRET_ACCESS_KEY='{}'; "
+    "$env:AWS_SESSION_TOKEN='{}'"
+)
 
 CONFIG_MAP = {
-            "--environment": "AWS_OKTA_ENVIRONMENT",
-            "--user": "AWS_OKTA_USER",
-            "--pass": "AWS_OKTA_PASS",
-            "--organization": "AWS_OKTA_ORGANIZATION",
-            "--application": "AWS_OKTA_APPLICATION",
-            "--role": "AWS_OKTA_ROLE",
-            "--duration": "AWS_OKTA_DURATION",
-            "--key": "AWS_OKTA_KEY",
-            "--factor": "AWS_OKTA_FACTOR",
-            "--silent": "AWS_OKTA_SILENT",
-            "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
-            "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
-            "--output": "AWS_OKTA_OUTPUT",
-            "--output-format": "AWS_OKTA_OUTPUT_FORMAT"
-        }
+    "--environment": "AWS_OKTA_ENVIRONMENT",
+    "--user": "AWS_OKTA_USER",
+    "--pass": "AWS_OKTA_PASS",
+    "--organization": "AWS_OKTA_ORGANIZATION",
+    "--application": "AWS_OKTA_APPLICATION",
+    "--role": "AWS_OKTA_ROLE",
+    "--duration": "AWS_OKTA_DURATION",
+    "--key": "AWS_OKTA_KEY",
+    "--factor": "AWS_OKTA_FACTOR",
+    "--silent": "AWS_OKTA_SILENT",
+    "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
+    "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
+    "--output": "AWS_OKTA_OUTPUT",
+    "--output-format": "AWS_OKTA_OUTPUT_FORMAT",
+}
 
 
 class GetRoles(Base):
     def get_accounts_and_roles(self):
         cache = JSONFileCache()
-        saml_fetcher = SAMLFetcher(
-            self,
-            cache=cache
-        )
+        saml_fetcher = SAMLFetcher(self, cache=cache)
 
         app_and_role = saml_fetcher.get_app_roles()
 
@@ -83,7 +84,9 @@ class GetRoles(Base):
 
         accounts = app_and_role["Accounts"]
         for name_raw in accounts:
-            account_parts = re.match(r"(Account:) ([a-zA-Z0-9-_]+) \(([0-9]+)\)", name_raw)
+            account_parts = re.match(
+                r"(Account:) ([a-zA-Z0-9-_]+) \(([0-9]+)\)", name_raw
+            )
             account = account_parts[2]
             account_id = account_parts[3]
             roles = accounts[name_raw]
@@ -92,15 +95,14 @@ class GetRoles(Base):
                 "name": account,
                 "id": account_id,
                 "name_raw": name_raw,
-                "roles": result_roles
+                "roles": result_roles,
             }
             result_accounts.append(result_account)
             for role in roles:
-                role_suffix = role.split(os.environ.get("AWS_OKTA_ROLE_SUFFIX_DELIMITER", "-"))[-1]
-                result_roles.append({
-                    "name": role,
-                    "suffix": role_suffix
-                })
+                role_suffix = role.split(
+                    os.environ.get("AWS_OKTA_ROLE_SUFFIX_DELIMITER", "-")
+                )[-1]
+                result_roles.append({"name": role, "suffix": role_suffix})
 
         return results
 
@@ -112,12 +114,18 @@ class GetRoles(Base):
         if output == "json":
             sys.stdout.write(json.dumps(accounts_and_roles))
         else:
-            output_format = self.configuration.get("AWS_OKTA_OUTPUT_FORMAT", "{account},{role}")
+            output_format = self.configuration.get(
+                "AWS_OKTA_OUTPUT_FORMAT", "{account},{role}"
+            )
             if output == "profiles":
-                output_format = '\n[{account}-{role_suffix}]\ncredential_process=aws-okta-processor authenticate ' \
-                                '--organization="{organization}" --user="{user}" --application="{application_url}" ' \
-                                '--role="{role}" --key="{account}-{role}"'
-            formatted_roles = self.get_formatted_roles(accounts_and_roles, output_format)
+                output_format = (
+                    "\n[{account}-{role_suffix}]\ncredential_process=aws-okta-processor authenticate "
+                    '--organization="{organization}" --user="{user}" --application="{application_url}" '
+                    '--role="{role}" --key="{account}-{role}"'
+                )
+            formatted_roles = self.get_formatted_roles(
+                accounts_and_roles, output_format
+            )
             for role in formatted_roles:
                 sys.stdout.write(role + "\n")
 
@@ -141,7 +149,7 @@ class GetRoles(Base):
                     organization=organization,
                     application_url=application_url,
                     user=user,
-                    role_suffix=role["suffix"].lower()
+                    role_suffix=role["suffix"].lower(),
                 )
 
     def get_pass(self):
@@ -152,7 +160,7 @@ class GetRoles(Base):
         return {
             "Organization": self.configuration["AWS_OKTA_ORGANIZATION"],
             "User": self.configuration["AWS_OKTA_USER"],
-            "Key": self.configuration["AWS_OKTA_KEY"]
+            "Key": self.configuration["AWS_OKTA_KEY"],
         }
 
     def get_configuration(self, options=None):

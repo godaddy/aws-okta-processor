@@ -11,27 +11,27 @@ from collections import OrderedDict
 from aws_okta_processor.core.tty import print_tty
 
 
-SAML_ATTRIBUTE = '{urn:oasis:names:tc:SAML:2.0:assertion}Attribute'
-SAML_ATTRIBUTE_ROLE = 'https://aws.amazon.com/SAML/Attributes/Role'
-SAML_ATTRIBUTE_VALUE = '{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue'
+SAML_ATTRIBUTE = "{urn:oasis:names:tc:SAML:2.0:assertion}Attribute"
+SAML_ATTRIBUTE_ROLE = "https://aws.amazon.com/SAML/Attributes/Role"
+SAML_ATTRIBUTE_VALUE = "{urn:oasis:names:tc:SAML:2.0:assertion}AttributeValue"
 AWS_SIGN_IN_URL = "https://signin.aws.amazon.com/saml"
 
 
 def get_saml_assertion(saml_response=None):
-    """ Extracts the SAML assertion from the saml_response HTML by finding the appropriate HTML element. """
+    """Extracts the SAML assertion from the saml_response HTML by finding the appropriate HTML element."""
     soup = BeautifulSoup(saml_response, "html.parser")
 
-    for input_tag in soup.find_all('input'):
-        if input_tag.get('name') == 'SAMLResponse':
-            return input_tag.get('value')
+    for input_tag in soup.find_all("input"):
+        if input_tag.get("name") == "SAMLResponse":
+            return input_tag.get("value")
 
-    if soup.find('div', {"id": "okta-sign-in"}):
+    if soup.find("div", {"id": "okta-sign-in"}):
         # Supplied Okta session not sufficient to get SAML assertion.
         # This condition may be missed if Okta significantly changes the app-level MFA page
         print_tty("SAMLResponse tag not found due to MFA challenge.")
         return None
 
-    if soup.find('div', {"id": "password-verification-challenge"}):
+    if soup.find("div", {"id": "password-verification-challenge"}):
         # Supplied Okta session not sufficient to get SAML assertion.
         # This condition may be missed if Okta significantly changes the app-level re-auth page
         print_tty("SAMLResponse tag not found due to password verification challenge.")
@@ -49,17 +49,15 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=None):
     saml_attributes = xml_saml.iter(SAML_ATTRIBUTE)
 
     for saml_attribute in saml_attributes:
-        if saml_attribute.get('Name') == SAML_ATTRIBUTE_ROLE:
-            saml_attribute_values = saml_attribute.iter(
-                SAML_ATTRIBUTE_VALUE
-            )
+        if saml_attribute.get("Name") == SAML_ATTRIBUTE_ROLE:
+            saml_attribute_values = saml_attribute.iter(SAML_ATTRIBUTE_VALUE)
 
             for saml_attribute_value in saml_attribute_values:
                 if not saml_attribute_value.text:
                     print_tty("ERROR: No accounts found in SAMLResponse!")
                     sys.exit(1)
 
-                principal_arn, role_arn = saml_attribute_value.text.split(',')
+                principal_arn, role_arn = saml_attribute_value.text.split(",")
 
                 role_principals[role_arn] = principal_arn
 
@@ -97,51 +95,42 @@ def get_aws_roles(saml_assertion=None, accounts_filter=None, sign_in_url=None):
 def get_account_roles(saml_assertion=None, sign_in_url=None):
     role_accounts = []
 
-    data = {
-        "SAMLResponse": saml_assertion,
-        "RelayState": ""
-    }
+    data = {"SAMLResponse": saml_assertion, "RelayState": ""}
 
     response = requests.post(sign_in_url or AWS_SIGN_IN_URL, data=data)
     soup = BeautifulSoup(response.text, "html.parser")
-    accounts = soup.find('fieldset').find_all(
-        "div",
-        attrs={"class": "saml-account"},
-        recursive=False
+    accounts = soup.find("fieldset").find_all(
+        "div", attrs={"class": "saml-account"}, recursive=False
     )
 
     for account in accounts:
-        account_name = account.find(
-            "div",
-            attrs={"class": "saml-account-name"}
-        ).string
+        account_name = account.find("div", attrs={"class": "saml-account-name"}).string
 
-        roles = account.find(
-            "div",
-            attrs={"class": "saml-account"}).find_all(
-            "div",
-            attrs={"class": "saml-role"}
+        roles = account.find("div", attrs={"class": "saml-account"}).find_all(
+            "div", attrs={"class": "saml-role"}
         )
 
         for role in roles:
-            role_arn = role.input['id']
+            role_arn = role.input["id"]
             role_description = role.label.string
-            role_accounts.append(AWSRole(
-                account_name=account_name,
-                role_description=role_description,
-                role_arn=role_arn
-            ))
+            role_accounts.append(
+                AWSRole(
+                    account_name=account_name,
+                    role_description=role_description,
+                    role_arn=role_arn,
+                )
+            )
 
     return role_accounts
 
 
 class AWSRole:
     def __init__(
-            self,
-            account_name=None,
-            role_description=None,
-            role_arn=None,
-            principal_arn=None
+        self,
+        account_name=None,
+        role_description=None,
+        role_arn=None,
+        principal_arn=None,
     ):
         self.account_name = account_name
         self.role_description = role_description

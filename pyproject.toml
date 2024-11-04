@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "aws-okta-processor"
+version = "1.9.3"
+description = "Resource for fetching AWS Role credentials from Okta"
+authors = ["Cloud Platform Solutions <cp-solutions@godaddy.com>"]
+readme = "README.rst"
+repository = "https://github.com/godaddy/aws-okta-processor"
+
+[tool.poetry.scripts]
+aws-okta-processor = "aws_okta_processor.cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+docopt = ">=0.6.2"
+requests = ">=2.21.0"
+boto3 = ">=1.9.134"
+beautifulsoup4 = ">=4.11.1"
+contextlib2 = ">=0.5.5"
+six = ">=1.12.0"
+defusedxml = ">=0.7.1"
+tomlkit = "^0.13.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.3"
+mock = "^5.1.0"
+pytest-cov = "^6.0.0"
+readme-renderer = "^44.0"
+docutils = "^0.21.2"
+flake8 = "^7.1.1"
+responses = "^0.25.3"
+atomicwrites = "^1.4.1"
+importlib-metadata = "^8.5.0"
+typing-extensions = "^4.12.2"
+black = "^24.10.0"
+mypy = "^1.13.0"
+pylint = "^3.3.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

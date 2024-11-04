@@ -41,13 +41,13 @@ class UTC(tzinfo):
 
 class Okta:
     def __init__(
-            self,
-            user_name=None,
-            user_pass=None,
-            organization=None,
-            factor=None,
-            silent=None,
-            no_okta_cache=None
+        self,
+        user_name=None,
+        user_pass=None,
+        organization=None,
+        factor=None,
+        silent=None,
+        no_okta_cache=None,
     ):
         self.user_name = user_name
         self.silent = silent
@@ -67,9 +67,7 @@ class Okta:
             # Refresh the session ID of the cached session
             self.read_aop_from_okta_session(okta_session)
 
-            self.refresh_okta_session_id(
-                okta_session=okta_session
-            )
+            self.refresh_okta_session_id(okta_session=okta_session)
 
         if not self.organization:
             print_tty(string="Organization: ", newline=False)
@@ -92,8 +90,7 @@ class Okta:
                 self.organization = input_tty()
 
             self.okta_single_use_token = self.get_okta_single_use_token(
-                user_name=self.user_name,
-                user_pass=user_pass
+                user_name=self.user_name, user_pass=user_pass
             )
 
             # This call sets self.okta_session_id
@@ -108,36 +105,32 @@ class Okta:
             del okta_session["aws-okta-processor"]
 
     def get_cache_file_path(self):
-        """ Returns the file path for the session cache file:
+        """Returns the file path for the session cache file:
         ~/.aws-okta-processor/cache/<username>-<organization>-session.json
         """
-        home_directory = os.path.expanduser('~')
-        cache_directory = os.path.join(
-            home_directory,
-            '.aws-okta-processor',
-            'cache'
-        )
+        home_directory = os.path.expanduser("~")
+        cache_directory = os.path.join(home_directory, ".aws-okta-processor", "cache")
 
         if not os.path.isdir(cache_directory):
             os.makedirs(cache_directory)
 
-        cache_file_name = "{}-{}-session.json".format(
-            self.user_name,
-            self.organization
-        )
+        cache_file_name = "{}-{}-session.json".format(self.user_name, self.organization)
 
         cache_file_path = os.path.join(cache_directory, cache_file_name)
 
         return cache_file_path
 
     def set_okta_session(self, okta_session=None):
-        """ Saves the given Okta session in our cache file. """
-        session_data = dict(okta_session, **{
-            "aws-okta-processor": {
-                "user_name": self.user_name,
-                "organization": self.organization
+        """Saves the given Okta session in our cache file."""
+        session_data = dict(
+            okta_session,
+            **{
+                "aws-okta-processor": {
+                    "user_name": self.user_name,
+                    "organization": self.organization,
+                }
             }
-        })
+        )
         with open(self.cache_file_path, "w") as file:
             json.dump(session_data, file)
 
@@ -156,18 +149,15 @@ class Okta:
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache"
+            "Cache-Control": "no-cache",
         }
 
-        json_payload = {
-            "username": user_name,
-            "password": user_pass
-        }
+        json_payload = {"username": user_name, "password": user_pass}
 
         response = self.call(
             endpoint=OKTA_AUTH_URL.format(self.organization),
             headers=headers,
-            json_payload=json_payload
+            json_payload=json_payload,
         )
 
         response_json = {}
@@ -188,15 +178,9 @@ class Okta:
 
     def handle_factor(self, response_json=None):
         state_token = response_json["stateToken"]
-        factors = get_supported_factors(
-            factors=response_json["_embedded"]["factors"]
-        )
+        factors = get_supported_factors(factors=response_json["_embedded"]["factors"])
 
-        factor = prompt.get_item(
-            items=factors,
-            label="Factor",
-            key=self.factor
-        )
+        factor = prompt.get_item(items=factors, label="Factor", key=self.factor)
 
         return self.verify_factor(factor=factor, state_token=state_token)
 
@@ -204,16 +188,14 @@ class Okta:
         headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
-            "Cache-Control": "no-cache"
+            "Cache-Control": "no-cache",
         }
 
         json_payload = factor.payload()
         json_payload.update({"stateToken": state_token})
 
         response = self.call(
-            endpoint=factor.link,
-            headers=headers,
-            json_payload=json_payload
+            endpoint=factor.link, headers=headers, json_payload=json_payload
         )
 
         response_json = {}
@@ -229,30 +211,22 @@ class Okta:
         if factor.retry(response_json):
             factor.link = response_json["_links"]["next"]["href"]
             time.sleep(1)
-            return self.verify_factor(
-                factor=factor,
-                state_token=state_token
-            )
+            return self.verify_factor(factor=factor, state_token=state_token)
 
         send_error(response=response)
 
     def create_and_store_okta_session(self):
-        """ Creates a new Okta session and caches it in our cache file for future use.
+        """Creates a new Okta session and caches it in our cache file for future use.
         https://developer.okta.com/docs/reference/api/sessions/#get-started
         """
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        }
+        headers = {"Accept": "application/json", "Content-Type": "application/json"}
 
-        json_payload = {
-            "sessionToken": self.okta_single_use_token
-        }
+        json_payload = {"sessionToken": self.okta_single_use_token}
 
         response = self.call(
             endpoint=OKTA_SESSION_URL.format(self.organization),
             json_payload=json_payload,
-            headers=headers
+            headers=headers,
         )
 
         try:
@@ -265,22 +239,19 @@ class Okta:
             send_error(response=response, json=False)
 
     def refresh_okta_session_id(self, okta_session=None):
-        session_expires = dateutil.parser.parse(
-            okta_session["expiresAt"]
-        )
+        session_expires = dateutil.parser.parse(okta_session["expiresAt"])
 
-        if (datetime.now(UTC()) <
-                (session_expires - timedelta(seconds=30))):
+        if datetime.now(UTC()) < (session_expires - timedelta(seconds=30)):
             headers = {
                 "Cookie": "sid={}".format(okta_session["id"]),
                 "Accept": "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             }
 
             response = self.call(
                 endpoint=OKTA_REFRESH_URL.format(self.organization),
                 headers=headers,
-                json_payload={}
+                json_payload={},
             )
 
             try:
@@ -299,12 +270,11 @@ class Okta:
         headers = {
             "Cookie": "sid={}".format(self.okta_session_id),
             "Accept": "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
         response = self.call(
-            endpoint=OKTA_APPLICATIONS_URL.format(self.organization),
-            headers=headers
+            endpoint=OKTA_APPLICATIONS_URL.format(self.organization), headers=headers
         )
 
         for application in response.json():
@@ -316,34 +286,22 @@ class Okta:
         return applications
 
     def get_saml_response(self, application_url=None):
-        headers = {
-            "Cookie": "sid={}".format(self.okta_session_id)
-        }
+        headers = {"Cookie": "sid={}".format(self.okta_session_id)}
 
         response = self.call(application_url, headers=headers)
 
         return response.content.decode()
 
     def call(self, endpoint=None, headers=None, json_payload=None):
-        print_tty(
-            "Info: Calling {}".format(endpoint),
-            silent=self.silent
-        )
+        print_tty("Info: Calling {}".format(endpoint), silent=self.silent)
 
         try:
             if json_payload is not None:
                 return self.session.post(
-                    endpoint,
-                    json=json_payload,
-                    headers=headers,
-                    timeout=10
+                    endpoint, json=json_payload, headers=headers, timeout=10
                 )
             else:
-                return self.session.get(
-                    endpoint,
-                    headers=headers,
-                    timeout=10
-                )
+                return self.session.get(endpoint, headers=headers, timeout=10)
 
         except ConnectTimeout:
             print_tty("Error: Timed Out")
@@ -361,8 +319,7 @@ def get_supported_factors(factors=None):
         try:
             supported_factor = FactorBase.factory(factor["factorType"])
 
-            key = '{}:{}'.format(
-                factor["factorType"], factor["provider"]).lower()
+            key = "{}:{}".format(factor["factorType"], factor["provider"]).lower()
             matching_factors[key] = supported_factor(
                 link=factor["_links"]["verify"]["href"]
             )
@@ -379,14 +336,10 @@ def send_error(response=None, json=True, exit=True):
         response_json = response.json()
 
         if "status" in response_json:
-            print_tty("Error: Status: {}".format(
-                response_json['status']
-            ))
+            print_tty("Error: Status: {}".format(response_json["status"]))
 
         if "errorSummary" in response_json:
-            print_tty("Error: Summary: {}".format(
-                response_json['errorSummary']
-            ))
+            print_tty("Error: Summary: {}".format(response_json["errorSummary"]))
     else:
         print_tty("Error: Invalid JSON")
 
@@ -429,9 +382,7 @@ class FactorPush(FactorBase):
     def __init__(self, link=None):
         super(FactorPush, self).__init__(link=link)
 
-        self.RETRYABLE_RESULTS = [
-            "WAITING",
-        ]
+        self.RETRYABLE_RESULTS = ["WAITING"]
 
     @staticmethod
     def payload():

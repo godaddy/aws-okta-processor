@@ -3,8 +3,8 @@
 import configparser
 import os
 
-DOTFILE = '.awsoktaprocessor'
-USER_DOTFILE = '~/' + DOTFILE
+DOTFILE = ".awsoktaprocessor"
+USER_DOTFILE = "~/" + DOTFILE
 
 
 class Base(object):
@@ -14,18 +14,14 @@ class Base(object):
         self.args = args
         self.kwargs = kwargs
 
-        self.configuration = self.get_configuration(
-            options=options
-        )
+        self.configuration = self.get_configuration(options=options)
 
     def run(self):
-        raise NotImplementedError(
-            'You must implement the run() method yourself!'
-        )
+        raise NotImplementedError("You must implement the run() method yourself!")
 
     def get_configuration(self, options=None):
         raise NotImplementedError(
-            'You must implement the get_configuration() method yourself!'
+            "You must implement the get_configuration() method yourself!"
         )
 
     @staticmethod
@@ -56,8 +52,8 @@ class Base(object):
             config.read(files)
 
             options = {}
-            if config.has_section('defaults'):
-                options = dict(**config['defaults'])
+            if config.has_section("defaults"):
+                options = dict(**config["defaults"])
 
             if config.has_section(command):
                 options = dict(options, **config[command])

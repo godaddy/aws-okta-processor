@@ -39,10 +39,10 @@ class SAMLFetcher(CachedCredentialFetcher):
         credentials = super(SAMLFetcher, self).fetch_credentials()
 
         return {
-            'AccessKeyId': credentials['access_key'],
-            'SecretAccessKey': credentials['secret_key'],
-            'SessionToken': credentials['token'],
-            'Expiration': credentials['expiry_time']
+            "AccessKeyId": credentials["access_key"],
+            "SecretAccessKey": credentials["secret_key"],
+            "SessionToken": credentials["token"],
+            "Expiration": credentials["expiry_time"],
         }
 
     def _get_app_roles(self):
@@ -57,11 +57,11 @@ class SAMLFetcher(CachedCredentialFetcher):
             organization=organization,
             factor=self._configuration["AWS_OKTA_FACTOR"],
             silent=self._configuration["AWS_OKTA_SILENT"],
-            no_okta_cache=no_okta_cache
+            no_okta_cache=no_okta_cache,
         )
 
-        self._configuration["AWS_OKTA_USER"] = ''
-        self._configuration["AWS_OKTA_PASS"] = ''
+        self._configuration["AWS_OKTA_USER"] = ""
+        self._configuration["AWS_OKTA_PASS"] = ""
 
         if self._configuration["AWS_OKTA_APPLICATION"]:
             application_url = self._configuration["AWS_OKTA_APPLICATION"]
@@ -71,15 +71,11 @@ class SAMLFetcher(CachedCredentialFetcher):
             application_url = prompt.get_item(
                 items=applications,
                 label="AWS application",
-                key=self._configuration["AWS_OKTA_APPLICATION"]
+                key=self._configuration["AWS_OKTA_APPLICATION"],
             )
 
-        saml_response = okta.get_saml_response(
-            application_url=application_url
-        )
-        saml_assertion = saml.get_saml_assertion(
-            saml_response=saml_response
-        )
+        saml_response = okta.get_saml_response(application_url=application_url)
+        saml_assertion = saml.get_saml_assertion(saml_response=saml_response)
 
         if not saml_assertion and not no_okta_cache:
             # Try again, but without using the cached Okta session
@@ -90,14 +86,10 @@ class SAMLFetcher(CachedCredentialFetcher):
                 organization=organization,
                 factor=self._configuration["AWS_OKTA_FACTOR"],
                 silent=self._configuration["AWS_OKTA_SILENT"],
-                no_okta_cache=True
+                no_okta_cache=True,
             )
-            saml_response = okta.get_saml_response(
-                application_url=application_url
-            )
-            saml_assertion = saml.get_saml_assertion(
-                saml_response=saml_response
-            )
+            saml_response = okta.get_saml_response(application_url=application_url)
+            saml_assertion = saml.get_saml_assertion(saml_response=saml_response)
 
         if not saml_assertion:
             print_tty("ERROR: SAMLResponse tag was not found!")
@@ -105,63 +97,69 @@ class SAMLFetcher(CachedCredentialFetcher):
 
         aws_roles = saml.get_aws_roles(
             saml_assertion=saml_assertion,
-            accounts_filter=self._configuration.get(
-                'AWS_OKTA_ACCOUNT_ALIAS', None),
-            sign_in_url=self._configuration.get(
-                'AWS_OKTA_SIGN_IN_URL', None)
+            accounts_filter=self._configuration.get("AWS_OKTA_ACCOUNT_ALIAS", None),
+            sign_in_url=self._configuration.get("AWS_OKTA_SIGN_IN_URL", None),
         )
 
-        return aws_roles, saml_assertion, application_url, okta.user_name, okta.organization
+        return (
+            aws_roles,
+            saml_assertion,
+            application_url,
+            okta.user_name,
+            okta.organization,
+        )
 
     def get_app_roles(self):
 
-        aws_roles, saml_assertion, application_url, user, organization = self._get_app_roles()
+        aws_roles, saml_assertion, application_url, user, organization = (
+            self._get_app_roles()
+        )
         return {
             "Application": application_url,
             "Accounts": aws_roles,
             "User": user,
-            "Organization": organization
+            "Organization": organization,
         }
 
     def _get_credentials(self):
         # Do NOT load credentials from ENV or ~/.aws/credentials
         client = boto3.client(
-            'sts',
-            aws_access_key_id='',
-            aws_secret_access_key='',
-            aws_session_token='',
-            region_name=self._configuration["AWS_OKTA_REGION"]
+            "sts",
+            aws_access_key_id="",
+            aws_secret_access_key="",
+            aws_session_token="",
+            region_name=self._configuration["AWS_OKTA_REGION"],
         )
 
-        aws_roles, saml_assertion, _application_url, user, _organization = self._get_app_roles()
+        aws_roles, saml_assertion, _application_url, user, _organization = (
+            self._get_app_roles()
+        )
 
         aws_role = prompt.get_item(
-            items=aws_roles,
-            label="AWS Role",
-            key=self._configuration["AWS_OKTA_ROLE"]
+            items=aws_roles, label="AWS Role", key=self._configuration["AWS_OKTA_ROLE"]
         )
 
         print_tty(
             "Role: {}".format(aws_role.role_arn),
-            silent=self._configuration["AWS_OKTA_SILENT"]
+            silent=self._configuration["AWS_OKTA_SILENT"],
         )
 
         response = client.assume_role_with_saml(
             RoleArn=aws_role.role_arn,
             PrincipalArn=aws_role.principal_arn,
             SAMLAssertion=saml_assertion,
-            DurationSeconds=int(self._configuration["AWS_OKTA_DURATION"])
+            DurationSeconds=int(self._configuration["AWS_OKTA_DURATION"]),
         )
 
-        if self._configuration.get('AWS_OKTA_SECONDARY_ROLE', None) is not None:
+        if self._configuration.get("AWS_OKTA_SECONDARY_ROLE", None) is not None:
             role_session_name = user
-            secondary_role_arn = self._configuration['AWS_OKTA_SECONDARY_ROLE']
+            secondary_role_arn = self._configuration["AWS_OKTA_SECONDARY_ROLE"]
 
             print_tty(f"Assuming secondary role {secondary_role_arn}")
-            credentials = response['Credentials']
+            credentials = response["Credentials"]
             client = boto3.client(
-                'sts',
-                aws_access_key_id=credentials['AccessKeyId'],
+                "sts",
+                aws_access_key_id=credentials["AccessKeyId"],
                 aws_secret_access_key=credentials["SecretAccessKey"],
                 aws_session_token=credentials["SessionToken"],
                 region_name=self._configuration["AWS_OKTA_REGION"],
@@ -172,8 +170,9 @@ class SAMLFetcher(CachedCredentialFetcher):
                 RoleSessionName=role_session_name,
             )
 
-        expiration = (response['Credentials']['Expiration']
-                      .isoformat().replace("+00:00", "Z"))
-        response['Credentials']['Expiration'] = expiration
+        expiration = (
+            response["Credentials"]["Expiration"].isoformat().replace("+00:00", "Z")
+        )
+        response["Credentials"]["Expiration"] = expiration
 
         return response

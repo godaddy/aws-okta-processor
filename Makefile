@@ -1,8 +1,6 @@
 init:
 	export PATH=$$(python3 -m site --user-base)/bin:$$PATH
-	pip install -U pip pipx
-	pipx ensurepath --force
-	pipx install poetry --force
+	pip install poetry --force
 
 	poetry update -vvv
 	poetry install --remove-untracked -vvv

@@ -50,7 +50,7 @@ def unix_input_tty():
     with contextlib2.ExitStack() as stack:
         try:
             # Open /dev/tty for reading and writing if available
-            fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY)
+            fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY)  # pylint: disable=E1101
             tty = io.FileIO(fd, "r+")
             stack.enter_context(tty)
             input = io.TextIOWrapper(tty)  # pylint: disable=W0622
@@ -111,7 +111,7 @@ def unix_print_tty(string="", indents=0, newline=True):
 
         try:
             # Try printing directly to /dev/tty
-            fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY)
+            fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY)  # pylint: disable=E1101
             tty = io.FileIO(fd, "w+")
             stack.enter_context(tty)
             text_input = io.TextIOWrapper(tty)

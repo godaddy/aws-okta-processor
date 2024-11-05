@@ -56,7 +56,6 @@ class UnixTtyTests(TestCase):
 
         tty.print_tty("STRING", newline=False)
         mock_os.open.assert_called_once()
-        mock_stack.enter_context.called_once_with(mock_text_wrapper)
         mock_text_wrapper.write.assert_called_once_with(u'STRING')
         mock_text_wrapper.flush.assert_called_once()
 
@@ -79,7 +78,6 @@ class UnixTtyTests(TestCase):
 
         tty.print_tty("STRING", indents=1, newline=False)
         mock_os.open.assert_called_once()
-        mock_stack.enter_context.called_once_with(mock_text_wrapper)
         mock_text_wrapper.write.assert_called_once_with(u'  STRING')
         mock_text_wrapper.flush.assert_called_once()
 

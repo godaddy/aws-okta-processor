@@ -25,7 +25,9 @@ import json
 
 
 class StubDate(datetime):
-    pass
+    @classmethod
+    def now(cls, tz = None):
+        return datetime(1, 1, 1, 0, 0, tzinfo=tz)
 
 
 class TestOkta(TestBase):
@@ -104,7 +106,7 @@ class TestOkta(TestBase):
     @patch('aws_okta_processor.core.okta.Okta.read_aop_from_okta_session')
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
-    @patch('aws_okta_processor.core.okta.datetime', StubDate)
+    @patch('aws_okta_processor.core.okta.datetime.datetime', StubDate)
     @patch('aws_okta_processor.core.okta.os.path.isfile')
     @patch('aws_okta_processor.core.okta.os.makedirs')
     @patch('aws_okta_processor.core.okta.print_tty')
@@ -118,8 +120,6 @@ class TestOkta(TestBase):
             mock_chmod,
             mock_read_aop_session
     ):
-        StubDate.now = classmethod(lambda cls, tz: datetime(1, 1, 1, 0, 0, tzinfo=tz))
-
         mock_isfile.return_value = True
         mock_enter = MagicMock()
         mock_enter.read.return_value = SESSION_RESPONSE
@@ -347,7 +347,7 @@ class TestOkta(TestBase):
             "session_stuff": "yes"
         })
 
-        mock_open_file.assert_called_once_with('/tmp/test.json', 'w')
+        mock_open_file.assert_called_once_with('/tmp/test.json', 'w', encoding="utf-8")
         mock_open_file().write.assert_has_calls([
             call('{'),
             call('"session_stuff"'),
@@ -628,7 +628,7 @@ class TestOkta(TestBase):
 
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
-    @patch('aws_okta_processor.core.okta.datetime', StubDate)
+    @patch('aws_okta_processor.core.okta.datetime.datetime', StubDate)
     @patch('aws_okta_processor.core.okta.os.path.isfile')
     @patch('aws_okta_processor.core.okta.os.makedirs')
     @patch('aws_okta_processor.core.okta.print_tty')
@@ -641,8 +641,6 @@ class TestOkta(TestBase):
             mock_open,
             mock_chmod
     ):
-        StubDate.now = classmethod(lambda cls, tz: datetime(1, 1, 1, 0, 0, tzinfo=tz))
-
         mock_isfile.return_value = True
         mock_enter = MagicMock()
         mock_enter.read.return_value = SESSION_RESPONSE
@@ -674,7 +672,7 @@ class TestOkta(TestBase):
 
     @patch('aws_okta_processor.core.okta.os.chmod')
     @patch('aws_okta_processor.core.okta.open')
-    @patch('aws_okta_processor.core.okta.datetime', StubDate)
+    @patch('aws_okta_processor.core.okta.datetime.datetime', StubDate)
     @patch('aws_okta_processor.core.okta.os.path.isfile')
     @patch('aws_okta_processor.core.okta.os.makedirs')
     @patch('aws_okta_processor.core.okta.print_tty')
@@ -687,8 +685,6 @@ class TestOkta(TestBase):
             mock_open,
             mock_chmod
     ):
-        StubDate.now = classmethod(lambda cls, tz: datetime(1, 1, 1, 0, 0, tzinfo=tz))
-
         mock_isfile.return_value = True
         mock_enter = MagicMock()
         mock_enter.read.return_value = SESSION_RESPONSE

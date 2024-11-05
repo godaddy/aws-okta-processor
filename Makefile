@@ -1,23 +1,25 @@
-PYTHONPATH=./:tests/
-
 init:
-	pip install --upgrade pipenv
-	pip install wheel twine
-	pipenv install --dev
+	export PATH=$$(python3 -m site --user-base)/bin:$$PATH
+	pip install poetry --force
+
+	poetry update -vvv
+	poetry install --remove-untracked -vvv
+	poetry env info
+
+format:
+	poetry run black --skip-magic-trailing-comma --preview aws_okta_processor
+
+lint:
+	poetry run pylint aws_okta_processor
+	poetry run flake8 aws_okta_processor
+	poetry run mypy aws_okta_processor
 
 test:
-	PYTHONPATH=$(PYTHONPATH) pipenv run py.test --junitxml=report.xml
+	export PYTHONPATH=".:aws_okta_processor/"
+	poetry run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov=aws_okta_processor
 
-flake8:
-	pipenv run flake8 aws_okta_processor --max-line-length=120
+build:
+	poetry build
 
-coverage:
-	PYTHONPATH=$(PYTHONPATH) pipenv run py.test --cov-config .coveragerc --verbose --cov-report term --cov-report xml --cov-report html --cov=aws_okta_processor tests
-
-package:
-	python setup.py sdist bdist_wheel
-
-publish: package
-	twine check dist/*
-	twine upload dist/*
-	rm -fr build dist .egg requests.egg-info
+publish: build
+	poetry publish -r publish

@@ -17,7 +17,9 @@ Help:
 See 'aws-okta-processor <command> -h' for more information on a specific command.
 """  # noqa
 
-from docopt import docopt
+import sys
+
+from docopt import docopt  # type: ignore[import-untyped]
 
 from . import __version__ as VERSION
 
@@ -39,9 +41,9 @@ def main():
             command = commands.getroles.GetRoles(options)
             command.run()
         else:
-            exit(
-                "%r is not a aws-okta-processor command. See 'aws-okta-processor --help'."
-                % args["<command>"]
+            sys.exit(
+                f"{args['<command>']!r} is not an aws-okta-processor "
+                "command. See 'aws-okta-processor --help'."
             )
     except KeyboardInterrupt:
-        exit(0)
+        sys.exit(0)

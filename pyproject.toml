@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aws-okta-processor"
-version = "1.9.3"
+version = "1.10.0"
 description = "Resource for fetching AWS Role credentials from Okta"
 authors = ["Cloud Platform Solutions <cp-solutions@godaddy.com>"]
 readme = "README.rst"

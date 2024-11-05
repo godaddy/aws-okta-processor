@@ -10,7 +10,8 @@ from tests.test_base import TestBase
 CREDENTIALS = {
     "AccessKeyId": "access_key_id",
     "SecretAccessKey": "secret_access_key",
-    "SessionToken": "session_token"
+    "SessionToken": "session_token",
+    "Expiration": "expiration"
 }
 
 
@@ -35,6 +36,7 @@ class TestAuthenticate(TestBase):
             '{"AccessKeyId": "access_key_id", '
             '"SecretAccessKey": "secret_access_key", '
             '"SessionToken": "session_token", '
+            '"Expiration": "expiration", '
             '"Version": 1}'
         )
 
@@ -50,7 +52,8 @@ class TestAuthenticate(TestBase):
         mock_print.assert_called_once_with(
             "$env:AWS_ACCESS_KEY_ID='access_key_id'; "
             "$env:AWS_SECRET_ACCESS_KEY='secret_access_key'; "
-            "$env:AWS_SESSION_TOKEN='session_token'"
+            "$env:AWS_SESSION_TOKEN='session_token'; "
+            "$env:AWS_CREDENTIAL_EXPIRATION='expiration'"
         )
 
     @patch("aws_okta_processor.commands.authenticate.os")
@@ -65,7 +68,8 @@ class TestAuthenticate(TestBase):
         mock_print.assert_called_once_with(
             "export AWS_ACCESS_KEY_ID='access_key_id' && "
             "export AWS_SECRET_ACCESS_KEY='secret_access_key' && "
-            "export AWS_SESSION_TOKEN='session_token'"
+            "export AWS_SESSION_TOKEN='session_token' && "
+            "export AWS_CREDENTIAL_EXPIRATION='expiration'"
         )
 
     def test_get_configuration_env(self):
@@ -81,9 +85,10 @@ class TestAuthenticate(TestBase):
         self.OPTIONS["--target-shell"] = "fish"
         auth = Authenticate(self.OPTIONS)
         credentials = {
-            "AccessKeyId": "XXXXX",
-            "SecretAccessKey": "YYYYY",
-            "SessionToken": "ZZZZZ"
+            "AccessKeyId": "WWWWW",
+            "SecretAccessKey": "XXXXX",
+            "SessionToken": "YYYYY",
+            "Expiration": "ZZZZZ"
         }
         self.assertNotIsInstance(
             auth.unix_output(credentials).index("set --export"),
@@ -95,9 +100,10 @@ class TestAuthenticate(TestBase):
 
         auth = Authenticate(self.OPTIONS)
         credentials = {
-            "AccessKeyId": "XXXXX",
-            "SecretAccessKey": "YYYYY",
-            "SessionToken": "ZZZZZ"
+            "AccessKeyId": "WWWWW",
+            "SecretAccessKey": "XXXXX",
+            "SessionToken": "YYYYY",
+            "Expiration": "ZZZZZ"
         }
         self.assertNotIsInstance(
             auth.unix_output(credentials).index("export "),
@@ -113,9 +119,10 @@ class TestAuthenticate(TestBase):
 
         auth = Authenticate(self.OPTIONS)
         credentials = {
-            "AccessKeyId": "XXXXX",
-            "SecretAccessKey": "YYYYY",
-            "SessionToken": "ZZZZZ"
+            "AccessKeyId": "WWWWW",
+            "SecretAccessKey": "XXXXX",
+            "SessionToken": "YYYYY",
+            "Expiration": "ZZZZZ"
         }
         self.assertNotIsInstance(
             auth.nt_output(credentials).index("$env:"),

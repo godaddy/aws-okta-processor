@@ -22,4 +22,4 @@ build:
 	poetry build
 
 publish: build
-	poetry publish -r publish
+	poetry config pypi-token.pypi $$PYPI_TOKEN && poetry publish

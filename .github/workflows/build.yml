@@ -32,7 +32,6 @@ jobs:
       - name: Package Publish
         if: startsWith(matrix.platform, 'ubuntu') && matrix.python-version == '3.9' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
         env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TWINE_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run:
           make publish

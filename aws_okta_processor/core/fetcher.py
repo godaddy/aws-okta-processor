@@ -139,6 +139,7 @@ class SAMLFetcher(CachedCredentialFetcher):
             saml_assertion=saml_assertion,
             accounts_filter=self._configuration.get("AWS_OKTA_ACCOUNT_ALIAS", None),
             sign_in_url=self._configuration.get("AWS_OKTA_SIGN_IN_URL", None),
+            no_tls_verify=self._configuration.get("AWS_OKTA_NO_TLS_VERIFY", None),
         )
 
         return (
@@ -173,6 +174,8 @@ class SAMLFetcher(CachedCredentialFetcher):
         Returns:
             A dictionary containing AWS credentials and expiration time.
         """
+        tls_verify = (self._configuration["AWS_OKTA_NO_TLS_VERIFY"] == None)
+
         # Do NOT load credentials from ENV or ~/.aws/credentials
         client = boto3.client(
             "sts",
@@ -180,6 +183,7 @@ class SAMLFetcher(CachedCredentialFetcher):
             aws_secret_access_key="",
             aws_session_token="",
             region_name=self._configuration["AWS_OKTA_REGION"],
+            verify=tls_verify,
         )
 
         # Get available AWS roles and SAML assertion
@@ -217,6 +221,7 @@ class SAMLFetcher(CachedCredentialFetcher):
                 aws_secret_access_key=credentials["SecretAccessKey"],
                 aws_session_token=credentials["SessionToken"],
                 region_name=self._configuration["AWS_OKTA_REGION"],
+                verify=tls_verify,
             )
             response = client.assume_role(
                 RoleArn=secondary_role_arn,

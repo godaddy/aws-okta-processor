@@ -12,6 +12,7 @@ from defusedxml import ElementTree  # type: ignore[import-untyped]
 from bs4 import BeautifulSoup  # type: ignore[import-untyped]
 import requests  # type: ignore[import-untyped]
 import six  # type: ignore[import-untyped]
+import urllib3  # type: ignore[import-untyped]
 
 from aws_okta_processor.core.tty import print_tty
 
@@ -61,7 +62,7 @@ def get_saml_assertion(saml_response=None):
 
 
 def get_aws_roles(  # pylint: disable=R0914
-    saml_assertion=None, accounts_filter=None, sign_in_url=None
+    saml_assertion=None, accounts_filter=None, sign_in_url=None, no_tls_verify=None,
 ):
     """
     Parses the SAML assertion and extracts AWS roles.
@@ -99,7 +100,7 @@ def get_aws_roles(  # pylint: disable=R0914
     if len(role_principals) > 1:
         # Retrieve account roles from AWS sign-in page
         account_roles = get_account_roles(
-            saml_assertion=saml_assertion, sign_in_url=sign_in_url
+            saml_assertion=saml_assertion, sign_in_url=sign_in_url, no_tls_verify=no_tls_verify,
         )
 
         for account_role in account_roles:
@@ -129,7 +130,7 @@ def get_aws_roles(  # pylint: disable=R0914
     return aws_roles
 
 
-def get_account_roles(saml_assertion=None, sign_in_url=None):
+def get_account_roles(saml_assertion=None, sign_in_url=None, no_tls_verify=None):
     """
     Retrieves AWS account roles from the AWS SAML sign-in page.
 
@@ -144,8 +145,13 @@ def get_account_roles(saml_assertion=None, sign_in_url=None):
 
     data = {"SAMLResponse": saml_assertion, "RelayState": ""}
 
+    # Configure TLS verification
+    tls_verify = (no_tls_verify == None)
+    if not tls_verify:
+        urllib3.disalbe_warnings()
+
     # Post the SAML assertion to AWS sign-in URL
-    response = requests.post(sign_in_url or AWS_SIGN_IN_URL, data=data, timeout=60)
+    response = requests.post(sign_in_url or AWS_SIGN_IN_URL, data=data, timeout=60, verify=tls_verify)
     soup = BeautifulSoup(response.text, "html.parser")
     accounts = soup.find("fieldset").find_all(
         "div", attrs={"class": "saml-account"}, recursive=False

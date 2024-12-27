@@ -13,6 +13,7 @@ Options:
     --version                                                   Show version.
     --no-okta-cache                                             Do not read Okta cache.
     --no-aws-cache                                              Do not read AWS cache.
+    --no-tls-verify                                             Do not verify TLS.
     -e --environment                                            Dump auth into ENV variables.
     -u <user_name>, --user=<user_name>                          Okta user name.
     -p <user_pass>, --pass=<user_pass>                          Okta user password.
@@ -85,6 +86,7 @@ CONFIG_MAP = {
     "--silent": "AWS_OKTA_SILENT",
     "--no-okta-cache": "AWS_OKTA_NO_OKTA_CACHE",
     "--no-aws-cache": "AWS_OKTA_NO_AWS_CACHE",
+    "--no-tls-verify": "AWS_OKTA_NO_TLS_VERIFY",
     "--account-alias": "AWS_OKTA_ACCOUNT_ALIAS",
     "--target-shell": "AWS_OKTA_TARGET_SHELL",
 }
@@ -106,6 +108,7 @@ EXTEND_CONFIG_MAP = {
     "AWS_OKTA_SILENT": "silent",
     "AWS_OKTA_NO_OKTA_CACHE": "no-okta-cache",
     "AWS_OKTA_NO_AWS_CACHE": "no-aws-cache",
+    "AWS_OKTA_NO_TLS_VERIFY": "no-tls-verify",
     "AWS_OKTA_ACCOUNT_ALIAS": "account-alias",
     "AWS_OKTA_TARGET_SHELL": "target-shell",
 }
